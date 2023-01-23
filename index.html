@@ -7,10 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abrantes</title>
     <script src="Abrantes.js"></script>
-    <script src="MyTest.js"></script>
 </head>
 
 <body>
+
+    <h1 id="bigH1"></h1>
+
+    <script>
+
+        var MyTest = Object.create(Abrantes);
+
+        Abrantes.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        MyTest.assignVariant("MyTest");
+
+        MyTest.renderVariant();
+
+        MyTest.persist();
+
+    </script>
 
 </body>
 
