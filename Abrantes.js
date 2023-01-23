@@ -28,7 +28,7 @@ Abrantes.assignVariant = function(testId){
 Abrantes.renderVariant = function(variant=this.variant){
     if (typeof (this.variants[variant]) === "function" ) {
         this.variants[variant]();
-        document.getElementsByTagName("body")[0].classList.add("variant-" + this.variant); 
+        document.getElementsByTagName("body")[0].classList.add( this.settings.bodyClassName + "-" + this.variant); 
     } else {
         throw("The variant " + variant + " does not exist");
     }
@@ -62,6 +62,7 @@ Abrantes.settings = {
     renderEvent : "DOMContentLoaded",
     storeEvent: "saveTestVariant",
     analyticsDelay: 2000,
+    bodyClassName: "variant"
 };
 
 /**
