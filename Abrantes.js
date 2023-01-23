@@ -22,12 +22,13 @@ Abrantes.assignVariant = function(testId){
 };
 
 /**
- * Renders the variant
+ * Renders the variant and adds the class variant-x to the <body> tag
  * @param {Number} variant 
  */
 Abrantes.renderVariant = function(variant=this.variant){
     if (typeof (this.variants[variant]) === "function" ) {
         this.variants[variant]();
+        document.getElementsByTagName("body")[0].classList.add("variant-" + this.variant); 
     } else {
         throw("The variant " + variant + " does not exist");
     }
