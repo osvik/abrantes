@@ -8,6 +8,7 @@ Abrantes is a JavaScript browser library to create advanced AB tests in websites
 - Have complete control and integration with your analytics tool.
 - Use a tool that is as private as it can be. It doesn't share information with **new** third party companies.
 - Modify it. Abrantes is open source and it's a proof of concept that I may use to fit my needs.
+- Modify it for a specific test! Yes, you can modify how Abrantes works for a specific test while all the other tests can continue to work with the defaults.
 
 ## Features and planned features
 
