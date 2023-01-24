@@ -37,8 +37,14 @@ Abrantes.renderVariant = function(variant=this.variant){
 /**
  * Stores the test id (object name) and variant in localStorage
  */
-Abrantes.persist = function(){
-    localStorage.setItem( this.testId, this.variant);
+Abrantes.persist = function(context){
+    if (context==="user") {
+        localStorage.setItem( this.testId, this.variant);
+    } else if (context==="session") {
+        sessionStorage.setItem( this.testId, this.variant);
+    } else {
+        throw("You must use either 'user' or 'session'");
+    }
 };
 
 /**
@@ -46,9 +52,12 @@ Abrantes.persist = function(){
  * @returns 
  */
 Abrantes.readPersistent = function() {
-    let inStorage = localStorage.getItem( this.testId);
-    if ( typeof(inStorage) === "string" || typeof(inStorage) === "number" ){
-        return Number(inStorage);
+    let userData = localStorage.getItem( this.testId);
+    let sessionData = sessionStorage.getItem( this.testId);
+    if ( typeof(userData) === "string" || typeof(userData) === "number" ){
+        return Number(userData);
+    } else if (typeof(sessionData) === "string" || typeof(sessionData) === "number" ){
+        return Number(sessionData);
     } else {
         return undefined;
     }
