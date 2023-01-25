@@ -90,3 +90,13 @@ Abrantes.randomVar = function(){
     this.variant = Math.round(Math.random() * (numberVariants - 1));
     return this.variant;
 };
+
+/**
+ * Track the user using Google Analytics 4 custom dimensions
+ * @param {string} customDim The id of the custom dimension, created in Admin > Property > Custom definitions 
+ */
+Abrantes.track = function(customDim){
+    if (typeof(gtag==="function")){
+        gtag('set', {customDim:  this.testId + "-" + this.variant});
+    }
+};
