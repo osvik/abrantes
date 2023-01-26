@@ -14,6 +14,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
+        // Add the params here instead of in gtag config
         window.gtagParams = {
 
         };
@@ -27,8 +28,10 @@
 
     <script>
 
+        // Create the test
         var MyTest = Object.create(Abrantes);
 
+        // Define the variants
         Abrantes.variants = [
 
             // Original
@@ -48,18 +51,22 @@
 
         ];
 
+        // Assign a variant
         MyTest.assignVariant("MyTest");
 
+        // Render the variant
         MyTest.renderVariant();
 
+        // Persist the variant in the browser
         MyTest.persist("session");
 
-        MyTest.track("test_event");
+        // Track the variant in a dimension 
         MyTest.track("test_user");
 
     </script>
 
     <script>
+        // Use the window.gtagParams in the gtag config and configure it in the header
         gtag('config', 'G-50HRM8825D', window.gtagParams);
     </script>
 
