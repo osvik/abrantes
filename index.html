@@ -9,7 +9,7 @@
     <script src="Abrantes.js"></script>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSV95FN951"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -51,15 +51,17 @@
 
         MyTest.persist("session");
 
-        MyTest.track("test_dim");
+        MyTest.track("test_event");
 
     </script>
 
     <script>
-        gtag('config', 'G-SSV95FN951');
+        gtag('config', 'G-50HRM8825D');
+
         gtag('event', "test_action", {
-            
-          });
+            // "test_event": "inside-event",
+            // "test_user": "inside-event"
+        });
     </script>
 
 
