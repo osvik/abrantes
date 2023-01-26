@@ -14,6 +14,9 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
+        window.gtagParams = {
+
+        };
     </script>
 
 </head>
@@ -52,16 +55,12 @@
         MyTest.persist("session");
 
         MyTest.track("test_event");
+        MyTest.track("test_user");
 
     </script>
 
     <script>
-        gtag('config', 'G-50HRM8825D');
-
-        gtag('event', "test_action", {
-            // "test_event": "inside-event",
-            // "test_user": "inside-event"
-        });
+        gtag('config', 'G-50HRM8825D', window.gtagParams);
     </script>
 
 

@@ -98,7 +98,5 @@ Abrantes.randomVar = function(){
 Abrantes.track = function(customDim){
     let setObj = {};
     setObj[customDim] = this.testId + "-" + this.variant;
-    if (typeof(gtag==="function")){
-        gtag('set', setObj);
-    }
+    Object.assign(window.gtagParams, setObj);
 };
