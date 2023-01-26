@@ -96,6 +96,9 @@ Abrantes.randomVar = function(){
  * @param {string} customDim The id of the custom dimension, created in Admin > Property > Custom definitions 
  */
 Abrantes.track = function(customDim){
+    if(typeof (window.gtagParams) !== "object"){
+        throw("window.gtagParams must be an object");
+    }
     let setObj = {};
     setObj[customDim] = this.testId + "-" + this.variant;
     Object.assign(window.gtagParams, setObj);
