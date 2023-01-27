@@ -10,7 +10,7 @@ Fully integrated with **Google Analytics 4**. All events are tagged with the exp
 
 You can also use **Looker Studio** for the analysis or to present the results.
 
-With GA4 you can have 50 event scoped dimensions and 25 user dimensions. That's **up to 75 simultaneous tests in a single website**. 
+With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single website**. 
 
 You can delete dimensions after the tests and create others for new tests (but you'll loose the experiments data). 
 
