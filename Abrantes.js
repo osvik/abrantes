@@ -67,10 +67,6 @@ Abrantes.readPersistent = function() {
  * Object where the user can read and write the settings
  */
 Abrantes.settings = {
-    storage: "localStorage",
-    renderEvent : "DOMContentLoaded",
-    storeEvent: "saveTestVariant",
-    analyticsDelay: 2000,
     bodyClassName: "variant"
 };
 
