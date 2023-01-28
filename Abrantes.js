@@ -17,7 +17,7 @@ Abrantes.assignVariant = function(testId){
     if ( typeof(this.readPersistent()) === "number" ) {
         this.variant = this.readPersistent();
     } else {
-        this.variant = Abrantes.randomVar();
+        this.variant = this.randomVar();
     }
 };
 
