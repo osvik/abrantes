@@ -33,11 +33,11 @@ It gives the developer complete control on how to run the experiments. For examp
 - You can **pause a test** and continue it latter.
 - You can have **more than a goal or no goal at all**. Sometimes it's interesting to see how an experiment affects the user experience in your website.
 
-### What to test with Abrantes
+### What experiments can you do with with Abrantes?
 
-- Content
-- Design
-- Interactivity
+- **Content** - You can experiment with any content you want in a web pages. It can be a simple text, image or video replacement or something more sophisticated like changing the information that you get from an API call.
+- **Design** - You can do simple design tests or use media queries to test variants that change differently in specific screen sizes or devices with a mouse/trackpad. And basically test anything that can be done in CSS, including animations.
+- **Interactivity** - Here it depends a lot on the libraries and frameworks you use on your website. In most cases you can overwrite existing html and javascript for the variant, remove or add event listeners... In some specific cases you may need to rewrite the original, but everything should be testable with Abrantes.
 
 ### Performance
 
