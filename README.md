@@ -4,6 +4,8 @@ Abrantes is a JavaScript browser library to **create advanced AB tests in websit
 
 With Abrantes webdevs can easily create unlimited tests with any number of users and page views.
 
+**[Read the documentation in the wiki](https://github.com/osvik/abrantes/wiki)**
+
 ### Analytics
 
 Fully integrated with **Google Analytics 4**. All events are tagged with the experiment id and variant, so you can create reports to understand the user's behaviour and not just to measure conversions.
