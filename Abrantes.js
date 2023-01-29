@@ -52,15 +52,15 @@ Abrantes.persist = function(context){
  * @returns 
  */
 Abrantes.readPersistent = function() {
-    let userData = localStorage.getItem( this.testId);
-    let sessionData = sessionStorage.getItem( this.testId);
-    if ( typeof(userData) === "string" || typeof(userData) === "number" ){
-        return Number(userData);
-    } else if (typeof(sessionData) === "string" || typeof(sessionData) === "number" ){
+    const sessionData = sessionStorage.getItem( this.testId);
+    if ( typeof(sessionData) === "string" || typeof(sessionData) === "number" ){
         return Number(sessionData);
-    } else {
-        return undefined;
-    }
+    }  
+    const userData = localStorage.getItem( this.testId);
+    if (typeof(userData) === "string" || typeof(userData) === "number" ){
+        return Number(userData);
+    } 
+    return undefined;
 };
 
 /**
