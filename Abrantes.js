@@ -28,7 +28,7 @@ Abrantes.assignVariant = function(testId){
 Abrantes.renderVariant = function(variant=this.variant){
     if (typeof (this.variants[variant]) === "function" ) {
         this.variants[variant]();
-        document.getElementsByTagName("body")[0].classList.add( this.settings.bodyClassName + "-" + variant); 
+        document.getElementsByTagName("body")[0].classList.add( this.testId + "-" + variant); 
     } else {
         throw("The variant " + variant + " does not exist");
     }
@@ -67,7 +67,7 @@ Abrantes.readPersistent = function() {
  * Object where the user can read and write the settings
  */
 Abrantes.settings = {
-    bodyClassName: "variant"
+    
 };
 
 /**
