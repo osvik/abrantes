@@ -4,6 +4,8 @@ Abrantes is a JavaScript browser library to **create advanced AB tests in websit
 
 With Abrantes webdevs can easily create unlimited tests with any number of users and page views.
 
+My goal with Abrantes is to create a tool where I can create simple and complex experiments with complete control and to do it as quickly as possible. It’s also a rant against Google Optimise, which is a very limited and not very performant tool. I had many issues with GO even more after implementing GDPR compliant cookies.
+
 **[Read the documentation in the wiki](https://github.com/osvik/abrantes/wiki)**
 
 ### Analytics
@@ -12,13 +14,15 @@ Fully integrated with **Google Analytics 4**. All events are tagged with the exp
 
 You can also use **Looker Studio** for the analysis or to present the results.
 
-With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single website**. 
+With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single website**. Please note that you can delete dimensions after the tests and create others for new tests (but you'll loose the previous experiments data).
 
-You can delete dimensions after the tests and create others for new tests (but you'll loose the experiments data). 
+With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
+
+In the future I might make it work also with Matomo and Plausible, instead of just Google Analytics 4, but for now I want to improve other aspects of Abrantes and document it a little better.
 
 ### Open source
 
-You can modify it for your general use or **for a specific test**. Abrantes is open source and easily modifiable. GPL v3 License.
+You can modify it for your general use or **for a specific test** by extending it. Abrantes is open source and easily modifiable. GPL v3 License.
 
 ### Privacy
 
@@ -32,6 +36,7 @@ It gives the developer complete control on how to run the experiments. For examp
 - Can work store the variant info for the duration of a session or indefinitely.
 - You can **pause a test** and continue it latter.
 - You can have **more than a goal or no goal at all**. Sometimes it's interesting to see how an experiment affects the user experience in your website.
+- While developing an experiment you can **run each variant simultaneously in a separate tab** or **run tabs for mobile phones simulatenously with tabs for desktops**. This way faster, specially for complex experiments. It also allows you to easily record videos explaining the experiment to your colleagues.
 
 ### What experiments can you do with with Abrantes?
 
