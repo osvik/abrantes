@@ -48,7 +48,7 @@ It gives the developer complete control on how to run the experiments. For examp
 
 Used properly, **the flash of switching content is unnoticeable**. It does not blank the page while loading. The user experience while loading the page is the same for the original and the other variants.
 
-**Lightweight**. Unlike other testing tools it doesn't load 80K or more of JavaScript on page load. Abrantes weights 2K minified. It can be gziped and cached.
+**Lightweight**. Unlike other testing tools it doesn't load 80K or more of JavaScript on page load. Abrantes weights 1.3K minified. It can be gziped and cached.
 
 ### Where to do your experiments 
 
