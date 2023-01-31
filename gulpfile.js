@@ -19,10 +19,11 @@ const rename = require('gulp-rename');
  */
 function init() {
     return src([
-        'Abrantes.js', 
-      ])
-      .pipe(concat("AbrantesPlus.js")) 
-      .pipe(dest('./'));
+        'Abrantes.js',
+        'plugins/ga4-gtag.js',
+    ])
+        .pipe(concat("AbrantesPlus.js"))
+        .pipe(dest('./'));
 }
 
 /**
@@ -30,11 +31,11 @@ function init() {
  */
 function minify() {
     return src([
-        'AbrantesPlus.js', 
-      ])
-      .pipe(terser())
-      .pipe(rename({ suffix: ".min" }))
-      .pipe(dest('./'));
+        'AbrantesPlus.js',
+    ])
+        .pipe(terser())
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(dest('./'));
 }
 
 exports.init = init;
