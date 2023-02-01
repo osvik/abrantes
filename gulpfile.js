@@ -3,8 +3,8 @@
 /**
  * USE with
  * 
- * gulp init
- * gulp minify
+ * gulp init - Concatenates Abrantes with the plugins in this Gulpfile
+ * gulp minify - Minifies Abrantes and the plugins
  * 
  * 
  */
