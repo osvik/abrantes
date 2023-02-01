@@ -22,7 +22,13 @@ In the future I might make it work also with Matomo and Plausible, instead of ju
 
 ### Open source
 
-You can modify it for your general use or **for a specific test** by extending it. Abrantes is open source and easily modifiable. GPL v3 License.
+With Abrantes you can:
+
+1. Create a **plugin** to extend it to your use case, based on the tools you use.
+2. Modify it for the needs of a **specific test** in your site.
+3. Contribute to the core or official plugins.
+
+Abrantes is open source and free to use for any purpose. GPL v3 License.
 
 ### Privacy
 
@@ -48,7 +54,7 @@ It gives the developer complete control on how to run the experiments. For examp
 
 Used properly, **the flash of switching content is unnoticeable**. It does not blank the page while loading. The user experience while loading the page is the same for the original and the other variants.
 
-**Lightweight**. Unlike other testing tools it doesn't load 80K or more of JavaScript on page load. Abrantes weights 2K minified. It can be gziped and cached.
+**Lightweight**. Unlike other testing tools it doesn't load 80K or more of JavaScript on page load. Abrantes weights 1.3K minified. It can be gziped and cached.
 
 ### Where to do your experiments 
 
