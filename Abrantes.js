@@ -88,8 +88,7 @@ Abrantes.randomVar = function () {
 };
 
 /**
- * Track the user using Google Analytics 4 custom dimensions
- * @param {string} customDim The id of the custom dimension, created in Admin > Property > Custom definitions 
+ * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
     throw ("Missing plugin to track results");

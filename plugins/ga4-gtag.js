@@ -1,6 +1,11 @@
 
 {
     const ga4gtag = {
+
+        /**
+         * Tracks the user using Google Analytics 4 and Gtag
+         * @param {string} customDim 
+         */
         track: function (customDim) {
             if (typeof (window.gtagParams) !== "object") {
                 throw ("window.gtagParams must be an object");
