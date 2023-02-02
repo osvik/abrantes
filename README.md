@@ -1,5 +1,20 @@
 # Abrantes
 
+- [Abrantes](#abrantes)
+    - [Analytics](#analytics)
+      - [Google Analytics 4](#google-analytics-4)
+      - [Matomo](#matomo)
+      - [Other](#other)
+    - [Open source](#open-source)
+    - [Privacy](#privacy)
+    - [Complete control](#complete-control)
+    - [What experiments can you do with with Abrantes?](#what-experiments-can-you-do-with-with-abrantes)
+    - [Performance](#performance)
+    - [Where to do your experiments](#where-to-do-your-experiments)
+    - [Types of experiments](#types-of-experiments)
+    - [Users to include in an experiment](#users-to-include-in-an-experiment)
+
+
 Abrantes is a JavaScript browser library to **create advanced AB tests in websites and web apps**. It's also a Portuguese city.
 
 With Abrantes webdevs can easily create unlimited tests with any number of users and page views.
