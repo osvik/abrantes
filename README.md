@@ -10,6 +10,8 @@ My goal with Abrantes is to create a tool where I can create simple and complex 
 
 ### Analytics
 
+#### Google Analytics 4
+
 Fully integrated with **Google Analytics 4**. All events are tagged with the experiment id and variant, so you can create reports to understand the user's behaviour and not just to measure conversions.
 
 You can also use **Looker Studio** for the analysis or to present the results.
@@ -18,7 +20,13 @@ With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous
 
 With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
 
-In the future I might make it work also with Matomo and Plausible, instead of just Google Analytics 4, but for now I want to improve other aspects of Abrantes and document it a little better.
+#### Matomo
+
+Abrantes works with Matomo. It’s not tested in a real world situation but it should work. Like with GA4 it also works using custom dimensions. You should test it with visit dimensions and action dimensions.
+
+#### Other
+
+In the future I might make it work also with Plausible and Hotjar
 
 ### Open source
 
