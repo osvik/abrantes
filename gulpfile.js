@@ -21,6 +21,7 @@ function init() {
     return src([
         'Abrantes.js',
         'plugins/ga4-gtag.js',
+        // 'plugins/matomo.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
