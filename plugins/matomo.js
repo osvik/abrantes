@@ -7,7 +7,7 @@
          * @param {string} customDim Id in Matomo, a number
          */
         track: function (customDim) {
-            _paq.push(['setCustomDimension', customDimensionId = customDim, customDimensionValue = MyTest.testId + "-" + MyTest.variant]);
+            _paq.push(['setCustomDimension', customDimensionId = customDim, customDimensionValue = this.testId + "-" + this.variant]);
         }
     };
 
