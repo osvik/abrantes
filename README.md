@@ -1,7 +1,7 @@
 # Abrantes
 
 - [Abrantes](#abrantes)
-    - [Analytics](#analytics)
+    - [Analytics and reporting](#analytics-and-reporting)
       - [Google Analytics 4](#google-analytics-4)
       - [Matomo](#matomo)
       - [Other](#other)
@@ -23,25 +23,25 @@ My goal with Abrantes is to create a tool where I can create simple and complex 
 
 **[Read the documentation in the wiki](https://github.com/osvik/abrantes/wiki)**
 
-### Analytics
+### Analytics and reporting
 
 #### Google Analytics 4
 
-Fully integrated with **Google Analytics 4**. All events are tagged with the experiment id and variant, so you can create reports to understand the user's behaviour and not just to measure conversions.
+Fully integrated with **Google Analytics 4**. All events are tagged with the experiment id and variant, so you can create reports to understand the user's behaviour and not just to measure which variant converts better.
 
 You can also use **Looker Studio** for the analysis or to present the results.
 
-With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single website**. Please note that you can delete dimensions after the tests and create others for new tests (but you'll loose the previous experiments data).
+With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single page**. 
 
 With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
 
 #### Matomo
 
-Abrantes works with Matomo. It’s not tested in a real world situation but it should work. Like with GA4 it also works using custom dimensions. You should test it with visit dimensions and action dimensions.
+Abrantes works with Matomo. Unlike with GA4 it’s not tested in a real world situation but it should work. Like with GA4 it also works using custom dimensions. You should test it with visit dimensions and action dimensions.
 
 #### Other
 
-In the future I might make it work also with Plausible and Hotjar
+In the future I might make it work also with Plausible, Microsoft Clarity and Mixpanel.
 
 ### Open source
 
