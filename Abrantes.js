@@ -83,7 +83,7 @@ Abrantes.variants = [
  */
 Abrantes.randomVar = function () {
     const numberVariants = this.variants.length;
-    this.variant = Math.round(Math.random() * (numberVariants - 1));
+    this.variant = Math.floor(Math.random() * (numberVariants));
     return this.variant;
 };
 
