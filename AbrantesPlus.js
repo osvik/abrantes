@@ -100,7 +100,7 @@ Abrantes.track = function () {
     const ga4gtag = {
 
         /**
-         * Tracks the user using Google Analytics 4 and Gtag
+         * Tracks the user using Google Analytics 4 and Gtag at event based level
          * @param {string} customDim 
          */
         track: function (customDim) {
@@ -110,6 +110,17 @@ Abrantes.track = function () {
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
+        },
+
+        /**
+         * Tracks the user using Google Analytics 4 and Gtag at user based level
+         * @param {string} customDim 
+         */
+        trackUser: function (customDim) {
+            let setObj = {};
+            setObj[customDim] = this.testId + "-" + this.variant;
+            console.log("Nooooo", setObj);
+            gtag('set', 'user_properties', setObj);
         }
     };
 

@@ -60,8 +60,11 @@
         // Persist the variant in the browser
         MyTest.persist("session");
 
-        // Track the variant in a dimension 
+        // Track the variant in an event dimension 
         MyTest.track("test_event");
+
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("test_user");
 
     </script>
 
