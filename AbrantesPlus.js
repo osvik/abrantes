@@ -119,7 +119,6 @@ Abrantes.track = function () {
         trackUser: function (customDim) {
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
-            console.log("Nooooo", setObj);
             gtag('set', 'user_properties', setObj);
         }
     };
