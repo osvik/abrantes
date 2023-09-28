@@ -22,7 +22,7 @@ function init() {
         'Abrantes.js',
         'plugins/ga4-gtag.js',
         // 'plugins/matomo.js',
-        // 'plugins/hotjar.js',
+        'plugins/hotjar.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
