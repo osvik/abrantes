@@ -2,6 +2,9 @@
 {
     const hotjarEvent = {
 
+        /**
+         * Triggers an event in Hotjar
+         */
         hotjar: function () {
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
