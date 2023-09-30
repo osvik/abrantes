@@ -3,8 +3,8 @@
 - [Abrantes](#abrantes)
     - [Analytics and reporting](#analytics-and-reporting)
       - [Google Analytics 4](#google-analytics-4)
-      - [Matomo](#matomo)
-      - [Other](#other)
+      - [Hotjar](#hotjar)
+      - [Matomo and other](#matomo-and-other)
     - [Open source](#open-source)
     - [Privacy](#privacy)
     - [Complete control](#complete-control)
@@ -35,13 +35,15 @@ With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous
 
 With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
 
-#### Matomo
+#### Hotjar
+
+You can filter recordings and heatmaps/scrollmaps by experiment and variant. This is very useful in larger interaction changes.
+
+#### Matomo and other
 
 Abrantes works with Matomo. Unlike with GA4 it’s not tested in a real world situation but it should work. Like with GA4 it also works using custom dimensions. You should test it with visit dimensions and action dimensions.
 
-#### Other
-
-In the future I might make it work also with Plausible, Microsoft Clarity and Mixpanel.
+In the future I might make it work with Mixpanel and Microsoft Clarity.
 
 ### Open source
 
@@ -64,6 +66,7 @@ It gives the developer complete control on how to run the experiments. For examp
 - The same experiment can run in multiple pages with **different changes in each page**.
 - Can work store the variant info for the duration of a session or indefinitely.
 - You can **pause a test** and continue it latter.
+- You can add or remove landing pages to an experiment during the experiment. (If you know what you are doing, as it can influence the results)
 - You can have **more than a goal or no goal at all**. Sometimes it's interesting to see how an experiment affects the user experience in your website.
 - While developing an experiment you can **run each variant simultaneously in a separate tab** or **run tabs for mobile phones simulatenously with tabs for desktops**. This way faster, specially for complex experiments. It also allows you to easily record videos explaining the experiment to your colleagues.
 
