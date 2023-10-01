@@ -32,7 +32,6 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
  */
 Abrantes.renderVariant = function (variant = this.variant) {
     if (variant === -1) {
-        console.log("Don't render");
         return;
     }
     if (typeof (this.variants[variant]) === "function") {
@@ -117,7 +116,6 @@ Abrantes.track = function () {
                 throw ("window.googleTrackingConfig must be an object");
             }
             if (this.variant === -1) {
-                console.log("Don't track");
                 return;
             }
             let setObj = {};
@@ -149,6 +147,9 @@ Abrantes.track = function () {
          * Triggers an event in Hotjar
          */
         hotjar: function () {
+            if (this.variant === -1) {
+                return;
+            }
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
                 return;
