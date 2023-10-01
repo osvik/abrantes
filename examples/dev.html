@@ -51,8 +51,8 @@
 
         ];
 
-        // Assign a variant
-        MyTest.assignVariant("MyTest");
+        // Assign a variant (Variant name, fraction of the audience to include in the experiment: from 0 to 1)
+        MyTest.assignVariant("MyTest", 1);
 
         // Render the variant
         MyTest.renderVariant();
@@ -60,7 +60,7 @@
         // Persist the variant in the browser
         MyTest.persist("session");
 
-        // Track the variant in an event dimension 
+        // Track the variant in an event dimension
         MyTest.track("test_event");
 
         // Optionally track the variant in a user dimension
