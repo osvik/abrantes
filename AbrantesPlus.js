@@ -16,6 +16,12 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
+        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+            detail: {
+                testId: this.testId,
+                variant: this.variant
+            }
+        }));
         return;
     }
     const n = Math.random();
@@ -23,6 +29,12 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
         this.variant = -1;
     } else {
         this.variant = this.randomVar();
+        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+            detail: {
+                testId: this.testId,
+                variant: this.variant
+            }
+        }));
     }
 };
 
