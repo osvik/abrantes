@@ -17,7 +17,7 @@
                 if (typeof (hj) === "function") {
                     hj('event', this.testId + "-" + this.variant);
                 } else {
-                    console.info("Hotjar not found");
+                    console.error("Hotjar not found");
                 }
             });
         }
