@@ -6,6 +6,9 @@
          * Triggers an event in Hotjar
          */
         hotjar: function () {
+            if (this.variant === -1) {
+                return;
+            }
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
                 return;
