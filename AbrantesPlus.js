@@ -9,13 +9,18 @@ Abrantes.variant = undefined;
  * Assigns a variant to a user
  * @param {string} testId 
  */
-Abrantes.assignVariant = function (testId) {
+Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when assigning a variant");
     }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
+        return;
+    }
+    const n = Math.random();
+    if (n > trafficAllocation) {
+        this.variant = -1;
     } else {
         this.variant = this.randomVar();
     }
@@ -26,6 +31,10 @@ Abrantes.assignVariant = function (testId) {
  * @param {Number} variant 
  */
 Abrantes.renderVariant = function (variant = this.variant) {
+    if (variant === -1) {
+        console.log("Don't render");
+        return;
+    }
     if (typeof (this.variants[variant]) === "function") {
         this.variants[variant]();
         document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
@@ -107,6 +116,10 @@ Abrantes.track = function () {
             if (typeof (window.googleTrackingConfig) !== "object") {
                 throw ("window.googleTrackingConfig must be an object");
             }
+            if (this.variant === -1) {
+                console.log("Don't track");
+                return;
+            }
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
@@ -132,6 +145,9 @@ Abrantes.track = function () {
 {
     const hotjarEvent = {
 
+        /**
+         * Triggers an event in Hotjar
+         */
         hotjar: function () {
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
