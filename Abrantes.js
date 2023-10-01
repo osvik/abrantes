@@ -31,6 +31,9 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
  * @param {Number} variant 
  */
 Abrantes.renderVariant = function (variant = this.variant) {
+    if (variant === -1) {
+        return;
+    }
     if (typeof (this.variants[variant]) === "function") {
         this.variants[variant]();
         document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
