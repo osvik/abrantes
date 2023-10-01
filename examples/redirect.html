@@ -14,10 +14,6 @@
 
     <script>
 
-        const redirectTo = function (url) {
-            location.href = url + location.search;
-        }
-
         // Create the test
         var MyTest = Object.create(Abrantes);
 
@@ -26,17 +22,17 @@
 
             // Original
             function () {
-                redirectTo("https://www.google.com/");
+                MyTest.redirectTo("https://www.google.com/");
             },
 
             // Variant 1
             function () {
-                redirectTo("https://www.bing.com/");
+                MyTest.redirectTo("https://www.bing.com/");
             },
 
             // Variant 2
             function () {
-                redirectTo("https://search.brave.com/");
+                MyTest.redirectTo("https://search.brave.com/");
             },
 
         ];
@@ -47,7 +43,7 @@
         // Persist the variant in the browser
         MyTest.persist("session");
 
-        // Render the variant
+        // Render the variant (should be the last)
         MyTest.renderVariant();
 
     </script>

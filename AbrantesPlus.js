@@ -96,6 +96,14 @@ Abrantes.randomVar = function () {
 };
 
 /**
+ * Redirects to another url maintaining the url params and the hash
+ * @param {string} url 
+ */
+Abrantes.redirectTo = function (url) {
+    location.href = url + location.search + location.hash;
+}
+
+/**
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
