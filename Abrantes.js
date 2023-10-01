@@ -9,13 +9,18 @@ Abrantes.variant = undefined;
  * Assigns a variant to a user
  * @param {string} testId 
  */
-Abrantes.assignVariant = function (testId) {
+Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when assigning a variant");
     }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
+        return;
+    }
+    const n = Math.random();
+    if (n > trafficAllocation) {
+        this.variant = -1;
     } else {
         this.variant = this.randomVar();
     }
