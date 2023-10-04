@@ -13,9 +13,10 @@
                 hj('event', this.testId + "-" + this.variant);
                 return;
             }
+            self = this;
             window.addEventListener("load", function () {
                 if (typeof (hj) === "function") {
-                    hj('event', this.testId + "-" + this.variant);
+                    hj('event', self.testId + "-" + self.variant);
                 } else {
                     console.error("Hotjar not found");
                 }
