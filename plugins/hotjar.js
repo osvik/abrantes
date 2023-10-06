@@ -13,7 +13,7 @@
                 hj('event', this.testId + "-" + this.variant);
                 return;
             }
-            self = this;
+            const self = this;
             window.addEventListener("load", function () {
                 if (typeof (hj) === "function") {
                     hj('event', self.testId + "-" + self.variant);
