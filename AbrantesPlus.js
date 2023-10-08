@@ -205,3 +205,38 @@ Abrantes.track = function () {
     Object.assign(Abrantes, hotjarEvent);
 
 }
+
+
+{
+    const formtrack = {
+
+        settings: {
+            formtrack: {
+                triggerEvents: ["DOMContentLoaded", "load"]
+            }
+        },
+
+        /**
+         * Controls the adding
+         */
+        formtrack: function () {
+
+            if (this.variant === -1) {
+                return;
+            }
+
+            const self = this;
+
+            this.settings.formtrack.triggerEvents.forEach(function (ev) {
+                window.addEventListener(ev, function () {
+                    console.log(ev, self.testId, self.variant);
+                });
+            });
+
+        }
+
+    };
+
+    Object.assign(Abrantes, formtrack);
+
+}

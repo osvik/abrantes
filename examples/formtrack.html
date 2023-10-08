@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes</title>
+    <script src="../AbrantesPlus.js"></script>
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        // Assign a variant (Variant name, fraction of the audience to include in the experiment: from 0 to 1)
+        MyTest.assignVariant("MyTest", 1);
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser
+        MyTest.persist("session");
+
+        // 
+        MyTest.formtrack();
+
+    </script>
+
+</body>
+
+</html>
