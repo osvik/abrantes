@@ -14,6 +14,10 @@
 
     <h1 id="bigH1">MyTest Original</h1>
 
+    <form>
+        <input id="last_abtest_variant" />
+    </form>
+
     <script>
 
         // Create the test
@@ -48,7 +52,7 @@
         // Persist the variant in the browser
         MyTest.persist("session");
 
-        // 
+        // Records the test id and variant in the default form input field
         MyTest.formtrack();
 
     </script>
