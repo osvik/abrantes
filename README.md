@@ -31,13 +31,13 @@ Fully integrated with **Google Analytics 4**. All events are tagged with the exp
 
 You can also use **Looker Studio** for the analysis or to present the results.
 
-With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single page**. 
+With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous experiments in a single page**. You can also use user scoped dimensions for other experiments.
 
 With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
 
 #### Hotjar
 
-You can filter recordings and heatmaps/scrollmaps by experiment and variant. This is very useful in larger interaction changes.
+You can filter recordings and heatmaps/scrollmaps by experiment and variant. This is very useful to observe differences between user behaviour in each variant.
 
 #### Matomo and other
 
