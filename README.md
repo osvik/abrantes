@@ -4,6 +4,7 @@
     - [Analytics and reporting](#analytics-and-reporting)
       - [Google Analytics 4](#google-analytics-4)
       - [Hotjar](#hotjar)
+      - [CRM / Marketing app](#crm--marketing-app)
       - [Matomo and other](#matomo-and-other)
     - [Open source](#open-source)
     - [Privacy](#privacy)
@@ -38,6 +39,10 @@ With GA4 and Looker studio you can create sophisticated visualisations of your e
 #### Hotjar
 
 You can filter recordings and heatmaps/scrollmaps by experiment and variant. This is very useful to observe differences between user behaviour in each variant.
+
+#### CRM / Marketing app
+
+For experiments where the conversion happens offline or latter, you can pass the experiment id and variant to a form.
 
 #### Matomo and other
 
