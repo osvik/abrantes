@@ -3,7 +3,7 @@
     const formtrack = {
 
         settings: {
-            formtrack: {
+            formTrack: {
                 // Use triggerEvents of your GDPR cookie/tracking acceptance. "DOMContentLoaded" for all
                 triggerEvents: ["DOMContentLoaded"],
                 // Form input element where to store the data
@@ -14,7 +14,7 @@
         /**
          * Adds listeners to the events that populates the form field
          */
-        formtrack: function () {
+        formTrack: function () {
 
             if (this.variant === -1) {
                 return;
@@ -22,9 +22,9 @@
 
             const self = this;
 
-            this.settings.formtrack.triggerEvents.forEach(function (ev) {
+            this.settings.formTrack.triggerEvents.forEach(function (ev) {
                 window.addEventListener(ev, function () {
-                    self.setInput(self.settings.formtrack.inputElement, self.testId, self.variant);
+                    self.setInput(self.settings.formTrack.inputElement, self.testId, self.variant);
                 });
             });
 
