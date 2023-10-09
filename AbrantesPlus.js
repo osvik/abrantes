@@ -161,13 +161,14 @@ Abrantes.track = function () {
 
 
 {
-    const hotjarEvent = {
 
-        settings: {
-            hotjar: {
-                triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
-            }
-        },
+    const settings = {
+        hotjar: {
+            triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
+        }
+    };
+
+    const hotjarEvent = {
 
         /**
          * Triggers an event in Hotjar
@@ -203,21 +204,23 @@ Abrantes.track = function () {
     };
 
     Object.assign(Abrantes, hotjarEvent);
+    Object.assign(Abrantes.settings, settings);
 
 }
 
 
 {
-    const formtrack = {
 
-        settings: {
-            formTrack: {
-                // Use triggerEvents of your GDPR cookie/tracking acceptance. "DOMContentLoaded" for all
-                triggerEvents: ["DOMContentLoaded"],
-                // Form input element where to store the data
-                inputElement: "#last_abtest_variant"
-            }
-        },
+    const settings = {
+        formTrack: {
+            // Use triggerEvents of your GDPR cookie/tracking acceptance. "DOMContentLoaded" for all
+            triggerEvents: ["DOMContentLoaded"],
+            // Form input element where to store the data
+            inputElement: "#last_abtest_variant"
+        }
+    };
+
+    const formtrack = {
 
         /**
          * Adds listeners to the events that populates the form field
@@ -255,5 +258,6 @@ Abrantes.track = function () {
     };
 
     Object.assign(Abrantes, formtrack);
+    Object.assign(Abrantes.settings, settings);
 
 }
