@@ -23,6 +23,7 @@ function init() {
         'plugins/ga4-gtag.js',
         // 'plugins/matomo.js',
         'plugins/hotjar.js',
+        // 'plugins/clarity.js',
         'plugins/formtrack.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
