@@ -1,15 +1,16 @@
 
 {
-    const formtrack = {
 
-        settings: {
-            formTrack: {
-                // Use triggerEvents of your GDPR cookie/tracking acceptance. "DOMContentLoaded" for all
-                triggerEvents: ["DOMContentLoaded"],
-                // Form input element where to store the data
-                inputElement: "#last_abtest_variant"
-            }
-        },
+    const settings = {
+        formTrack: {
+            // Use triggerEvents of your GDPR cookie/tracking acceptance. "DOMContentLoaded" for all
+            triggerEvents: ["DOMContentLoaded"],
+            // Form input element where to store the data
+            inputElement: "#last_abtest_variant"
+        }
+    };
+
+    const formtrack = {
 
         /**
          * Adds listeners to the events that populates the form field
@@ -47,5 +48,6 @@
     };
 
     Object.assign(Abrantes, formtrack);
+    Object.assign(Abrantes.settings, settings);
 
 }

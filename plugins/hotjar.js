@@ -1,12 +1,13 @@
 
 {
-    const hotjarEvent = {
 
-        settings: {
-            hotjar: {
-                triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
-            }
-        },
+    const settings = {
+        hotjar: {
+            triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
+        }
+    };
+
+    const hotjarEvent = {
 
         /**
          * Triggers an event in Hotjar
@@ -42,5 +43,6 @@
     };
 
     Object.assign(Abrantes, hotjarEvent);
+    Object.assign(Abrantes.settings, settings);
 
 }
