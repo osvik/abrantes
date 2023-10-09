@@ -3,7 +3,7 @@
 - [Abrantes](#abrantes)
     - [Analytics and reporting](#analytics-and-reporting)
       - [Google Analytics 4](#google-analytics-4)
-      - [Hotjar](#hotjar)
+      - [Hotjar or Microsoft Clarity](#hotjar-or-microsoft-clarity)
       - [CRM / Marketing app](#crm--marketing-app)
       - [Matomo and other](#matomo-and-other)
     - [Open source](#open-source)
@@ -36,7 +36,7 @@ With GA4 you can have 50 event scoped dimensions. That's **up to 50 simultaneous
 
 With GA4 and Looker studio you can create sophisticated visualisations of your experiment results.
 
-#### Hotjar
+#### Hotjar or Microsoft Clarity
 
 You can filter recordings and heatmaps/scrollmaps by experiment and variant. This is very useful to observe differences between user behaviour in each variant.
 
@@ -48,7 +48,7 @@ For experiments where the conversion happens offline or latter, you can pass the
 
 Abrantes works with Matomo. Unlike with GA4 it’s not tested in a real world situation but it should work. Like with GA4 it also works using custom dimensions. You should test it with visit dimensions and action dimensions.
 
-In the future I might make it work with Mixpanel and Microsoft Clarity.
+In the future I might make it work with Mixpanel.
 
 ### Open source
 
