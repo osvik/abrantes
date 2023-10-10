@@ -194,7 +194,7 @@ Abrantes.track = function () {
                         } else {
                             console.info("Hotjar not present");
                         }
-                    }, 2000);
+                    }, 1000);
                 });
             });
 

@@ -29,7 +29,7 @@
                         } else {
                             console.info("Clarity not present");
                         }
-                    }, 2000);
+                    }, 1000);
                 });
             });
 
