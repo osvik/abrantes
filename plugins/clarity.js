@@ -19,12 +19,11 @@
             }
 
             const self = this;
-            // Loops trough cookie aceptance events, defined in .settings.hotjar.triggerEvents
+            // Loops trough cookie aceptance events, defined in .settings.clarity.triggerEvents
             this.settings.clarity.triggerEvents.forEach(function (ev) {
                 window.addEventListener(ev, function () {
                     setTimeout(() => {
                         if (typeof (clarity) === "function") {
-                            // clarity("set", "flight", "testflight1");
                             clarity("set", self.testId, "v" + self.variant);
                         } else {
                             console.info("Clarity not present");
@@ -33,7 +32,6 @@
                 });
             });
 
-            // FIXME Change the tracking script to fire the events
         }
 
     };
