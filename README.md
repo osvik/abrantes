@@ -94,6 +94,7 @@ Used properly, **the flash of switching content is unnoticeable**. It does not b
 - Templates
 - Components in random pages
 - The entire site
+- Cross-site
 
 ### Types of experiments
 
