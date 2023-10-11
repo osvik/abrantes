@@ -39,6 +39,31 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
 };
 
 /**
+ * Imports the variant from the url
+ * @param {string} testId 
+ */
+Abrantes.importVariant = function (testId) {
+    if (typeof (testId) !== "string" || testId.length === 0) {
+        throw ("You need to provide an ID when importing a variant");
+    }
+
+    this.testId = testId;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has(testId)) {
+        this.variant = Number(urlParams.get(testId));
+        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+            detail: {
+                testId: this.testId,
+                variant: this.variant
+            }
+        }));
+    } else {
+        this.variant = -1;
+    }
+};
+
+/**
  * Renders the variant and adds the class variant-x to the <body> tag
  * @param {Number} variant 
  */
