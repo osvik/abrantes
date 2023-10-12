@@ -64,6 +64,17 @@ Abrantes.importVariant = function (testId) {
 };
 
 /**
+ * Adds the variant to the URL, to be imported in a different domain
+ * @param {string} linkURLstring 
+ * @returns {string}
+ */
+Abrantes.makeCrossSiteURL = function (linkURLstring) {
+    const linkURL = new URL(linkURLstring);
+    linkURL.searchParams.set(this.testId, this.variant);
+    return linkURL.href;
+};
+
+/**
  * Renders the variant and adds the class variant-x to the <body> tag
  * @param {Number} variant 
  */
