@@ -70,6 +70,12 @@ Abrantes.importVariant = function (testId) {
  */
 Abrantes.makeCrossSiteURL = function (linkURLstring) {
     const linkURL = new URL(linkURLstring);
+    const windowSearch = new URLSearchParams(window.location.search);
+    windowSearch.forEach(function (v, k) {
+        if (!linkURL.searchParams.has(k)) {
+            linkURL.searchParams.set(k, v);
+        }
+    });
     linkURL.searchParams.set(this.testId, this.variant);
     return linkURL.href;
 };
