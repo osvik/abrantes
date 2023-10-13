@@ -8,7 +8,7 @@ II - **Free and open source software** - You can use it for any purpose or to cr
 
 III - **Extensible** - Functionality that's specific to third-party tools is in the included plugins. To keep it lightweight you can select just the plugins you need, . You can also write your own plugins. [Read more](https://github.com/osvik/abrantes/wiki/List-of-plugins)
 
-IV - **Unlimited** - There's no limits whatsoever. Do as many experiments as you want, for as long as you want, with as many variants as you want for as many users as you want in as many pages/sites as you want. You can also use as many deployments as you want.
+IV - **Unlimited** - There's no limits whatsoever. Do as many experiments as you want, for as long as you want, with as many variants as you want for as many users as you want in as many pages/sites as you want. You can also use as many deployments as you want. [Read more](https://github.com/osvik/abrantes/wiki/Unlimited)
 
 V - **Focus on flexibility and control** - This tool was developed to allow me to do web experiments exactly as I want, with complete control on all the details. [Read more](https://github.com/osvik/abrantes/wiki/Focus-on-flexibility-and-control)
 
