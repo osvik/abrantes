@@ -81,6 +81,20 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
 };
 
 /**
+ * It transforms the hrefs of the <a> in the selector to make cross site experiments
+ * @param {string} selector Css selector
+ */
+Abrantes.crossSiteLink = function (selector) {
+    const self = this;
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(function (element) {
+        const elHref = element.getAttribute("href")
+        const newHref = self.makeCrossSiteURL(elHref);
+        element.setAttribute("href", newHref);
+    });
+};
+
+/**
  * Renders the variant and adds the class variant-x to the <body> tag
  * @param {Number} variant 
  */

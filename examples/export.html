@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes</title>
+    <script src="../AbrantesPlus.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        // Add the params here instead of in gtag config
+        window.googleTrackingConfig = {
+
+        };
+    </script>
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <ul>
+        <li>
+            <a class="os" href="https://debian.org/?utm_source=Abrantes">Link</a>
+        </li>
+        <li>
+            <a href="https://fsf.org">Link 2</a>
+        </li>
+
+    </ul>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        // Assign a variant (Variant name, fraction of the audience to include in the experiment: from 0 to 1)
+        MyTest.assignVariant("MyTest", 1);
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser
+        MyTest.persist("session");
+
+        // Track the variant in an event dimension
+        MyTest.track("test_event");
+
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("test_user");
+
+        // Make the links ready for cross site experiments
+        MyTest.crossSiteLink("a");
+
+    </script>
+
+    <script>
+        // Use the window.googleTrackingConfig in the gtag config and configure it in the header
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
+
+
+</body>
+
+</html>
