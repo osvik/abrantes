@@ -86,12 +86,21 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
  */
 Abrantes.crossSiteLink = function (selector) {
     const self = this;
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(function (element) {
-        const elHref = element.getAttribute("href")
-        const newHref = self.makeCrossSiteURL(elHref);
-        element.setAttribute("href", newHref);
-    });
+    const addLinks = function (selector) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(function (element) {
+            const elHref = element.getAttribute("href")
+            const newHref = self.makeCrossSiteURL(elHref);
+            element.setAttribute("href", newHref);
+        });
+    };
+    if (this.settings.crossSiteLink.triggerEvent) {
+        window.addEventListener(this.settings.crossSiteLink.triggerEvent, function () {
+            addLinks(selector);
+        });
+    } else {
+        addLinks(selector);
+    }
 };
 
 /**
@@ -143,6 +152,10 @@ Abrantes.readPersistent = function () {
  * Object where the user can read and write the settings
  */
 Abrantes.settings = {
+
+    crossSiteLink: {
+        triggerEvent: "DOMContentLoaded"
+    }
 
 };
 
