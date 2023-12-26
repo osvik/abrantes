@@ -1,6 +1,6 @@
 /* jshint esversion:6 */
 
-Abrantes = Object.create(null);
+const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 {
 
@@ -39,7 +40,7 @@
          */
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);
-            if (!Boolean(iElement)) {
+            if (!iElement) {
                 throw ("The element '" + selector + "' does not exist");
             }
             iElement.value = testId + "-" + variant;
