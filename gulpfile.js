@@ -27,6 +27,7 @@ function init() {
         'plugins/hotjar.js',
         // 'plugins/clarity.js',
         'plugins/formtrack.js',
+        'plugins/add2DL.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
