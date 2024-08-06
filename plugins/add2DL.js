@@ -5,7 +5,10 @@
     const settings = {
         dataLayer: {
             eventName: "run_ab_test",
-            customDimension: "ab_test_data"
+            customDimension: "ab_test_data",
+            experimentName: "experiment_name",
+            variantName: "variant_name",
+            variantPrefix : "v"
         }
     };
 
@@ -26,6 +29,8 @@
 
             dlevent["event"] = this.settings.dataLayer.eventName;
             dlevent[this.settings.dataLayer.customDimension] = customDim + "-" + this.variant;
+            dlevent[this.settings.dataLayer.experimentName] = customDim;
+            dlevent[this.settings.dataLayer.variantName] = this.settings.dataLayer.variantPrefix + this.variant;
 
             if (typeof (dataLayer) === "undefined") {
                 throw ("Undefined dataLayer");
