@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes redirect</title>
+    <script src="../../AbrantesPlus.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+    </script>
+
+</head>
+
+<body>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+            
+            },
+
+            // Variant 1
+            function () {
+
+            }
+
+        ];
+
+        // Assign the variant 1
+        MyTest.testId = "MyTest";
+        MyTest.variant = 1;
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser
+        MyTest.persist("user");
+        
+        // Send event ID and variant to the dataLayer
+        MyTest.add2dataLayer("my_test");
+
+        // Heatmaps and recordings
+        MyTest.hotjar();
+
+    </script>
+
+</body>
+
+</html>

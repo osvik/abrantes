@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes redirect</title>
+    <script src="../../AbrantesPlus.js"></script>
+
+</head>
+
+<body>
+
+    <script>
+
+        var MyTest = Object.create(Abrantes);
+
+        MyTest.variants = [
+
+            // Original
+            function () {
+                MyTest.redirectTo("variant-0.html");
+            },
+
+            // Variant 1
+            function () {
+                MyTest.redirectTo("variant-1.html");
+            },
+
+        ];
+
+        MyTest.assignVariant("MyTest");
+        
+        MyTest.renderVariant();
+
+    </script>
+
+</body>
+
+</html>
