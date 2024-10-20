@@ -127,8 +127,10 @@ Abrantes.persist = function (context) {
         localStorage.setItem(this.testId, this.variant);
     } else if (context === "session") {
         sessionStorage.setItem(this.testId, this.variant);
+    } else if ( context === "cookie" ) {
+        document.cookie = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=/; SameSite=Strict;`;
     } else {
-        throw ("You must use either 'user' or 'session'");
+        throw ("You must use either 'user', 'session' or 'cookie' with persist");
     }
 };
 
@@ -155,6 +157,9 @@ Abrantes.settings = {
 
     crossSiteLink: {
         triggerEvent: "DOMContentLoaded"
+    },
+    cookie: {
+        expires: 7
     }
 
 };
