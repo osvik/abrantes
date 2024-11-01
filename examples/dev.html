@@ -57,8 +57,8 @@
         // Render the variant
         MyTest.renderVariant();
 
-        // Persist the variant in the browser
-        MyTest.persist("session");
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
 
         // Track the variant in an event dimension
         MyTest.track("test_event");

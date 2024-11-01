@@ -127,8 +127,10 @@ Abrantes.persist = function (context) {
         localStorage.setItem(this.testId, this.variant);
     } else if (context === "session") {
         sessionStorage.setItem(this.testId, this.variant);
+    } else if ( context === "cookie" ) {
+        document.cookie = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=/; SameSite=Strict;`;
     } else {
-        throw ("You must use either 'user' or 'session'");
+        throw ("You must use either 'user', 'session' or 'cookie' with persist");
     }
 };
 
@@ -145,6 +147,10 @@ Abrantes.readPersistent = function () {
     if (typeof (userData) === "string" || typeof (userData) === "number") {
         return Number(userData);
     }
+    const cookieData = document.cookie.split('; ').find(row => row.startsWith(this.testId + '='));
+    if (typeof (cookieData) === "string" || typeof (cookieData) === "number") {
+        return Number(cookieData.split('=')[1]);
+    }
     return undefined;
 };
 
@@ -155,6 +161,9 @@ Abrantes.settings = {
 
     crossSiteLink: {
         triggerEvent: "DOMContentLoaded"
+    },
+    cookie: {
+        expires: 7
     }
 
 };
