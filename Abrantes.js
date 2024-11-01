@@ -147,6 +147,10 @@ Abrantes.readPersistent = function () {
     if (typeof (userData) === "string" || typeof (userData) === "number") {
         return Number(userData);
     }
+    const cookieData = document.cookie.split('; ').find(row => row.startsWith(this.testId + '='));
+    if (typeof (cookieData) === "string" || typeof (cookieData) === "number") {
+        return Number(cookieData.split('=')[1]);
+    }
     return undefined;
 };
 
