@@ -123,7 +123,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
  * Stores the test id (object name) and variant in localStorage
  */
 Abrantes.persist = function (context) {
-    if (context === "user") {
+    if (context === "user" || context=="local") {
         localStorage.setItem(this.testId, this.variant);
     } else if (context === "session") {
         sessionStorage.setItem(this.testId, this.variant);
@@ -148,7 +148,7 @@ Abrantes.readPersistent = function () {
         return Number(userData);
     }
     const cookieData = document.cookie.split('; ').find(row => row.startsWith(this.testId + '='));
-    if (typeof (cookieData) === "string" || typeof (cookieData) === "number") {
+    if (typeof (cookieData) === "string") {
         return Number(cookieData.split('=')[1]);
     }
     return undefined;
