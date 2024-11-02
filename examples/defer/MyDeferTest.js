@@ -28,7 +28,7 @@ MyDeferTest.assignVariant("MyDeferTest");
 MyDeferTest.renderVariant();
 
 // Persist the variant in the browser
-MyDeferTest.persist("session");
+MyDeferTest.persist("cookie");
 
 // Track the variant in a dimension 
 MyDeferTest.track("test_event");
