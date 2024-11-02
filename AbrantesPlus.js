@@ -181,18 +181,14 @@ Abrantes.variants = [
  * @returns number
  */
 Abrantes.randomVar = function () {
-    const numberVariants = this.variants.length;
+    const numberOfVariants = this.variants.length;
     if (window.crypto && window.crypto.getRandomValues) {
-        const maxUint32 = 4294967295;
-        const limit = maxUint32 - (maxUint32 % (numberVariants));
         const values = new Uint32Array(1);
-        do {
-            window.crypto.getRandomValues(values);
-        } while (values[0] >= limit);
-        this.variant = values[0] % (numberVariants);
+        window.crypto.getRandomValues(values);
+        this.variant = values[0] % (numberOfVariants);
     }
     else {
-        this.variant = Math.floor(Math.random() * (numberVariants));
+        this.variant = Math.floor(Math.random() * (numberOfVariants));
     }
     return this.variant;
 };
