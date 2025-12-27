@@ -85,7 +85,7 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
 
 /**
  * It transforms the hrefs of the <a> in the selector to make cross site experiments
- * @param {string} selector Css selector
+ * @param {string} selector CSS selector
  */
 Abrantes.crossSiteLink = function (selector) {
     const self = this;
@@ -124,6 +124,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
 
 /**
  * Stores the test id (object name) and variant in localStorage
+ * @param {string} context "user" for localStorage, "session" for sessionStorage, "cookie" for cookies
  */
 Abrantes.persist = function (context) {
     if (context === "user" || context=="local") {
@@ -138,8 +139,8 @@ Abrantes.persist = function (context) {
 };
 
 /**
- * Reads the value in the storage
- * @returns 
+ * Reads the value of the variant in the storage
+ * @returns {number|undefined}
  */
 Abrantes.readPersistent = function () {
     const sessionData = sessionStorage.getItem(this.testId);
