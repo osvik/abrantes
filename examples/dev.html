@@ -51,8 +51,11 @@
 
         ];
 
-        // Assign a variant (Variant name, fraction of the audience to include in the experiment: from 0 to 1)
-        MyTest.assignVariant("MyTest", 1);
+        // Assign a variant (Variant name, optional fraction of the audience to include in the experiment: from 0 to 1, optional segment function)
+        MyTest.assignVariant("MyTest", 1, () => {
+            // Example segment: only include users with Portuguese as browser language
+            return navigator.language === "pt";
+        });
 
         // Render the variant
         MyTest.renderVariant();

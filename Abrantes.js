@@ -8,9 +8,11 @@ Abrantes.version = "0.19+";
 
 /**
  * Assigns a variant to a user
- * @param {string} testId 
+ * @param {string} testId String identifier for the test
+ * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
+ * @param {function} segment Function that returns true or false to include the user in the test
  */
-Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
+Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () => true) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when assigning a variant");
     }
@@ -26,7 +28,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1) {
         return;
     }
     const n = Math.random();
-    if (n > trafficAllocation) {
+    if (n > trafficAllocation || !segment()) {
         this.variant = -1;
     } else {
         this.variant = this.randomVar();
