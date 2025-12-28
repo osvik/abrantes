@@ -139,8 +139,8 @@ Abrantes.persist = function (context) {
 };
 
 /**
- * Reads the value in the storage
- * @returns 
+ * Reads the value of the variant in the storage
+ * @returns {number|undefined}
  */
 Abrantes.readPersistent = function () {
     const sessionData = sessionStorage.getItem(this.testId);
