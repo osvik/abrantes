@@ -205,6 +205,28 @@ Abrantes.redirectTo = function (url) {
 }
 
 /**
+ * Waits for an element to appear in the DOM
+ * @param {string} selector CSS selector
+ * @param {function} callback
+ */
+Abrantes.waitFor = function (selector, callback) {
+    if (document.querySelector(selector)) {
+        callback();
+    } else {
+        const observer = new MutationObserver(function () {
+            if (document.querySelector(selector)) {
+                observer.disconnect();
+                callback();
+            }
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+};
+
+/**
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
