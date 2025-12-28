@@ -4,7 +4,7 @@ const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "0.20+";
+Abrantes.version = "0.21+";
 
 /**
  * Assigns a variant to a user
