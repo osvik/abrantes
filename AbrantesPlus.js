@@ -85,7 +85,7 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
 
 /**
  * It transforms the hrefs of the <a> in the selector to make cross site experiments
- * @param {string} selector Css selector
+ * @param {string} selector CSS selector
  */
 Abrantes.crossSiteLink = function (selector) {
     const self = this;
@@ -124,13 +124,14 @@ Abrantes.renderVariant = function (variant = this.variant) {
 
 /**
  * Stores the test id (object name) and variant in localStorage
+ * @param {string} context "user" for localStorage, "session" for sessionStorage, "cookie" for cookies
  */
 Abrantes.persist = function (context) {
-    if (context === "user" || context=="local") {
+    if (context === "user" || context === "local") {
         localStorage.setItem(this.testId, this.variant);
     } else if (context === "session") {
         sessionStorage.setItem(this.testId, this.variant);
-    } else if ( context === "cookie" ) {
+    } else if (context === "cookie") {
         document.cookie = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=/; SameSite=Strict;`;
     } else {
         throw ("You must use either 'user', 'session' or 'cookie' with persist");
