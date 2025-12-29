@@ -38,6 +38,15 @@
 
             dataLayer.push(dlevent);
 
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "dataLayer"
+                }
+            }));
+
         }
 
     };

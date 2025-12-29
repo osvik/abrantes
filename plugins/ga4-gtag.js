@@ -17,6 +17,15 @@
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "ga4-gtag",
+                    type: "event"
+                }
+            }));
         },
 
         /**
@@ -24,9 +33,24 @@
          * @param {string} customDim 
          */
         trackUser: function (customDim) {
+            if (typeof (gtag) !== "function") {
+                throw ("gtag is not defined");
+            }
+            if (this.variant === -1) {
+                return;
+            }
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             gtag('set', 'user_properties', setObj);
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "ga4-gtag",
+                    type: "user"
+                }
+            }));
         }
     };
 

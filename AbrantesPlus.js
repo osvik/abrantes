@@ -274,6 +274,15 @@ Abrantes.track = function () {
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "ga4-gtag",
+                    type: "event"
+                }
+            }));
         },
 
         /**
@@ -281,9 +290,24 @@ Abrantes.track = function () {
          * @param {string} customDim 
          */
         trackUser: function (customDim) {
+            if (typeof (gtag) !== "function") {
+                throw ("gtag is not defined");
+            }
+            if (this.variant === -1) {
+                return;
+            }
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             gtag('set', 'user_properties', setObj);
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "ga4-gtag",
+                    type: "user"
+                }
+            }));
         }
     };
 
@@ -436,6 +460,15 @@ Abrantes.track = function () {
             }
 
             dataLayer.push(dlevent);
+
+            window.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    customDim: customDim,
+                    tool: "dataLayer"
+                }
+            }));
 
         }
 
