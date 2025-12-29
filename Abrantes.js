@@ -117,6 +117,12 @@ Abrantes.renderVariant = function (variant = this.variant) {
     if (typeof (this.variants[variant]) === "function") {
         this.variants[variant]();
         document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
+        window.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
+            detail: {
+                testId: this.testId,
+                variant: this.variant
+            }
+        }));
     } else {
         throw ("The variant " + variant + " does not exist");
     }
@@ -127,14 +133,29 @@ Abrantes.renderVariant = function (variant = this.variant) {
  * @param {string} context "user" for localStorage, "session" for sessionStorage, "cookie" for cookies
  */
 Abrantes.persist = function (context) {
+    let validContexts = ["user", "local", "session", "cookie"];
+    if (!validContexts.includes(context)) {
+        throw ("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
+    }
+    let persisted = false;
     if (context === "user" || context === "local") {
         localStorage.setItem(this.testId, this.variant);
+        persisted = true;
     } else if (context === "session") {
         sessionStorage.setItem(this.testId, this.variant);
+        persisted = true;
     } else if (context === "cookie") {
         document.cookie = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=/; SameSite=Strict;`;
-    } else {
-        throw ("You must use either 'user', 'session' or 'cookie' with persist");
+        persisted = true;
+    }
+    if (persisted) {
+        window.dispatchEvent(new CustomEvent("abrantes:persist", {
+            detail: {
+                testId: this.testId,
+                variant: this.variant,
+                context: context
+            }
+        }));
     }
 };
 
