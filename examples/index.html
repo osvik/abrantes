@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes examples</title>
+    <meta name="description"
+        content="Beginner-friendly index of Abrantes examples: basic tests, CSS-only variants, waitFor, redirects, cross-site import/export, and analytics plugins.">
+    <link rel="stylesheet" href="../docs/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .example-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge.core {
+            border-color: rgba(37, 99, 235, 0.35);
+            color: var(--primary-color);
+        }
+
+        .badge.plugin {
+            border-color: rgba(30, 41, 59, 0.35);
+            color: var(--secondary-color);
+        }
+
+        .example-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .tip-card {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .tip-card p + p {
+            margin-top: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="../docs/index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="../docs/index.html">Home</a>
+                <a href="https://github.com/osvik/abrantes/wiki" target="_blank" rel="noreferrer">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Examples</h1>
+                <p class="subtitle">Pick the closest pattern and copy/paste it into your project.</p>
+            </div>
+        </section>
+
+        <section class="integrations">
+            <div class="container">
+                <h2>Quick tips</h2>
+                <div class="feature-card tip-card">
+                    <p>
+                        Most examples load <code>../AbrantesPlus.js</code> (core + plugins). If you want core-only, swap
+                        it for <code>../Abrantes.js</code> and remove plugin calls like <code>track()</code>.
+                    </p>
+                    <p>
+                        Some examples include Google Tag Manager / GA4 snippets; replace IDs or remove tracking scripts
+                        as needed.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Browse examples</h2>
+
+                <div class="examples-grid">
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Basic AB test</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when you want the simplest “assign → render → persist → track” flow.</p>
+                        <a class="example-link" href="dev.html">Open dev.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>CSS-only design experiment</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when variants are mostly CSS changes and you want per-variant classes on <code>&lt;body&gt;</code>.</p>
+                        <a class="example-link" href="design-experiment-1.html">Open design-experiment-1.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Wait for DOM elements</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when your page/app renders late (SPA, widgets) and you must wait before changing the DOM.</p>
+                        <a class="example-link" href="waitFor.html">Open waitFor.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Defer-loaded scripts</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when you load Abrantes (and/or your variant code) with <code>defer</code> and want predictable timing.</p>
+                        <a class="example-link" href="defer.html">Open defer.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Redirect experiment</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when each variant is a different page/URL (landing pages, funnels, pricing pages).</p>
+                        <a class="example-link" href="redirect/redirect.html">Open redirect/redirect.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Cross-site links (export)</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use when the experiment continues across domains and you need to keep the same variant in the URL.</p>
+                        <a class="example-link" href="export.html">Open export.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Cross-site import</h3>
+                            <span class="badge core">core</span>
+                        </div>
+                        <p>Use on the receiving domain to import the variant from URL parameters.</p>
+                        <a class="example-link" href="import.html">Open import.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Plugins overview</h3>
+                            <span class="badge plugin">plugins</span>
+                        </div>
+                        <p>Use to see what each plugin does and when to include it.</p>
+                        <a class="example-link" href="plugins.html">Open plugins.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Google Tag Manager dataLayer</h3>
+                            <span class="badge plugin">plugin</span>
+                        </div>
+                        <p>Use when GTM reads your experiment/variant from <code>dataLayer</code>.</p>
+                        <a class="example-link" href="add2DL.html">Open add2DL.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Hotjar events</h3>
+                            <span class="badge plugin">plugin</span>
+                        </div>
+                        <p>Use when you want heatmaps/recordings segmented by variant.</p>
+                        <a class="example-link" href="hotjar.html">Open hotjar.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Microsoft Clarity set()</h3>
+                            <span class="badge plugin">plugin</span>
+                        </div>
+                        <p>Use when you want session replays segmented by variant in Clarity.</p>
+                        <a class="example-link" href="clarity.html">Open clarity.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Matomo custom dimension</h3>
+                            <span class="badge plugin">plugin</span>
+                        </div>
+                        <p>Use when you track variants as Matomo custom dimensions.</p>
+                        <a class="example-link" href="matomo.html">Open matomo.html &rarr;</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="example-title">
+                            <h3>Form tracking field</h3>
+                            <span class="badge plugin">plugin</span>
+                        </div>
+                        <p>Use when you need the test+variant posted with a form (CRM, leads, support requests).</p>
+                        <a class="example-link" href="formtrack.html">Open formtrack.html &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Tip: run these from a local web server (not <code>file://</code>) so storage, redirects, and URL params behave as expected.
+    </footer>
+</body>
+
+</html>
