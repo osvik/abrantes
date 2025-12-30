@@ -38,7 +38,7 @@
 
             dataLayer.push(dlevent);
 
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,

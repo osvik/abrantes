@@ -12,7 +12,7 @@
                 return;
             }
             _paq.push(['setCustomDimension', customDimensionId = customDim, customDimensionValue = this.testId + "-" + this.variant]);
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,

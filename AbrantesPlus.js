@@ -19,7 +19,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
-        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+        document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
                 variant: this.variant
@@ -32,7 +32,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
         this.variant = -1;
     } else {
         this.variant = this.randomVar();
-        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+        document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
                 variant: this.variant
@@ -55,7 +55,7 @@ Abrantes.importVariant = function (testId) {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has(testId)) {
         this.variant = Number(urlParams.get(testId));
-        window.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+        document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
                 variant: this.variant
@@ -117,7 +117,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
     if (typeof (this.variants[variant]) === "function") {
         this.variants[variant]();
         document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
-        window.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
+        document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
             detail: {
                 testId: this.testId,
                 variant: this.variant
@@ -149,7 +149,7 @@ Abrantes.persist = function (context) {
         persisted = true;
     }
     if (persisted) {
-        window.dispatchEvent(new CustomEvent("abrantes:persist", {
+        document.dispatchEvent(new CustomEvent("abrantes:persist", {
             detail: {
                 testId: this.testId,
                 variant: this.variant,
@@ -274,7 +274,7 @@ Abrantes.track = function () {
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
@@ -299,7 +299,7 @@ Abrantes.track = function () {
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             gtag('set', 'user_properties', setObj);
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
@@ -398,7 +398,7 @@ Abrantes.track = function () {
                 });
             });
 
-            window.dispatchEvent(new CustomEvent("abrantes:formTrack", {
+            document.dispatchEvent(new CustomEvent("abrantes:formTrack", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
@@ -469,7 +469,7 @@ Abrantes.track = function () {
 
             dataLayer.push(dlevent);
 
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,

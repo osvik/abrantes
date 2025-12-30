@@ -30,7 +30,7 @@
                 });
             });
 
-            window.dispatchEvent(new CustomEvent("abrantes:formTrack", {
+            document.dispatchEvent(new CustomEvent("abrantes:formTrack", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,

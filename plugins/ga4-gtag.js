@@ -17,7 +17,7 @@
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
@@ -42,7 +42,7 @@
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             gtag('set', 'user_properties', setObj);
-            window.dispatchEvent(new CustomEvent("abrantes:track", {
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
