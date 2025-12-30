@@ -398,6 +398,14 @@ Abrantes.track = function () {
                 });
             });
 
+            window.dispatchEvent(new CustomEvent("abrantes:formTrack", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    element: this.settings.formTrack.inputElement
+                }
+            }));
+
         },
 
         /**
