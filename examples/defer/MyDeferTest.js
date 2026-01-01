@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // Create the test
 var MyDeferTest = Object.create(Abrantes);
 
