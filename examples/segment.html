@@ -51,17 +51,23 @@
 
         ];
 
-        // Assign a variant
-        MyTest.assignVariant("MyTest");
+        // Assign a variant (Experiment name, optional fraction of the audience to include in the experiment [from 0 to 1], optional segment function)
+        MyTest.assignVariant("MyTest", 1, () => {
+            // Example segment: only include users with Portuguese as browser language
+            return navigator.language === "pt";
+        });
 
         // Render the variant
         MyTest.renderVariant();
 
-        // Persist the variant in the browser
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
         MyTest.persist("cookie");
 
-        // Track the variant in a dimension 
+        // Track the variant in an event dimension
         MyTest.track("test_event");
+
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("test_user");
 
     </script>
 
