@@ -1,12 +1,43 @@
+/**
+ * Array of example variant functions to be used in A/B testing.
+ * Each function modifies the DOM in a specific way.
+ * h1 is just an example, in a real scenario more specific selectors should be used
+ */
+
 // eslint-disable-next-line no-unused-vars
 var variants = [
 
     /*
-     * Rename all h1 tags to "MyTest Variant 1"
+     * Change the text of the first h1 tag to "MyTest Variant 1"
      */
     function () {
+        document.querySelector("h1").innerText = "MyTest Variant 1";
+    },
+
+    /**
+     * Change the inner HTML of the first h1 tag
+     */
+    function () {
+        document.querySelector("h1").innerHTML = `
+        MyTest <span style="color: red;">Variant 1</span>
+        `;
+    },
+
+    /*
+    * Add a class to all h1 tags
+    */
+    function () {
         document.querySelectorAll("h1").forEach((n) => {
-            n.innerText = "MyTest Variant 2";
+            n.classList.add("d-none");
+        });
+    },
+
+    /*
+    * Remove a class to all h1 tags
+    */
+    function () {
+        document.querySelectorAll("h1").forEach((n) => {
+            n.classList.remove("d-none");
         });
     },
 
@@ -20,11 +51,11 @@ var variants = [
     },
 
     /*
-    * Add a class to all h1 tags
+    * Remove an atribute to all h1 tags
     */
     function () {
         document.querySelectorAll("h1").forEach((n) => {
-            n.classList.add("d-none");
+            n.removeAttribute("data-variant");
         });
     },
 
@@ -34,6 +65,7 @@ var variants = [
     function () {
         document.querySelectorAll("h1").forEach((n) => {
             n.style.display = "none";
+            n.setAttribute("aria-hidden", "true");
         });
     },
 
@@ -64,8 +96,5 @@ var variants = [
             }
         });
     },
-
-
-
 
 ]
