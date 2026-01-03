@@ -58,10 +58,8 @@
         // Assign a variant to the user
         MyTest.assignVariant("MyTest");
 
-        // Render the variant after waiting for an element to be available in the DOM
-        MyTest.waitFor("#bigH1", () => { 
-            MyTest.renderVariant(); 
-        });
+        // Render the variant (each variant uses waitFor internally)
+        MyTest.renderVariant(); 
 
         // Persist the variant in the browser. It should be "session", "user" or "cookie"
         MyTest.persist("cookie");
