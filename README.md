@@ -21,4 +21,4 @@ VIII - **Excellent reporting** - Abrantes focuses on managing the experiments, Y
 IX - **What Abrantes doesn't do!** - It does what I need very well. However here's some things that it doesn't do, in case they are important to you. [Read more](https://github.com/osvik/abrantes/wiki/What-Abrantes-can't-do)
 
 
-**[Read the documentation in the wiki](https://github.com/osvik/abrantes/wiki)**
+**[Go to the website](https://osvik.github.io/abrantes/)**
