@@ -18,7 +18,9 @@ VII - **Focus on performance** - Abrantes is lightweight and renders the experim
 
 VIII - **Excellent reporting** - Abrantes focuses on managing the experiments, You can have excellent reports from the tolls you use for analytics, heatmaps and screen recording. Abrantes itself does not store any user data. [Read more](https://github.com/osvik/abrantes/wiki/Excellent-reporting)
 
-IX - **What Abrantes doesn't do!** - It does what I need very well. However here's some things that it doesn't do, in case they are important to you. [Read more](https://github.com/osvik/abrantes/wiki/What-Abrantes-can't-do)
+IX - **Abrantes checker** - A Firefox and Chrome browser extension to test experiments and help preventing mistakes. [Read more](https://github.com/osvik/abrantes-checker-extension)
+
+X - **What Abrantes doesn't do!** - It does what I need very well. However here's some things that it doesn't do, in case they are important to you. [Read more](https://github.com/osvik/abrantes/wiki/What-Abrantes-can't-do)
 
 
 **[Go to the website](https://osvik.github.io/abrantes/)**
