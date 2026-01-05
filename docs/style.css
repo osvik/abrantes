@@ -155,6 +155,11 @@ header .container {
     transition: transform 0.2s;
 }
 
+.feature-card a {
+    text-decoration: underline;
+    color: var(--primary-color)
+}
+
 .feature-card:hover {
     transform: translateY(-5px);
 }
