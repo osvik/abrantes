@@ -24,8 +24,15 @@
             autocapture: true,
             record_sessions_percent: 100,
             api_host: 'https://api-eu.mixpanel.com',
+            track_pageview: true,
         })
 
+    </script>
+
+    <script>
+        // You need to identify the user before setting PEOPLE properties. 
+        // The folling line is just an example and should be replaced with your own user identification logic.
+        mixpanel.identify(String(Math.random()));
     </script>
 
 </head>
@@ -68,24 +75,28 @@
         // Persist the variant in the browser. It should be "session", "user" or "cookie"
         MyTest.persist("cookie");
 
-        // Track the variant in an event dimension
-        // MyTest.track("test_event");
+        mixpanel.track('run_ab_test', {
+            'ab_test_data': MyTest.testId + "-" + MyTest.variant
+        })
 
-        // Optionally track the variant in a user dimension
-        // MyTest.trackUser("test_user");
+        // Optional: If your website Mixpanel uses mixpanel.identify 
+        // you can also set a people property with the assigned experiment and variant.
+        mixpanel.people.set({
+            'user_id_variant': MyTest.testId + "-" + MyTest.variant
+        });
 
     </script>
 
     <div>
         <button onclick="signup();">Simulate a conversion event</button>
-        - Click to trigger a "conversion" event in the dataLayer for testing purposes.
+        - Click to trigger a "My conversion" event for testing purposes.
     </div>
 
     <script>
         function signup() {
 
-            mixpanel.track('Sign Up', {
-                'Signup Type': 'Referral'
+            mixpanel.track('My conversion', {
+                'ab_test_data': MyTest.testId + "-" + MyTest.variant
             })
 
         }
