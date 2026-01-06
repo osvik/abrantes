@@ -75,6 +75,7 @@
         // Persist the variant in the browser. It should be "session", "user" or "cookie"
         MyTest.persist("cookie");
 
+        // Track the assigned experiment and variant in Mixpanel
         mixpanel.track('run_ab_test', {
             'ab_test_data': MyTest.testId + "-" + MyTest.variant
         })
