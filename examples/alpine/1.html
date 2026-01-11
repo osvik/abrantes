@@ -35,8 +35,8 @@
         // Wait for the DOM and Alpine.js to be initialized before running the experiment
         document.addEventListener('DOMContentLoaded', () => {
 
-            var block1 = document.getElementById('alpineBlock1');
-            var block2 = document.getElementById('alpineBlock2');
+            const block1 = document.getElementById('alpineBlock1');
+            const block2 = document.getElementById('alpineBlock2');
 
             // Create the test
             var MyTest = Object.create(Abrantes);
@@ -113,6 +113,11 @@
             style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
             x-text="ctaText"></button>
     </div>
+
+    <script>
+        // Use the window.googleTrackingConfig in the gtag config and configure it in the header
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
 
 
 </body>
