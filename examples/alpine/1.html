@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abrantes with Alpine.js</title>
-    <script src="../AbrantesPlus.js"></script>
+    <script src="../../AbrantesPlus.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
@@ -26,12 +26,17 @@
     <!-- First x-data block (before experiment) -->
     <div id="alpineBlock1" x-data="{ heading: 'Original Heading', buttonText: 'Click Me', buttonColor: 'blue' }">
         <h2 x-text="heading">Loading...</h2>
-        <button @click="alert('Button clicked!')" :style="'background-color: ' + buttonColor + '; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;'" x-text="buttonText"></button>
+        <button @click="alert('Button clicked!')"
+            :style="'background-color: ' + buttonColor + '; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;'"
+            x-text="buttonText"></button>
     </div>
 
     <script>
-        // Wait for Alpine.js to be initialized before running the experiment
+        // Wait for the DOM and Alpine.js to be initialized before running the experiment
         document.addEventListener('DOMContentLoaded', () => {
+
+            var block1 = document.getElementById('alpineBlock1');
+            var block2 = document.getElementById('alpineBlock2');
 
             // Create the test
             var MyTest = Object.create(Abrantes);
@@ -41,9 +46,6 @@
 
                 // Original
                 function () {
-                    // Access the Alpine component and modify its data
-                    var block1 = document.getElementById('alpineBlock1');
-                    var block2 = document.getElementById('alpineBlock2');
 
                     // Modify first Alpine component
                     Alpine.$data(block1).heading = "MyTest Original";
@@ -53,13 +55,11 @@
                     // Modify second Alpine component
                     Alpine.$data(block2).message = "This is the Original variant";
                     Alpine.$data(block2).ctaText = "Sign Up Now";
+
                 },
 
                 // Variant 1
                 function () {
-                    // Access the Alpine component and modify its data
-                    var block1 = document.getElementById('alpineBlock1');
-                    var block2 = document.getElementById('alpineBlock2');
 
                     // Modify first Alpine component
                     Alpine.$data(block1).heading = "MyTest Variant 1";
@@ -73,9 +73,6 @@
 
                 // Variant 2
                 function () {
-                    // Access the Alpine component and modify its data
-                    var block1 = document.getElementById('alpineBlock1');
-                    var block2 = document.getElementById('alpineBlock2');
 
                     // Modify first Alpine component
                     Alpine.$data(block1).heading = "MyTest Variant 2";
@@ -85,6 +82,7 @@
                     // Modify second Alpine component
                     Alpine.$data(block2).message = "This is Variant 2 - Special limited offer!";
                     Alpine.$data(block2).ctaText = "Claim Your Spot";
+
                 },
 
             ];
@@ -111,7 +109,9 @@
     <div id="alpineBlock2" x-data="{ message: 'Default message', ctaText: 'Default CTA' }">
         <h3>Second Alpine Component</h3>
         <p x-text="message">Loading...</p>
-        <button @click="alert('CTA clicked!')" style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" x-text="ctaText"></button>
+        <button @click="alert('CTA clicked!')"
+            style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            x-text="ctaText"></button>
     </div>
 
 
