@@ -4,7 +4,7 @@ const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "1.0+";
+Abrantes.version = "1.0.1";
 
 /**
  * Assigns a variant to a user
@@ -132,7 +132,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
  * Stores the test id (object name) and variant in localStorage
  * @param {string} context "user" for localStorage, "session" for sessionStorage, "cookie" for cookies
  */
-Abrantes.persist = function (context) {
+Abrantes.persist = function (context = "cookie") {
     let validContexts = ["user", "local", "session", "cookie"];
     if (!validContexts.includes(context)) {
         throw ("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
