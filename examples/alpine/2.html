@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes with Alpine.js</title>
+    <script src="../../AbrantesPlus.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.3/dist/cdn.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        // Add the params here instead of in gtag config
+        window.googleTrackingConfig = {
+
+        };
+    </script>
+</head>
+
+<body>
+
+    <div id="container1"></div>
+
+    <!-- Experiment script (All the experiment changes must be made here) -->
+    <script>
+
+            // Create the test
+            var MyTest = Object.create(Abrantes);
+
+            // Define the variants
+            MyTest.variants = [
+
+                // Original
+                function () {
+
+                },
+
+                // Variant 1
+                function () {
+
+                },
+
+            ];
+
+            // Assign a variant to the user
+            MyTest.assignVariant("MyTest");
+
+            // Render the variant
+            MyTest.renderVariant();
+
+            // Persist the variant in the browser. It should be "session", "user" or "cookie"
+            MyTest.persist("cookie");
+
+            // Track the variant in an event dimension
+            MyTest.track("test_event");
+
+            // Optionally track the variant in a user dimension
+            MyTest.trackUser("test_user");
+
+    </script>
+
+    <!-- Alpine blocks -->
+    <div x-data="{ variant: MyTest.variant  }">
+
+        <template x-teleport="#container1">
+            <div x-show="variant === 0">
+                <h1>This goes to container 1</h1>
+                <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </template>
+
+        <template x-teleport="#container1">
+            <div x-show="variant === 1">
+                <h1>This goes to container 1</h1>
+                <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </template>
+
+        <template x-teleport="#container2">
+            <div x-show="variant === 0">
+                <h1>This goes to container 2</h1>
+                <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </template>
+
+        <template x-teleport="#container2">
+            <div x-show="variant === 1">
+                <h1>This goes to container 2</h1>
+                <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </template>
+
+    </div>
+    <!-- / Experiment script -->
+
+
+    <div id="container2"></div>
+
+    <script>
+        // Use the window.googleTrackingConfig in the gtag config and configure it in the header
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
+
+
+</body>
+
+</html>
