@@ -28,70 +28,78 @@
     <!-- Experiment script (All the experiment changes must be made here) -->
     <script>
 
-            // Create the test
-            var MyTest = Object.create(Abrantes);
+        // Create the test
+        var MyTest = Object.create(Abrantes);
 
-            // Define the variants
-            MyTest.variants = [
+        // Define the variants
+        MyTest.variants = [
 
-                // Original
-                function () {
+            // Original
+            function () {
 
-                },
+            },
 
-                // Variant 1
-                function () {
+            // Variant 1
+            function () {
 
-                },
+            },
 
-            ];
+        ];
 
-            // Assign a variant to the user
-            MyTest.assignVariant("MyTest");
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
 
-            // Render the variant
-            MyTest.renderVariant();
+        // Render the variant
+        MyTest.renderVariant();
 
-            // Persist the variant in the browser. It should be "session", "user" or "cookie"
-            MyTest.persist("cookie");
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
 
-            // Track the variant in an event dimension
-            MyTest.track("test_event");
+        // Track the variant in an event dimension
+        MyTest.track("test_event");
 
-            // Optionally track the variant in a user dimension
-            MyTest.trackUser("test_user");
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("test_user");
 
     </script>
 
     <!-- Alpine blocks -->
     <div x-data="{ variant: MyTest.variant  }">
 
-        <template x-teleport="#container1">
-            <div x-show="variant === 0">
-                <h1>This goes to container 1</h1>
-                <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
+        <template x-if="variant === 0">
+            <template x-teleport="#container1">
+                <div>
+                    <h1>This goes to container 1</h1>
+                    <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </template>
         </template>
 
-        <template x-teleport="#container1">
-            <div x-show="variant === 1">
-                <h1>This goes to container 1</h1>
-                <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
+        <template x-if="variant === 1">
+            <template x-teleport="#container1">
+                <div>
+                    <h1>This goes to container 1</h1>
+                    <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </template>
         </template>
 
-        <template x-teleport="#container2">
-            <div x-show="variant === 0">
-                <h1>This goes to container 2</h1>
-                <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
+        <template x-if="variant === 0">
+            <template x-teleport="#container2">
+                <div>
+                    <h1>This goes to container 2</h1>
+                    <p>Variant 0 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </template>
         </template>
 
-        <template x-teleport="#container2">
-            <div x-show="variant === 1">
-                <h1>This goes to container 2</h1>
-                <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
+        <template x-if="variant === 1">
+            <template x-teleport="#container2">
+                <div>
+                    <h1>This goes to container 2</h1>
+                    <p>Variant 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </template>
         </template>
 
     </div>
