@@ -16,6 +16,15 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when assigning a variant");
     }
+    if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
+        throw ("trafficAllocation must be a number between 0 and 1");
+    }
+    if (typeof (segment) !== "function") {
+        throw ("segment must be a function that returns true or false");
+    }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("You must define at least one variant before assigning");
+    }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
