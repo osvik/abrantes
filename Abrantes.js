@@ -236,6 +236,9 @@ Abrantes.variants = [
  * @returns number
  */
 Abrantes.randomVar = function () {
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("Cannot select random variant: no variants defined");
+    }
     const numberOfVariants = this.variants.length;
     if (window.crypto && window.crypto.getRandomValues) {
         const values = new Uint32Array(1);
