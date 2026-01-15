@@ -4,7 +4,7 @@ const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "1.0.1";
+Abrantes.version = "1.0.2";
 
 /**
  * Assigns a variant to a user
@@ -15,6 +15,15 @@ Abrantes.version = "1.0.1";
 Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () => true) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when assigning a variant");
+    }
+    if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
+        throw ("trafficAllocation must be a number between 0 and 1");
+    }
+    if (typeof (segment) !== "function") {
+        throw ("segment must be a function that returns true or false");
+    }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("You must define at least one variant before assigning");
     }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
@@ -43,18 +52,32 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
 
 /**
  * Imports the variant from the url
- * @param {string} testId 
+ * @param {string} testId
  */
 Abrantes.importVariant = function (testId) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when importing a variant");
+    }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("You must define at least one variant before importing");
     }
 
     this.testId = testId;
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has(testId)) {
-        this.variant = Number(urlParams.get(testId));
+        const importedVariant = Number(urlParams.get(testId));
+        if (isNaN(importedVariant)) {
+            console.warn("Abrantes: Invalid variant value in URL, assigning to control");
+            this.variant = -1;
+            return;
+        }
+        if (importedVariant !== -1 && (importedVariant < 0 || importedVariant >= this.variants.length)) {
+            console.warn("Abrantes: Variant " + importedVariant + " does not exist, assigning to control");
+            this.variant = -1;
+            return;
+        }
+        this.variant = importedVariant;
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
@@ -114,18 +137,26 @@ Abrantes.renderVariant = function (variant = this.variant) {
     if (variant === -1) {
         return;
     }
-    if (typeof (this.variants[variant]) === "function") {
-        this.variants[variant]();
-        document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
-        document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
-            detail: {
-                testId: this.testId,
-                variant: this.variant
-            }
-        }));
-    } else {
-        throw ("The variant " + variant + " does not exist");
+    if (typeof (variant) !== "number" || isNaN(variant)) {
+        throw ("Variant must be a number");
     }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("No variants defined");
+    }
+    if (variant < 0 || variant >= this.variants.length) {
+        throw ("Variant " + variant + " is out of range. Valid range: 0-" + (this.variants.length - 1));
+    }
+    if (typeof (this.variants[variant]) !== "function") {
+        throw ("Variant " + variant + " is not a function");
+    }
+    this.variants[variant]();
+    document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
+    document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
+        detail: {
+            testId: this.testId,
+            variant: this.variant
+        }
+    }));
 };
 
 /**
@@ -205,6 +236,9 @@ Abrantes.variants = [
  * @returns number
  */
 Abrantes.randomVar = function () {
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("Cannot select random variant: no variants defined");
+    }
     const numberOfVariants = this.variants.length;
     if (window.crypto && window.crypto.getRandomValues) {
         const values = new Uint32Array(1);
