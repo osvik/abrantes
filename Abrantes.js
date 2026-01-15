@@ -137,18 +137,26 @@ Abrantes.renderVariant = function (variant = this.variant) {
     if (variant === -1) {
         return;
     }
-    if (typeof (this.variants[variant]) === "function") {
-        this.variants[variant]();
-        document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
-        document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
-            detail: {
-                testId: this.testId,
-                variant: this.variant
-            }
-        }));
-    } else {
-        throw ("The variant " + variant + " does not exist");
+    if (typeof (variant) !== "number" || isNaN(variant)) {
+        throw ("Variant must be a number");
     }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("No variants defined");
+    }
+    if (variant < 0 || variant >= this.variants.length) {
+        throw ("Variant " + variant + " is out of range. Valid range: 0-" + (this.variants.length - 1));
+    }
+    if (typeof (this.variants[variant]) !== "function") {
+        throw ("Variant " + variant + " is not a function");
+    }
+    this.variants[variant]();
+    document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
+    document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
+        detail: {
+            testId: this.testId,
+            variant: this.variant
+        }
+    }));
 };
 
 /**
