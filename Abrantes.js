@@ -52,18 +52,32 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
 
 /**
  * Imports the variant from the url
- * @param {string} testId 
+ * @param {string} testId
  */
 Abrantes.importVariant = function (testId) {
     if (typeof (testId) !== "string" || testId.length === 0) {
         throw ("You need to provide an ID when importing a variant");
+    }
+    if (!Array.isArray(this.variants) || this.variants.length === 0) {
+        throw ("You must define at least one variant before importing");
     }
 
     this.testId = testId;
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has(testId)) {
-        this.variant = Number(urlParams.get(testId));
+        const importedVariant = Number(urlParams.get(testId));
+        if (isNaN(importedVariant)) {
+            console.warn("Abrantes: Invalid variant value in URL, assigning to control");
+            this.variant = -1;
+            return;
+        }
+        if (importedVariant !== -1 && (importedVariant < 0 || importedVariant >= this.variants.length)) {
+            console.warn("Abrantes: Variant " + importedVariant + " does not exist, assigning to control");
+            this.variant = -1;
+            return;
+        }
+        this.variant = importedVariant;
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
