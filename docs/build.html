@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Custom Build</title>
+    <meta name="description" content="Customize the AbrantesPlus build by selecting plugins and running gulp tasks.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Customize the build</h1>
+                <p class="subtitle">Select the plugins you want and rebuild AbrantesPlus with gulp.</p>
+                <div class="cta-group">
+                    <a href="plugins.html" class="btn btn-secondary">Plugin reference</a>
+                    <a href="install.html" class="btn btn-secondary">Install guide</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>How the build works</h2>
+                <div class="feature-card">
+                    <p><code>AbrantesPlus.js</code> is created by concatenating <code>Abrantes.js</code> with the plugin
+                        files listed in <code>gulpfile.js</code>.</p>
+                    <p>This page is only about selecting plugins, not about writing new ones.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>1. Select plugins</h2>
+                <div class="feature-card">
+                    <p>Edit the <code>src</code> list in <code>gulpfile.js</code> to include or remove plugins.</p>
+                    <pre><code>return src([
+  "Abrantes.js",
+  "plugins/ga4-gtag.js",
+  // "plugins/matomo.js",
+  "plugins/hotjar.js",
+  // "plugins/clarity.js",
+  "plugins/formtrack.js",
+  "plugins/add2DL.js"
+])
+  .pipe(concat("AbrantesPlus.js"))
+  .pipe(dest("./"));
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>2. Run gulp tasks</h2>
+                <div class="feature-card">
+                    <ol class="doc-steps">
+                        <li>Install dependencies with <code>npm install</code>.</li>
+                        <li>Build the bundle with <code>npx gulp init</code>.</li>
+                        <li>Minify with <code>npx gulp minify</code>.</li>
+                    </ol>
+                    <pre><code>npm install
+npx gulp init
+npx gulp minify
+</code></pre>
+                    <p>The output files are written to the repository root as <code>AbrantesPlus.js</code> and
+                        <code>AbrantesPlus.min.js</code>.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

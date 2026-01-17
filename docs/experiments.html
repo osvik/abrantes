@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Creating Experiments</title>
+    <meta name="description" content="Create experiments with Abrantes: define variants, assign users, persist results, and track outcomes.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Create experiments</h1>
+                <p class="subtitle">Define variants, assign users, render changes, and track results.</p>
+                <div class="cta-group">
+                    <a href="plugins.html" class="btn btn-secondary">Plugin reference</a>
+                    <a href="examples.html" class="btn btn-secondary">View examples</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Basic setup</h2>
+                <div class="feature-card">
+                    <p>Create a test object, define variants, then assign and render the variant.</p>
+                    <pre><code>var MyTest = Object.create(Abrantes);
+
+MyTest.variants = [
+  function () { /* control stays as the default page */ },
+  function () { document.querySelector(".cta").textContent = "Start free trial"; }
+];
+
+MyTest.assignVariant("pricing_cta");
+MyTest.renderVariant();
+MyTest.persist("cookie");
+</code></pre>
+                    <p class="doc-callout">
+                        If <code>assignVariant</code> returns <code>-1</code>, the user is not in the experiment and the
+                        page remains unchanged.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Traffic allocation and segmentation</h2>
+                <div class="feature-card">
+                    <p>Use the optional parameters in <code>assignVariant</code> to limit traffic or target a segment.</p>
+                    <pre><code>MyTest.assignVariant(
+  "pricing_cta",
+  0.5,
+  function () { return window.innerWidth > 768; }
+);
+</code></pre>
+                    <ul class="doc-list">
+                        <li><code>trafficAllocation</code> is a number between <code>0</code> and <code>1</code>.</li>
+                        <li><code>segment</code> is a function that returns <code>true</code> or <code>false</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Tracking results</h2>
+                <div class="feature-card">
+                    <p>Tracking is handled by plugins. Call the plugin method after <code>assignVariant</code>.</p>
+                    <pre><code>// Example with the GA4 gtag plugin
+MyTest.track("pricing_cta_event");
+MyTest.trackUser("pricing_cta_user");
+</code></pre>
+                    <p>See the plugin reference for details and required analytics scripts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Advanced patterns</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>Wait for the DOM</h3>
+                        <p>For SPAs or delayed content, wait for elements before rendering changes.</p>
+                        <pre><code>MyTest.waitFor(".pricing-table", function () {
+  MyTest.renderVariant();
+});
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Cross-site experiments</h3>
+                        <p>Export the variant to another domain and import it on the destination.</p>
+                        <pre><code>// Origin
+MyTest.crossSiteLink("a[data-cross-site]");
+
+// Destination
+MyTest.importVariant("pricing_cta");
+MyTest.renderVariant();
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Redirect tests</h3>
+                        <p>Use different pages for each variant and keep URL parameters.</p>
+                        <pre><code>if (MyTest.variant === 1) {
+  MyTest.redirectTo("/pricing-v2");
+}
+</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

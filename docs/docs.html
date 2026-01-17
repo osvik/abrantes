@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Documentation</title>
+    <meta name="description"
+        content="Documentation for installing Abrantes, creating experiments, using plugins, and building custom bundles.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Documentation</h1>
+                <p class="subtitle">Install Abrantes, create experiments, and add the plugins you need.</p>
+                <div class="cta-group">
+                    <a href="install.html" class="btn btn-primary">Install Abrantes</a>
+                    <a href="experiments.html" class="btn btn-secondary">Create experiments</a>
+                    <a href="plugins.html" class="btn btn-secondary">Plugins</a>
+                    <a href="build.html" class="btn btn-secondary">Custom build</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Start here</h2>
+                <div class="doc-grid">
+                    <div class="feature-card">
+                        <h3>Install Abrantes</h3>
+                        <p>Pick the core build or AbrantesPlus (core + plugins) and add it to your site.</p>
+                        <a class="doc-link" href="install.html">Installation guide &rarr;</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Create experiments</h3>
+                        <p>Define variants, assign users, render changes, and persist the result.</p>
+                        <a class="doc-link" href="experiments.html">Experiment basics &rarr;</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Use plugins</h3>
+                        <p>Connect Abrantes with analytics and tools like GA4, GTM, Hotjar, and Matomo.</p>
+                        <a class="doc-link" href="plugins.html">Plugin reference &rarr;</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Customize the build</h3>
+                        <p>Swap plugins in or out and rebuild AbrantesPlus with gulp.</p>
+                        <a class="doc-link" href="build.html">Custom build steps &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Core workflow</h2>
+                <div class="feature-card">
+                    <p>Most experiments follow the same sequence. Keep your base page as control, then let Abrantes
+                        render variants when assigned.</p>
+                    <pre><code>&lt;script src="AbrantesPlus.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  var PricingTest = Object.create(Abrantes);
+  PricingTest.variants = [
+    function () { /* control is the default page */ },
+    function () { document.querySelector(".cta").textContent = "Start free trial"; }
+  ];
+  PricingTest.assignVariant("pricing_cta");
+  PricingTest.renderVariant();
+  PricingTest.persist("cookie");
+&lt;/script&gt;
+</code></pre>
+                    <ol class="doc-steps">
+                        <li>Create a test object from <code>Abrantes</code>.</li>
+                        <li>Define <code>variants</code> as an array of functions.</li>
+                        <li>Assign a variant with <code>assignVariant</code>.</li>
+                        <li>Render the variant and persist it.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>More resources</h2>
+                <div class="doc-grid">
+                    <div class="feature-card">
+                        <h3>Examples page</h3>
+                        <p>Browse real examples like cross-site tests, waitFor, redirects, and analytics plugins.</p>
+                        <a class="doc-link" href="examples.html">Go to examples &rarr;</a>
+                    </div>
+                    <div class="feature-card">
+                        <h3>GitHub repository</h3>
+                        <p>Explore the source, open issues, or grab the latest version.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes" target="_blank"
+                            rel="noreferrer">Open GitHub &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

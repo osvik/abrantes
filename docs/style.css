@@ -29,6 +29,32 @@ a {
     transition: color 0.2s;
 }
 
+code {
+    font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    background: #eef2f8;
+    color: var(--heading-color);
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.35rem;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #f1f5f9;
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
 ul {
     list-style: none;
 }
@@ -168,6 +194,85 @@ header .container {
     margin-bottom: 0.75rem;
     color: var(--heading-color);
     font-size: 1.25rem;
+}
+
+/* Docs */
+.docs-hero {
+    padding: 4.5rem 0 3rem;
+}
+
+.docs-hero .subtitle {
+    max-width: 720px;
+}
+
+.docs-section {
+    padding: 3.5rem 0;
+}
+
+.docs-section h2 {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.docs-section .feature-card {
+    text-align: left;
+}
+
+.doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.doc-grid.two-col {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+}
+
+.doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.doc-link:hover {
+    text-decoration: underline;
+}
+
+.doc-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.75rem;
+}
+
+.doc-steps {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    margin-top: 0.75rem;
+}
+
+.doc-list li,
+.doc-steps li {
+    margin-bottom: 0.5rem;
+}
+
+.doc-section p + p {
+    margin-top: 0.75rem;
+}
+
+.doc-list + p,
+.doc-steps + p,
+pre + p {
+    margin-top: 0.75rem;
+}
+
+.doc-callout {
+    background: var(--card-bg);
+    border: 1px dashed var(--border-color);
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.75rem;
+    margin-top: 1rem;
 }
 
 /* Integrations */

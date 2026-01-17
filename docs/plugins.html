@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Plugins</title>
+    <meta name="description" content="Reference for Abrantes plugins: GA4, GTM dataLayer, Hotjar, Clarity, Matomo, and form tracking.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Plugins</h1>
+                <p class="subtitle">Connect Abrantes with analytics and tools you already use.</p>
+                <div class="cta-group">
+                    <a href="install.html" class="btn btn-secondary">Install guide</a>
+                    <a href="build.html" class="btn btn-secondary">Customize the build</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Plugin basics</h2>
+                <div class="feature-card">
+                    <ul class="doc-list">
+                        <li>Use <code>AbrantesPlus.js</code> to load all current plugins at once.</li>
+                        <li>Or load individual plugin files after <code>Abrantes.js</code>.</li>
+                        <li>Call plugin methods after <code>assignVariant</code>.</li>
+                        <li>Customize plugin settings through <code>Abrantes.settings</code>.</li>
+                        <li>Some plugins share method names (for example, GA4 and Matomo both use
+                            <code>track</code>).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Available plugins</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>GA4 (gtag)</h3>
+                        <p>Track events or user properties in Google Analytics 4 using gtag.js.</p>
+                        <ul class="doc-list">
+                            <li>Requires <code>gtag</code> and a <code>window.googleTrackingConfig</code> object.</li>
+                        </ul>
+                        <p>Call <code>gtag("config", "G-XXXX", window.googleTrackingConfig)</code> after setting it.</p>
+                        <pre><code>MyTest.track("pricing_cta_event");
+MyTest.trackUser("pricing_cta_user");
+</code></pre>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>GTM dataLayer</h3>
+                        <p>Push test and variant info into <code>dataLayer</code> for Google Tag Manager.</p>
+                        <pre><code>MyTest.add2dataLayer("pricing_cta");
+</code></pre>
+                        <p>Customize fields in <code>Abrantes.settings.dataLayer</code>. Requires <code>dataLayer</code>
+                            to be initialized.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Hotjar</h3>
+                        <p>Trigger Hotjar events based on the assigned variant.</p>
+                        <ul class="doc-list">
+                            <li>Uses <code>hj</code> if present, or waits for cookie events.</li>
+                        </ul>
+                        <pre><code>MyTest.hotjar();
+</code></pre>
+                        <p>Configure triggers with <code>Abrantes.settings.hotjar.triggerEvents</code>.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Microsoft Clarity</h3>
+                        <p>Set Clarity dimensions with the test and variant.</p>
+                        <pre><code>MyTest.clarity();
+</code></pre>
+                        <p>Configure triggers with <code>Abrantes.settings.clarity.triggerEvents</code>.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Form tracking</h3>
+                        <p>Fill a hidden input with the test and variant for CRM or lead forms.</p>
+                        <pre><code>&lt;input type="hidden" id="last_abtest_variant"&gt;
+MyTest.formTrack();
+</code></pre>
+                        <p>Set the selector in <code>Abrantes.settings.formTrack.inputElement</code>.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Matomo</h3>
+                        <p>Store the variant in a Matomo custom dimension.</p>
+                        <pre><code>MyTest.track(3);
+</code></pre>
+                        <p>Requires <code>_paq</code> to be initialized. Pass the custom dimension ID.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
