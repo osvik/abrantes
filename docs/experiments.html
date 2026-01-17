@@ -49,14 +49,10 @@ MyTest.variants = [
   function () { document.querySelector(".cta").textContent = "Start free trial"; }
 ];
 
-MyTest.assignVariant("pricing_cta");
+MyTest.assignVariant("MyTest");
 MyTest.renderVariant();
 MyTest.persist("cookie");
 </code></pre>
-                    <p class="doc-callout">
-                        If <code>assignVariant</code> returns <code>-1</code>, the user is not in the experiment and the
-                        page remains unchanged.
-                    </p>
                 </div>
             </div>
         </section>
@@ -67,15 +63,19 @@ MyTest.persist("cookie");
                 <div class="feature-card">
                     <p>Use the optional parameters in <code>assignVariant</code> to limit traffic or target a segment.</p>
                     <pre><code>MyTest.assignVariant(
-  "pricing_cta",
-  0.5,
-  function () { return window.innerWidth > 768; }
+  "MyTest", // experiment name
+  0.5, // traffic allocation: 50% of users
+  () => { return window.innerWidth > 768; } // segment: do the test for only desktop users only
 );
 </code></pre>
                     <ul class="doc-list">
-                        <li><code>trafficAllocation</code> is a number between <code>0</code> and <code>1</code>.</li>
-                        <li><code>segment</code> is a function that returns <code>true</code> or <code>false</code>.</li>
+                        <li>The traffic allocation is a number between <code>0</code> and <code>1</code>.</li>
+                        <li><code>segment</code> is a function that returns <code>true</code> or <code>false</code>. If it returns <code>true</code> the user enters the experiment.</li>
                     </ul>
+                    <p class="doc-callout">
+                        When the user is not in the experiment <code>assignVariant</code> returns <code>-1</code> and the
+                        page remains unchanged. Also the user participation in the experiment is not tracked.
+                    </p>
                 </div>
             </div>
         </section>
@@ -84,12 +84,12 @@ MyTest.persist("cookie");
             <div class="container">
                 <h2>Tracking results</h2>
                 <div class="feature-card">
-                    <p>Tracking is handled by plugins. Call the plugin method after <code>assignVariant</code>.</p>
+                    <p>Tracking is handled by plugins. You should use the plugins for your tracking tools. Call the plugin method after <code>assignVariant</code>.</p>
                     <pre><code>// Example with the GA4 gtag plugin
 MyTest.track("pricing_cta_event");
-MyTest.trackUser("pricing_cta_user");
+MyTest.track("test_event");
 </code></pre>
-                    <p>See the plugin reference for details and required analytics scripts.</p>
+                    <p>You can also use the <code>dataLayer</code> to track users if you are using a tag manager. See the add2DL plugin example for details.</p>
                 </div>
             </div>
         </section>
@@ -100,11 +100,16 @@ MyTest.trackUser("pricing_cta_user");
                 <div class="doc-grid two-col">
                     <div class="feature-card">
                         <h3>Wait for the DOM</h3>
-                        <p>For SPAs or delayed content, wait for elements before rendering changes.</p>
-                        <pre><code>MyTest.waitFor(".pricing-table", function () {
-  MyTest.renderVariant();
-});
+                        <p>For SPAs or delayed content, wait for elements before rendering changes. <code>waitFor</code> should be used in the variant definitions. You can use more than one <code>waitFor</code> in a variant to wait for different elements.</p>
+                        <pre><code>function () {
+  MyTest.waitFor(".pricing-table", () => {
+    document.querySelectorAll(".pricing-table .price").forEach(el => {
+    el.textContent = "9.99 €";
+    })
+  })
+}
 </code></pre>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/waitFor.html#L35-L54" target="_blank">Open waitFor.html &rarr;</a>
                     </div>
                     <div class="feature-card">
                         <h3>Cross-site experiments</h3>
@@ -113,9 +118,11 @@ MyTest.trackUser("pricing_cta_user");
 MyTest.crossSiteLink("a[data-cross-site]");
 
 // Destination
-MyTest.importVariant("pricing_cta");
+MyTest.importVariant("MyTest");
 MyTest.renderVariant();
 </code></pre>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/export.html#L79-L81" target="_blank">Open export.html →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/import.html#L54-L56" target="_blank">Open import.html →</a>
                     </div>
                     <div class="feature-card">
                         <h3>Redirect tests</h3>
@@ -124,6 +131,7 @@ MyTest.renderVariant();
   MyTest.redirectTo("/pricing-v2");
 }
 </code></pre>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/redirect/" target="_blank">Open redirect/ →</a>
                     </div>
                 </div>
             </div>
