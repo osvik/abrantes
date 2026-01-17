@@ -29,7 +29,7 @@
         <section class="hero docs-hero">
             <div class="container">
                 <h1>Install Abrantes</h1>
-                <p class="subtitle">Pick the build you want, add the script to your page, and start experimenting.</p>
+                <p class="subtitle">Pick the build you want, add the script to your web page, and start experimenting.</p>
                 <div class="cta-group">
                     <a href="experiments.html" class="btn btn-primary">Create your first experiment</a>
                     <a href="plugins.html" class="btn btn-secondary">Browse plugins</a>
@@ -42,21 +42,21 @@
                 <h2>Choose your build</h2>
                 <div class="doc-grid two-col">
                     <div class="feature-card">
-                        <h3>Abrantes.js (core)</h3>
-                        <p>Use the lightweight core only. Add the plugins you need as separate scripts.</p>
+                        <h3>Abrantes.js</h3>
+                        <p>Use the lightweight core and add the plugins you need as separate scripts.</p>
                         <ul class="doc-list">
-                            <li>Smallest footprint.</li>
-                            <li>You control which plugins are loaded.</li>
-                            <li>Best for custom setups.</li>
+                            <li>Good to learn the tool.</li>
+                            <li>You don't need to use gulp.</li>
                         </ul>
+                        <p>In production websites use the other build, AbrantesPlus.js customized and minified.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>AbrantesPlus.js (core + plugins)</h3>
+                        <h3>AbrantesPlus.js</h3>
                         <p>Prebuilt bundle with the current set of plugins from the repo.</p>
                         <ul class="doc-list">
-                            <li>Fastest way to get started.</li>
-                            <li>Available as <code>AbrantesPlus.js</code> and <code>AbrantesPlus.min.js</code>.</li>
                             <li>Customize the plugin list with gulp.</li>
+                            <li>Best performance.</li>
+                            <li>Available as <code>AbrantesPlus.js</code> and <code>AbrantesPlus.min.js</code> (2.7Kb gziped and minified).</li>
                         </ul>
                         <a class="doc-link" href="build.html">How to customize the build &rarr;</a>
                     </div>
@@ -69,8 +69,8 @@
                 <h2>Add the script to your page</h2>
                 <div class="doc-grid two-col">
                     <div class="feature-card">
-                        <h3>Use AbrantesPlus</h3>
-                        <p>Recommended for quick installs and demos.</p>
+                        <h3>Use AbrantesPlus.js</h3>
+                        <p>In production websites always use a minified custom build for performance.</p>
                         <pre><code>&lt;script src="AbrantesPlus.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   // Your experiment code here
@@ -78,7 +78,7 @@
 </code></pre>
                     </div>
                     <div class="feature-card">
-                        <h3>Core + plugins</h3>
+                        <h3>Use Abrantes.js</h3>
                         <p>Load Abrantes first, then the plugins you need.</p>
                         <pre><code>&lt;script src="Abrantes.js"&gt;&lt;/script&gt;
 &lt;script src="plugins/ga4-gtag.js"&gt;&lt;/script&gt;
@@ -97,10 +97,10 @@
                 <h2>Script order and dependencies</h2>
                 <div class="feature-card">
                     <ul class="doc-list">
-                        <li>Load Abrantes before any plugin scripts.</li>
+                        <li>Load Abrantes before any plugin scripts. (without defer)</li>
                         <li>Load analytics scripts (gtag, GTM, Hotjar, Clarity, Matomo) before calling their plugin
-                            methods.</li>
-                        <li>Place your experiment code after the scripts or use <code>defer</code> on the script tags.</li>
+                            methods. For more information check the <a href="https://github.com/osvik/abrantes/tree/main/examples" target="_blank">examples</a>.</li>
+                        <li>Place your experiment code after loading Abrantes and the plugins.</li>
                         <li>When testing locally, use a web server (not <code>file://</code>) so storage and redirects
                             work correctly.</li>
                     </ul>
