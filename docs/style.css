@@ -234,6 +234,7 @@ header .container {
     gap: 0.4rem;
     color: var(--primary-color);
     font-weight: 600;
+    margin-top: 0.5rem;
 }
 
 .doc-link:hover {

@@ -81,16 +81,19 @@
     function () { /* control is the default page */ },
     function () { document.querySelector(".cta").textContent = "Start free trial"; }
   ];
-  PricingTest.assignVariant("pricing_cta");
+  PricingTest.assignVariant("PricingTest");
   PricingTest.renderVariant();
   PricingTest.persist("cookie");
+  PricingTest.track("test_event");
 &lt;/script&gt;
 </code></pre>
                     <ol class="doc-steps">
                         <li>Create a test object from <code>Abrantes</code>.</li>
-                        <li>Define <code>variants</code> as an array of functions.</li>
-                        <li>Assign a variant with <code>assignVariant</code>.</li>
-                        <li>Render the variant and persist it.</li>
+                        <li>Define <code>variants</code> as an array of functions that modify your page. One function per variant.</li>
+                        <li>Assign a variant to the user with <code>assignVariant</code>.</li>
+                        <li>Render the variant in the page.</li>
+                        <li>Persist the same variant with a cookie or local/sessionStorage.</li>
+                        <li>Track using the test_event dimension. (tracking may vary by your analytics tool)</li>
                     </ol>
                 </div>
             </div>
