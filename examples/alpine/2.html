@@ -64,7 +64,7 @@
     </script>
 
     <!-- Alpine blocks -->
-    <div x-data="{ variant: MyTest.variant  }">
+    <div x-data="{ variant: MyTest.variant === -1 ? 0 : MyTest.variant  }">
 
         <template x-if="variant === 0">
             <template x-teleport="#container1">
