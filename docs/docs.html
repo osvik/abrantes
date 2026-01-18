@@ -75,6 +75,7 @@
                     <p>Most experiments follow the same sequence. Keep your base page as control, then let Abrantes
                         render variants when assigned.</p>
                     <pre><code>&lt;script src="AbrantesPlus.min.js"&gt;&lt;/script&gt;
+...
 &lt;script&gt;
   var PricingTest = Object.create(Abrantes);
   PricingTest.variants = [
@@ -84,7 +85,7 @@
   PricingTest.assignVariant("PricingTest");
   PricingTest.renderVariant();
   PricingTest.persist("cookie");
-  PricingTest.track("test_event");
+  PricingTest.add2dataLayer("example_test");
 &lt;/script&gt;
 </code></pre>
                     <ol class="doc-steps">
@@ -93,7 +94,7 @@
                         <li>Assign a variant to the user with <code>assignVariant</code>.</li>
                         <li>Render the variant in the page.</li>
                         <li>Persist the same variant with a cookie or local/sessionStorage.</li>
-                        <li>Track using the test_event dimension. (tracking may vary by your analytics tool)</li>
+                        <li>Add the experiment to the dataLayer to be tracked (tracking may vary by your analytics tool).</li>
                     </ol>
                 </div>
             </div>
