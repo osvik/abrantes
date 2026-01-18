@@ -42,7 +42,7 @@
                 <h2>Plugin basics</h2>
                 <div class="feature-card">
                     <ul class="doc-list">
-                        <li>Use <code>AbrantesPlus.js</code> to load all current plugins at once.</li>
+                        <li>Use <code>AbrantesPlus.js</code> to load Abrantes and all the default plugins in one file.</li>
                         <li>Or load individual plugin files after <code>Abrantes.js</code>.</li>
                         <li>Call plugin methods after <code>assignVariant</code>.</li>
                         <li>Customize plugin settings through <code>Abrantes.settings</code>.</li>
@@ -64,18 +64,22 @@
                             <li>Requires <code>gtag</code> and a <code>window.googleTrackingConfig</code> object.</li>
                         </ul>
                         <p>Call <code>gtag("config", "G-XXXX", window.googleTrackingConfig)</code> after setting it.</p>
-                        <pre><code>MyTest.track("pricing_cta_event");
-MyTest.trackUser("pricing_cta_user");
+                        <pre><code>MyTest.track("test_event");
+MyTest.trackUser("test_user");
 </code></pre>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/dev.html#L31-L67" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/ga4-gtag.js" target="_blank">Open source code →</a>
                     </div>
 
                     <div class="feature-card">
                         <h3>GTM dataLayer</h3>
                         <p>Push test and variant info into <code>dataLayer</code> for Google Tag Manager.</p>
-                        <pre><code>MyTest.add2dataLayer("pricing_cta");
+                        <pre><code>MyTest.add2dataLayer("example_test");
 </code></pre>
                         <p>Customize fields in <code>Abrantes.settings.dataLayer</code>. Requires <code>dataLayer</code>
                             to be initialized.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/add2DL.html#L62-L63" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/add2DL.js" target="_blank">Open source code →</a>
                     </div>
 
                     <div class="feature-card">
@@ -87,14 +91,19 @@ MyTest.trackUser("pricing_cta_user");
                         <pre><code>MyTest.hotjar();
 </code></pre>
                         <p>Configure triggers with <code>Abrantes.settings.hotjar.triggerEvents</code>.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/hotjar.html#L65-L66" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/hotjar.js" target="_blank">Open source code →</a>
                     </div>
-
+                    
                     <div class="feature-card">
                         <h3>Microsoft Clarity</h3>
                         <p>Set Clarity dimensions with the test and variant.</p>
                         <pre><code>MyTest.clarity();
 </code></pre>
                         <p>Configure triggers with <code>Abrantes.settings.clarity.triggerEvents</code>.</p>
+
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/clarity.html#L59-L60" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/clarity.js" target="_blank">Open source code →</a>
                     </div>
 
                     <div class="feature-card">
@@ -104,6 +113,8 @@ MyTest.trackUser("pricing_cta_user");
 MyTest.formTrack();
 </code></pre>
                         <p>Set the selector in <code>Abrantes.settings.formTrack.inputElement</code>.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/formtrack.html#L55-L56" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/formtrack.js" target="_blank">Open source code →</a>
                     </div>
 
                     <div class="feature-card">
@@ -112,6 +123,8 @@ MyTest.formTrack();
                         <pre><code>MyTest.track(3);
 </code></pre>
                         <p>Requires <code>_paq</code> to be initialized. Pass the custom dimension ID.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/matomo.html#L25-L58" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/matomo.js" target="_blank">Open source code →</a>
                     </div>
                 </div>
             </div>
