@@ -30,7 +30,7 @@
         <section class="hero docs-hero">
             <div class="container">
                 <h1>Defining variants in JavaScript</h1>
-                <p class="subtitle">Variants are plain functions that run when Abrantes renders the chosen version.</p>
+                <p class="subtitle">You define an array of functions that modify the page(s), one function per variant. When the experiment runs a random variant is assigned to the user and the corresponding function executes and modifies the page.</p>
                 <div class="cta-group">
                     <a href="experiments.html" class="btn btn-secondary">Back to experiments</a>
                     <a href="examples.html" class="btn btn-secondary">Browse examples</a>
@@ -57,9 +57,10 @@ MyTest.variants = [
   function () { document.querySelector(".cta").textContent = "Get demo"; }
 ];
 
-MyTest.assignVariant("pricing_cta");
+MyTest.assignVariant("MyTest");
 MyTest.renderVariant();
 </code></pre>
+<p>You should carefully test all variants, in desktop and mobile, before publishing an experiment. During the testing you can pass the variant number as a parameter to the renderVariant method. For example <code>MyTest.renderVariant(1);</code></p>
                 </div>
             </div>
         </section>
@@ -87,7 +88,8 @@ MyTest.renderVariant();
                         <h3>Add or remove classes</h3>
                         <pre><code>function () {
   document.querySelectorAll("h1").forEach(function (el) {
-    el.classList.add("d-none");
+    el.classList.add("large-header");
+    n.classList.remove("d-none");
   });
 }
 </code></pre>
@@ -134,10 +136,10 @@ MyTest.renderVariant();
                 <h2>Tips for clean variants</h2>
                 <div class="feature-card">
                     <ul class="doc-list">
-                        <li>Use specific selectors so you only change what you intend.</li>
+                        <li>Use specific CSS selectors so you only change what you intend.</li>
                         <li>Check for missing elements before updating them.</li>
                         <li>Keep the control in the base HTML and use an empty control function when needed.</li>
-                        <li>For delayed content, wrap changes in <code>MyTest.waitFor</code>.</li>
+                        <li>For delayed content, or content not yet in the DOM, wrap changes in <code>MyTest.waitFor</code>.</li>
                     </ul>
                     <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/waitFor.html#L35-L54" target="_blank">Open waitFor.html →</a><br />
                     <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/example-functions.js"
@@ -149,7 +151,7 @@ MyTest.renderVariant();
 
     <footer>
         <div class="container">
-            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>&copy; Abrantes. Open source software licensed under LGPL-3.0.</p>
             <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
         </div>
     </footer>
