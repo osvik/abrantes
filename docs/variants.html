@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Variant Functions</title>
+    <meta name="description"
+        content="Learn how Abrantes variants work and see JavaScript examples for changing text, classes, attributes, and more.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Defining variants in JavaScript</h1>
+                <p class="subtitle">Variants are plain functions that run when Abrantes renders the chosen version.</p>
+                <div class="cta-group">
+                    <a href="experiments.html" class="btn btn-secondary">Back to experiments</a>
+                    <a href="examples.html" class="btn btn-secondary">Browse examples</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>How variants work</h2>
+                <div class="feature-card">
+                    <p><code>MyTest.variants</code> is an array of functions. Each function describes the DOM changes
+                        for one variant.</p>
+                    <ul class="doc-list">
+                        <li>Index <code>0</code> is the first variant, often the control.</li>
+                        <li>Each variant function runs when <code>MyTest.renderVariant()</code> is called.</li>
+                        <li><code>MyTest.variant</code> is the chosen index, or <code>-1</code> if the user is excluded.</li>
+                    </ul>
+                    <pre><code>var MyTest = Object.create(Abrantes);
+
+MyTest.variants = [
+  function () { /* control or baseline changes */ },
+  function () { document.querySelector(".cta").textContent = "Start free trial"; },
+  function () { document.querySelector(".cta").textContent = "Get demo"; }
+];
+
+MyTest.assignVariant("pricing_cta");
+MyTest.renderVariant();
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Common DOM patterns</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>Change text</h3>
+                        <pre><code>function () {
+  document.querySelector("h1").innerText = "MyTest Variant 1";
+}
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Change HTML</h3>
+                        <pre><code>function () {
+  document.querySelector("h1").innerHTML =
+    'MyTest &lt;span style="color: red;"&gt;Variant 1&lt;/span&gt;';
+}
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Add or remove classes</h3>
+                        <pre><code>function () {
+  document.querySelectorAll("h1").forEach(function (el) {
+    el.classList.add("d-none");
+  });
+}
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Set attributes</h3>
+                        <pre><code>function () {
+  document.querySelectorAll("h1").forEach(function (el) {
+    el.setAttribute("data-variant", "MyTest Variant 2");
+  });
+}
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Hide elements</h3>
+                        <pre><code>function () {
+  document.querySelectorAll("h1").forEach(function (el) {
+    el.style.display = "none";
+    el.setAttribute("aria-hidden", "true");
+  });
+}
+</code></pre>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Swap an image</h3>
+                        <pre><code>function () {
+  document.querySelectorAll("img").forEach(function (img) {
+    var original = "example.jpg";
+    var variant = "example-variant.jpg";
+    if (img.src.includes(original)) {
+      img.src = img.src.replace(original, variant);
+      img.removeAttribute("srcset");
+    }
+  });
+}
+</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Tips for clean variants</h2>
+                <div class="feature-card">
+                    <ul class="doc-list">
+                        <li>Use specific selectors so you only change what you intend.</li>
+                        <li>Check for missing elements before updating them.</li>
+                        <li>Keep the control in the base HTML and use an empty control function when needed.</li>
+                        <li>For delayed content, wrap changes in <code>MyTest.waitFor</code>.</li>
+                    </ul>
+                    <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/example-functions.js"
+                        target="_blank" rel="noreferrer">Open example-functions.js &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under GPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
