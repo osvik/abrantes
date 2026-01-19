@@ -45,9 +45,9 @@
                     <p><code>MyTest.variants</code> is an array of functions. Each function describes the DOM changes
                         for one variant.</p>
                     <ul class="doc-list">
-                        <li>Index <code>0</code> is the first variant, often the control.</li>
-                        <li>Each variant function runs when <code>MyTest.renderVariant()</code> is called.</li>
-                        <li><code>MyTest.variant</code> is the chosen index, or <code>-1</code> if the user is excluded.</li>
+                        <li>The variant function runs when <code>MyTest.renderVariant()</code> is called, after a variant is assigned to the user.</li>
+                        <li>Index <code>0</code> is the first variant, often the control/original. It can be an empty function or a baseline function.</li>
+                        <li>If a user is excluded from the experiment, <code>MyTest.variant</code> is set to <code>-1</code> and no variant is rendered.</li>
                     </ul>
                     <pre><code>var MyTest = Object.create(Abrantes);
 
