@@ -4,7 +4,7 @@ Abrantes is a lightweight JavaScript browser library to **create advanced experi
 
 I - **Completely free** - Abrantes doesn't has any paid plans or paid add-ons and there's no plan to create them. There's add-ons to free third party tools that you can use.
 
-II - **Free and open source software** - You can use it for any purpose or to create your own script, based in Abrantes, to fit your needs. [GPL v3 License](LICENSE).
+II - **Free and open source software** - You can use it for any purpose or to create your own script, based in Abrantes, to fit your needs. [LGPL v3 License](LICENSE).
 
 III - **Extensible** - Functionality that's specific to third-party tools is in the included plugins. To keep it lightweight you can select just the plugins you need, . You can also write your own plugins. [Read more](https://github.com/osvik/abrantes/wiki/List-of-plugins)
 
