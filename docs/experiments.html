@@ -60,6 +60,41 @@ MyTest.persist("cookie");
 
         <section class="features docs-section">
             <div class="container">
+                <h2>CSS-only design experiments</h2>
+                <div class="feature-card">
+                    <p>For visual tweaks, you can let Abrantes add a variant class on <code>&lt;body&gt;</code> and handle
+                        the changes in CSS. The class format is <code>{testId}-{variant}</code>, matching the ID you pass
+                        to <code>assignVariant</code>.</p>
+                    <pre><code>/* CSS scoped to the variant class */
+.MyDesginExperiment-1 .hero-title { font-size: 2.5rem; }
+.MyDesginExperiment-2 .hero-title { font-size: 1.7rem; }
+</code></pre>
+                    <pre><code>var MyDesginExperiment = Object.create(Abrantes);
+MyDesginExperiment.variants = [
+  function () {}, // control
+  function () {}, // variant 1
+  function () {}  // variant 2
+];
+MyDesginExperiment.assignVariant("MyDesginExperiment");
+MyDesginExperiment.renderVariant();
+MyDesginExperiment.persist("cookie");
+</code></pre>
+                    <ul class="doc-list">
+                        <li>Keep the variant functions empty when CSS handles the changes.</li>
+                        <li>You can target the control with <code>.MyDesginExperiment-0</code> if needed.</li>
+                        <li>Place the CSS in a stylesheet or a <code>&lt;style&gt;</code> block on the page.</li>
+                    </ul>
+                    <p class="doc-callout">If the user is excluded by segmentation or allocation, <code>assignVariant</code>
+                        returns <code>-1</code> and no variant class is added to the page.</p>
+                    <a class="doc-link"
+                        href="https://github.com/osvik/abrantes/blob/main/examples/design-experiment-1.html"
+                        target="_blank" rel="noreferrer">Open design-experiment-1.html &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
                 <h2>Traffic allocation and segmentation</h2>
                 <div class="feature-card">
                     <p>Use the optional parameters in <code>assignVariant</code> to limit traffic or target a segment.</p>
