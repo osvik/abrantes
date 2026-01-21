@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Settings</title>
+    <meta name="description" content="Settings reference for Abrantes and its plugins.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Settings reference</h1>
+                <p class="subtitle">Full list of settings you can override on <code>MyTest.settings</code>.</p>
+                <div class="cta-group">
+                    <a href="docs.html" class="btn btn-secondary">Documentation home</a>
+                    <a href="plugins.html" class="btn btn-secondary">Plugin reference</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>How settings work</h2>
+                <div class="feature-card">
+                    <p>Each test created with <code>Object.create(Abrantes)</code> inherits <code>Abrantes.settings</code>.
+                        Update <code>MyTest.settings</code> before calling the method that uses it.</p>
+                    <p>Plugin settings appear only after loading the plugin (or when using <code>AbrantesPlus.js</code>).</p>
+                    <pre><code>var MyTest = Object.create(Abrantes);
+
+MyTest.settings.cookie.expires = 30;
+MyTest.settings.crossSiteLink.triggerEvent = false;
+MyTest.settings.dataLayer.eventName = "run_my_ab_test";
+MyTest.settings.formTrack.inputElement = "#ab_variant";
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Core settings</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>crossSiteLink</h3>
+                        <p>Controls when <code>crossSiteLink()</code> rewrites URLs.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.crossSiteLink.triggerEvent</code> (string or false).</li>
+                            <li>Default: <code>"DOMContentLoaded"</code>.</li>
+                            <li>Set to <code>false</code> to run immediately.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>cookie</h3>
+                        <p>Controls how long variants persist when using cookies.</p>
+                        <ul class="doc-list">
+                            <li><code>MyTest.settings.cookie.expires</code> (number of days).</li>
+                            <li>Default: <code>7</code>.</li>
+                            <li>Used only when calling <code>persist("cookie")</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Plugin settings</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>GTM dataLayer</h3>
+                        <p>Keys used when calling <code>add2dataLayer()</code>.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.dataLayer.eventName</code> (default: <code>"run_ab_test"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.dataLayer.customDimension</code> (default: <code>"ab_test_data"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.dataLayer.experimentName</code> (default: <code>"experiment_name"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.dataLayer.variantName</code> (default: <code>"variant_name"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.dataLayer.variantPrefix</code> (default: <code>"v"</code>).</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Hotjar</h3>
+                        <p>Events that should trigger <code>hotjar()</code> when Hotjar loads after consent.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.hotjar.triggerEvents</code> (array of event names).</li>
+                            <li>Default: <code>["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]</code>.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Microsoft Clarity</h3>
+                        <p>Events that should trigger <code>clarity()</code> when Clarity loads after consent.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.clarity.triggerEvents</code> (array of event names).</li>
+                            <li>Default: <code>["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]</code>.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Form tracking</h3>
+                        <p>Controls when the hidden input is filled by <code>formTrack()</code>.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.formTrack.triggerEvents</code> (array of event names).</li>
+                            <li>Default: <code>["DOMContentLoaded"]</code>.</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.formTrack.inputElement</code> (selector string).</li>
+                            <li>Default: <code>"#last_abtest_variant"</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Plugins without settings</h2>
+                <div class="feature-card">
+                    <p>These plugins do not add new keys to <code>MyTest.settings</code>:</p>
+                    <ul class="doc-list">
+                        <li><strong>GA4 (gtag):</strong> uses <code>gtag</code> and <code>window.googleTrackingConfig</code>.</li>
+                        <li><strong>Matomo:</strong> uses the global <code>_paq</code> queue.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Default settings (AbrantesPlus)</h2>
+                <div class="feature-card">
+                    <p>This is the default settings object when you load <code>AbrantesPlus.js</code>:</p>
+                    <pre><code>MyTest.settings = {
+  crossSiteLink: {
+    triggerEvent: "DOMContentLoaded"
+  },
+  cookie: {
+    expires: 7
+  },
+  hotjar: {
+    triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
+  },
+  clarity: {
+    triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
+  },
+  formTrack: {
+    triggerEvents: ["DOMContentLoaded"],
+    inputElement: "#last_abtest_variant"
+  },
+  dataLayer: {
+    eventName: "run_ab_test",
+    customDimension: "ab_test_data",
+    experimentName: "experiment_name",
+    variantName: "variant_name",
+    variantPrefix: "v"
+  }
+};
+</code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under LGPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
