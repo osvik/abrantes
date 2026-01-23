@@ -45,5 +45,61 @@ function minify() {
         .pipe(dest('./'));
 }
 
+/**
+ * Creates the ES6 module version (AbrantesPlusMod.js)
+ * Concatenates files and adds module export at the end
+ */
+function initMod() {
+    const { Transform } = require('stream');
+
+    // Custom transform to add ES6 export at the end
+    const addModuleExport = new Transform({
+        objectMode: true,
+        transform(file, encoding, callback) {
+            if (file.isBuffer()) {
+                const moduleExport = `
+// ES6 Module export - also expose globally for backward compatibility
+if (typeof window !== 'undefined') {
+    window.Abrantes = Abrantes;
+}
+
+export default Abrantes;
+`;
+                file.contents = Buffer.concat([file.contents, Buffer.from(moduleExport)]);
+            }
+            callback(null, file);
+        }
+    });
+
+    return src([
+        'Abrantes.js',
+        'plugins/ga4-gtag.js',
+        // 'plugins/matomo.js',
+        'plugins/hotjar.js',
+        // 'plugins/clarity.js',
+        'plugins/formtrack.js',
+        'plugins/add2DL.js',
+    ])
+        .pipe(concat("AbrantesPlusMod.js"))
+        .pipe(addModuleExport)
+        .pipe(dest('./'));
+}
+
+/**
+ * Minifies the ES6 module version
+ */
+function minifyMod() {
+    return src([
+        'AbrantesPlusMod.js',
+    ])
+        .pipe(terser({
+            module: true
+        }))
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(dest('./'));
+}
+
 exports.init = init;
+exports.initMod = initMod;
 exports.minify = minify;
+exports.minifyMod = minifyMod;
