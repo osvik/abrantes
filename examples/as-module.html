@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - ES6 Module Example</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M7XW88');</script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <!-- Using ES6 module import -->
+    <script type="module" async>
+
+        // Import Abrantes from the ES6 module
+        import Abrantes from 'https://cdn.jsdelivr.net/gh/osvik/abrantes@main/AbrantesPlusMod.min.js';
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+                MyTest.waitFor("#after", () => {
+                    document.getElementById("after").innerText = "Element after the script is now available in the DOM. V0 variant executed.";
+                });
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+                MyTest.waitFor("#after", () => {
+                    document.getElementById("after").innerText = "Element after the script is now available in the DOM. V1 variant executed.";
+                });
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+                MyTest.waitFor("#after", () => {
+                    document.getElementById("after").innerText = "Element after the script is now available in the DOM. V2 variant executed.";
+                });
+            },
+
+        ];
+
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
+
+        // Send event ID and variant to the dataLayer
+        MyTest.add2dataLayer("example_test");
+
+    </script>
+
+    <p id="after">Content after the script</p>
+
+</body>
+
+</html>
