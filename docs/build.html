@@ -65,6 +65,7 @@
   .pipe(concat("AbrantesPlus.js"))
   .pipe(dest("./"));
 </code></pre>
+                    <p>Please note that there's two functions, one for the standard build <code>init()</code> and one for the E6 module build <code>initMod()</code>.</p>
                 </div>
             </div>
         </section>
@@ -84,6 +85,15 @@ npx gulp minify
 </code></pre>
                     <p>The output files are written to the repository root as <code>AbrantesPlus.js</code> and
                         <code>AbrantesPlus.min.js</code>.</p>
+                        <h3 style="margin-top: 1rem;">Build the E6 module</h3>
+                        <p>If you want to build the E6 module run:</p>
+                    <pre><code>npm install
+npx gulp initMod
+npx gulp minifyMod
+</code></pre>
+                    <p>The module output files are written as <code>AbrantesPlusMod.js</code> and
+                        <code>AbrantesPlusMod.min.js</code>.</p>
+                        <p>See the <a href="https://github.com/osvik/abrantes/blob/main/examples/as-module.html#L27-L77" target="_blank">module example</a> for more information.</p>
                 </div>
             </div>
         </section>
