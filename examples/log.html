@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Log Plugin Example</title>
+    <script src="../AbrantesPlus.js"></script>
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+    <button id="logBtn">Log Event</button>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Configure the log API URL. Use your own URL here! API available at https://github.com/osvik/abrantes-log-api
+        MyTest.settings.log.apiURL = "https://lab.osvaldo.pt/abrantes-log/public/";
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        // Assign a variant
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser
+        MyTest.persist("cookie");
+
+        // Log an event when the button is clicked
+        document.getElementById("logBtn").addEventListener("click", function () {
+            MyTest.log("button_click", "User clicked the log button");
+        });
+
+        // Log a page view event
+        MyTest.log("page_view");
+
+    </script>
+
+</body>
+
+</html>
