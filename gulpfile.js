@@ -28,6 +28,7 @@ function init() {
         // 'plugins/clarity.js',
         'plugins/formtrack.js',
         'plugins/add2DL.js',
+        'plugins/log.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
@@ -79,6 +80,7 @@ export default Abrantes;
         // 'plugins/clarity.js',
         'plugins/formtrack.js',
         'plugins/add2DL.js',
+        'plugins/log.js',
     ])
         .pipe(concat("AbrantesPlusMod.js"))
         .pipe(addModuleExport)
