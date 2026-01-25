@@ -107,6 +107,17 @@ MyTest.trackUser("test_user");
                     </div>
 
                     <div class="feature-card">
+                        <h3>Abrantes log</h3>
+                        <p>Send events to the Abrantes log API.</p>
+                        <pre><code>MyTest.log("button_click", "User clicked the log button");
+</code></pre>
+                        <p>Configure log apiURL with <code style="overflow-wrap: anywhere;">MyTest.settings.log.apiURL</code>.</p>
+
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/log.html" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/log.js" target="_blank">Open source code →</a>
+                    </div>
+
+                    <div class="feature-card">
                         <h3>Form tracking</h3>
                         <p>Fill a hidden input with the test and variant for CRM or lead forms.</p>
                         <pre><code>&lt;input type="hidden" id="last_abtest_variant"&gt;
