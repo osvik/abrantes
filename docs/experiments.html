@@ -148,11 +148,11 @@ MyTest.track("test_event");
                     </div>
                     <div class="feature-card">
                         <h3>Cross-site experiments</h3>
-                        <p>Export the variant to another domain and import it on the destination.</p>
-                        <pre><code>// Origin
+                        <p>Assign the variant in one domain and pass it to another domain .</p>
+                        <pre><code>// Landing
 MyTest.crossSiteLink("a[data-cross-site]");
 
-// Destination
+// Step 2
 MyTest.importVariant("MyTest");
 MyTest.renderVariant();
 </code></pre>
