@@ -5,7 +5,7 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 ## Core Concepts
 *   [design-experiment-1.html](design-experiment-1.html) - A simple CSS-based experiment. Abrantes applies different classes to the body tag that can be used to experiment with different designs.
 *   [segment.html](segment.html) - Demonstrates how to segment the experiment to specific users (e.g., by language or screen size).
-*   [defer.html](defer.html) - Shows how to load Abrantes with the `defer` attribute.
+*   [defer.html](defer/defer.html) - Shows how to load Abrantes with the `defer` attribute.
 *   [as-module.html](as-module.html) - Example of using Abrantes as an ES6 module.
 *   [example-functions.js](example-functions.js) - A collection of example JavaScript functions for common DOM manipulations (changing text, images, classes) to use in your variants.
 
