@@ -21,8 +21,8 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 
 ## Advanced Patterns
 *   [waitFor.html](waitFor.html) - Implementation of a wait function to apply changes only when dynamic elements appear in the DOM. Important for SPAs.
-*   [export.html](cross-site/export.html) - "Origin" page example for cross-site experiments (exports the variant).
-*   [import.html](cross-site/import.html) - "Destination" page example for cross-site experiments (imports the variant from the origin).
+*   [landing.html](cross-site/landing.html) - "Origin" page example for cross-site experiments (exports the variant).
+*   [step-2.html](cross-site/step-2.html) - "Destination" page example for cross-site experiments (imports the variant from the origin).
 *   [redirect/](redirect/) - Folder containing examples of redirect tests (sending users to different URLs).
 *   [alpine/](alpine/) - Examples of integrating Abrantes with Alpine.js.
 *   [dev.html](dev.html) - A generic development template used for testing various features.
