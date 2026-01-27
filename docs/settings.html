@@ -122,6 +122,15 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                             <li>Default: <code>"#last_abtest_variant"</code>.</li>
                         </ul>
                     </div>
+                    <div class="feature-card">
+                        <h3>Abrantes log</h3>
+                        <p>Controls where to send user's event logs.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.log.apiURL</code> - A string with the URL of the API endpoint. Default: <code>""</code> - It must be defined before calling <code>.log("example_event", "example note")</code>.</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.log.variantPrefix</code> - Prefix to the variant number in the log. Default: <code>"v"</code>.</li>
+                        </ul>
+                        <p>This plugin must be used with the custom API <a href="https://github.com/osvik/abrantes-log-api" target="_blank">Abrantes log</a>.</p>
+                    </div>
                 </div>
             </div>
         </section>
