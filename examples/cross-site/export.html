@@ -24,14 +24,14 @@
 
 <body>
 
-    <h1 id="bigH1">MyTest Original</h1>
+    <h1 id="bigH1">Landing original</h1>
 
     <ul>
         <li>
-            <a class="os" href="https://debian.org/?utm_source=Abrantes">Link</a>
+            <a href="http://localhost:8888/abrantes/examples/cross-site/import.html?utm_source=Abrantes">Link with utm_source</a>
         </li>
         <li>
-            <a href="https://fsf.org">Link 2</a>
+            <a href="http://localhost:8888/abrantes/examples/cross-site/import.html">Link without utm_source</a>
         </li>
 
     </ul>
@@ -46,17 +46,17 @@
 
             // Original
             function () {
-                document.getElementById("bigH1").innerText = "MyTest Original";
+                document.getElementById("bigH1").innerText = "Landing original";
             },
 
             // Variant 1
             function () {
-                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+                document.getElementById("bigH1").innerText = "Landing variant 1";
             },
 
             // Variant 2
             function () {
-                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+                document.getElementById("bigH1").innerText = "Landing variant 2";
             },
 
         ];
