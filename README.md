@@ -24,3 +24,12 @@ X - **What Abrantes doesn't do!** - It does what I need very well. However here'
 
 
 **[Go to the website](https://osvik.github.io/abrantes/)**
+
+----
+
+To browse this repository locally type in the terminal:
+
+```sh
+python3 -m http.server
+```
+And go to [http://localhost:8000/](http://localhost:8000/)
