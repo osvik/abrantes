@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - iFrame parent</title>
+    <script src="../../AbrantesPlus.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M7XW88');</script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">iFrame test original</h1>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "iFrame test original";
+                MyTest.waitFor("iframe", function (iframe) {
+                    const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
+                    document.getElementById("iframe").src = iframeURL;
+                });
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "iFrame test variant 1";
+                MyTest.waitFor("iframe", function (iframe) {
+                    const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
+                    document.getElementById("iframe").src = iframeURL;
+                });
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "iFrame test variant 2";
+                MyTest.waitFor("iframe", function (iframe) {
+                    const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
+                    document.getElementById("iframe").src = iframeURL;
+                });
+            },
+
+        ];
+
+        // Assign a variant
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser
+        MyTest.persist("cookie");
+
+        /**
+         * In this example we are using the dataLayer to track.
+         * You can adapt this part to your tracking setup.
+         */
+
+        // Send event ID and variant to the dataLayer
+        MyTest.add2dataLayer("example_test");
+
+        // Listen for messages from the child iframe
+        window.addEventListener('message', function(event) {
+
+            // For debugging purposes, remove the following line in production
+            console.log('Origin is:', event.origin);
+
+            // In production, always verify the origin
+            // if (event.origin !== 'https://trusted-domain.com') return;
+            
+            if (event.data && event.data.event) {
+                Object.assign(event.data, {
+                    ab_test_data: "example_test" + "-" + MyTest.variant
+                });
+                dataLayer.push(event.data);
+            }
+        });
+
+    </script>
+
+    <iframe id="iframe" src="" width="600" height="200"></iframe>
+
+    <p>Inspect the dataLayer in the browser console or use Google Tag Assistant for more information.</p>
+
+
+</body>
+
+</html>

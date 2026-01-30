@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child iFrame</title>
+    <script src="../../AbrantesPlus.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="childH2">Child iFrame original</h2>
+    <button id="donateBtn">Send donation event</button>
+
+    <script>
+
+    var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("childH2").innerText = "Child iFrame original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("childH2").innerText = "Child iFrame variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("childH2").innerText = "Child iFrame variant 2";
+            },
+
+        ];
+
+        MyTest.importVariant("MyTest");
+
+        MyTest.renderVariant();
+
+        document.getElementById('donateBtn').addEventListener('click', function() {
+            const message = {
+                event: "donation",
+                label: "monthly",
+                value: 12
+            };
+
+            // Send message to parent window
+            // Replace '*' with the specific parent origin in production for security
+            window.parent.postMessage(message, '*');
+
+            // For debugging purposes, remove in production
+            console.log('Message sent to parent:', message);
+        });
+    </script>
+</body>
+</html>
