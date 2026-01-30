@@ -29,6 +29,7 @@ function init() {
         'plugins/formtrack.js',
         'plugins/add2DL.js',
         'plugins/log.js',
+        'plugins/seed.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
@@ -81,6 +82,7 @@ export default Abrantes;
         'plugins/formtrack.js',
         'plugins/add2DL.js',
         'plugins/log.js',
+        'plugins/seed.js',
     ])
         .pipe(concat("AbrantesPlusMod.js"))
         .pipe(addModuleExport)
