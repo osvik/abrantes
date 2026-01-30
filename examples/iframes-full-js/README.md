@@ -1,4 +1,4 @@
-# Iframe unlimited
+# Iframe full JavaScript
 
 In this example we see how to make an experiment with Abrantes when you have don't have restrictions on the JavaScript you can put inside the iframe. In this case we can run Abrantes both in the parent and child.
 

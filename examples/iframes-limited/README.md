@@ -1,4 +1,4 @@
-# Iframe limited
+# Iframe limited JavaScript
 
 In this example we see how to make an experiment with Abrantes when you have restrictions on the JavaScript you can put inside the iframe. Use when you can add JavaScript for the conversion event only.
 
