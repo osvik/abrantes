@@ -13,8 +13,9 @@
         },
 
         /**
-         * Assigns a variant based on a seed value.
+         * Selects a random variation from the list of available variants based on a seed value
          * @param {string} seed The seed value to use for variant assignment
+         * @return {number} The assigned variant index (as a promise)
          */
         seededVar: async function (seed = "") {
 
@@ -25,20 +26,29 @@
 
             const hash = await this.calculateSHA256(seed);
             const hashInt = parseInt(hash.slice(0, 8), 16);
-            const numberOfVariants = this.variants.length;
 
-            this.variant = hashInt % (numberOfVariants);
+            this.variant = hashInt % (this.variants.length);
             return this.variant;
 
         },
 
-        seedVariant: async function (testId) {
+        /**
+         * Assigns a variant to a user based on a seed string and a test identifier
+         * @param {string} testId String identifier for the test
+         * @param {string} seed A string seed to determine the variant
+         */
+        seedVariant: async function (testId, seed) {
             if (typeof (testId) !== "string" || testId.length === 0) {
-                throw ("You need to provide an ID when importing a variant");
+                throw ("You need to provide an ID when assigning a variant");
             }
             if (!Array.isArray(this.variants) || this.variants.length === 0) {
-                throw ("You must define at least one variant before importing");
+                throw ("You must define at least one variant before assigning a seeded variant");
             }
+            if (typeof (seed) !== "string" || seed.length === 0) {
+                throw ("You need to provide a seed string when assigning a seeded variant");
+            }
+            this.testId = testId;
+            await this.seededVar(seed);
         }
 
     };
