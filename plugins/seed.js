@@ -18,28 +18,27 @@
          * @return {number} The assigned variant index (as a promise)
          */
         seededVar: async function (seed = "") {
-
             if (typeof (seed) !== "string" || seed === "") {
-                this.variant = -1;
-                return this.variant;
+                return -1;
             }
-
             const hash = await this.calculateSHA256(seed);
             const hashInt = parseInt(hash.slice(0, 8), 16);
-
-            this.variant = hashInt % (this.variants.length);
-            return this.variant;
-
+            return hashInt % (this.variants.length);
         },
 
         /**
          * Assigns a variant to a user based on a seed string and a test identifier
          * @param {string} testId String identifier for the test
          * @param {string} seed A string seed to determine the variant
+         * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
+         * @param {function} segment Function that returns true or false to include the user in the test
          */
-        seedVariant: async function (testId, seed) {
+        seedVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
                 throw ("You need to provide an ID when assigning a variant");
+            }
+            if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
+                throw ("trafficAllocation must be a number between 0 and 1");
             }
             if (!Array.isArray(this.variants) || this.variants.length === 0) {
                 throw ("You must define at least one variant before assigning a seeded variant");
@@ -48,7 +47,18 @@
                 throw ("You need to provide a seed string when assigning a seeded variant");
             }
             this.testId = testId;
-            await this.seededVar(seed);
+            const n = Math.random();
+            if (n > trafficAllocation || !segment()) {
+                this.variant = -1;
+                return
+            }
+            this.variant = await this.seededVar(seed);
+            document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant
+                }
+            }));
         }
 
     };
