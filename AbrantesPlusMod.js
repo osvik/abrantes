@@ -605,7 +605,7 @@ Abrantes.track = function () {
          * @param {string} seed The seed value to use for variant assignment
          * @return {number} The assigned variant index (as a promise)
          */
-        seededVar: async function (seed = "") {
+        getSeededVar: async function (seed = "") {
             if (typeof (seed) !== "string" || seed === "") {
                 return -1;
             }
@@ -621,7 +621,7 @@ Abrantes.track = function () {
          * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
          * @param {function} segment Function that returns true or false to include the user in the test
          */
-        seedVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
+        assignSeededVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
                 throw ("You need to provide an ID when assigning a variant");
             }
@@ -640,7 +640,7 @@ Abrantes.track = function () {
                 this.variant = -1;
                 return
             }
-            this.variant = await this.seededVar(seed);
+            this.variant = await this.getSeededVar(seed);
             document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
                 detail: {
                     testId: this.testId,

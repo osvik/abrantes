@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes</title>
+    <script src="../AbrantesPlus.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        // Add the params here instead of in gtag config
+        window.googleTrackingConfig = {
+
+        };
+    </script>
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <script>
+
+        // Seeded experiments must be async because of the hashing
+        (async () => {
+
+            // Fetch user data to use as seed
+            let seed;
+            try {
+                // Use a your own API endpoint that returns consistent user JSON data
+                const response = await fetch("https://api-bdc.net/data/client-info");
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const result = await response.json();
+                seed = JSON.stringify(result);
+            } catch (error) {
+                console.error(error.message);
+                seed = "";
+            }
+
+            // Create the test
+            var MyTest = Object.create(Abrantes);
+
+            // Define the variants
+            MyTest.variants = [
+
+                // Original
+                function () {
+                    document.getElementById("bigH1").innerText = "MyTest Original";
+                },
+
+                // Variant 1
+                function () {
+                    document.getElementById("bigH1").innerText = "MyTest Variant 1";
+                },
+
+                // Variant 2
+                function () {
+                    document.getElementById("bigH1").innerText = "MyTest Variant 2";
+                },
+
+            ];
+
+            // Assign a variant to the user
+            await MyTest.assignSeededVariant("MyTest", seed);
+
+            // Render the variant
+            MyTest.renderVariant();
+
+            // Track the variant in an event dimension
+            MyTest.track("test_event");
+
+            // Optionally track the variant in a user dimension
+            MyTest.trackUser("test_user");
+
+            window.MyTest = MyTest; // For debugging
+
+        })();
+
+    </script>
+
+    <script>
+        // Use the window.googleTrackingConfig in the gtag config and configure it in the header
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
+
+
+</body>
+
+</html>

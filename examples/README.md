@@ -17,6 +17,7 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 *   [matomo.html](matomo.html) - Integration with Matomo (formerly Piwik) analytics.
 *   [mixpanel.html](mixpanel.html) - Integration with Mixpanel analytics. (Example without GTM)
 *   [formtrack.html](formtrack.html) - How to save the assigned variant into a hidden form input (useful for CRM tracking).
+*   [seed.html](seed.html) - Assign variants accordingly to a seed, instead of randomly.
 *   [log.html](log.html) - Sending experiment events to a free/open source custom logging API.
 
 ## Advanced Patterns
