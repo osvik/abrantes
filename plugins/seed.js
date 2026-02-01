@@ -5,6 +5,9 @@
     const seed = {
 
         calculateSHA256: async function (message) {
+            if (typeof (message) !== "string" || message.length === 0) {
+                throw ("You need to provide a non-empty string to calculate SHA256");
+            }
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
