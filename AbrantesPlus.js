@@ -1,10 +1,16 @@
 /* jshint esversion:6 */
 
+/*
+    Abrantes - A lightweight A/B testing library
+    © Osvaldo Gago - https://github.com/osvik/
+    Licensed under the LGPL v3.0 license https://github.com/osvik/abrantes/blob/main/LICENSE
+ */
+
 const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "1.2.0";
+Abrantes.version = "1.3.0";
 
 /**
  * Assigns a variant to a user
