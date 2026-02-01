@@ -26,4 +26,6 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 *   [step-2.html](cross-site/step-2.html) - "Destination" page example for cross-site experiments (imports the variant from the origin).
 *   [redirect/](redirect/) - Folder containing examples of redirect tests (sending users to different URLs).
 *   [alpine/](alpine/) - Examples of integrating Abrantes with Alpine.js.
+*   [iframes full/](iframes-full-js/) - Doing experiments with iframes when you can put any JavaScript in the iframe.
+*   [iframes limited/](iframes-limited/) - Experiments with iframes when the JavaScript you can put in the iframe is limited to run a script after the conversion.
 *   [dev.html](dev.html) - A generic development template used for testing various features.
