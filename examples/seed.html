@@ -69,17 +69,14 @@
 
             ];
 
-            // Assign a variant to the user
-            await MyTest.assignSeededVariant("MyTest", seed);
+            // Assign a variant to the user from the seed. 100% traffic, all users included
+            await MyTest.assignSeededVariant("MyTest", seed, 1, () => true);
 
             // Render the variant
             MyTest.renderVariant();
 
-            // Track the variant in an event dimension
-            MyTest.track("test_event");
-
-            // Optionally track the variant in a user dimension
-            MyTest.trackUser("test_user");
+            // Send event ID and variant to the dataLayer to track in your Analytics software.
+            MyTest.add2dataLayer("example_test");
 
             // For debugging uncomment the line below
             // window.MyTest = MyTest;
