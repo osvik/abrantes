@@ -40,7 +40,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     if (n > trafficAllocation || !segment()) {
         this.variant = -1;
     } else {
-        this.variant = this.randomVar();
+        this.variant = this.getRandomVar();
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
@@ -235,20 +235,21 @@ Abrantes.variants = [
  * Selects a random variation from the list of available variants
  * @returns number
  */
-Abrantes.randomVar = function () {
+Abrantes.getRandomVar = function () {
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
         throw ("Cannot select random variant: no variants defined");
     }
+    let variant;
     const numberOfVariants = this.variants.length;
     if (window.crypto && window.crypto.getRandomValues) {
         const values = new Uint32Array(1);
         window.crypto.getRandomValues(values);
-        this.variant = values[0] % (numberOfVariants);
+        variant = values[0] % (numberOfVariants);
     }
     else {
-        this.variant = Math.floor(Math.random() * (numberOfVariants));
+        variant = Math.floor(Math.random() * (numberOfVariants));
     }
-    return this.variant;
+    return variant;
 };
 
 /**
