@@ -263,7 +263,11 @@ Abrantes.getRandomVar = function () {
  * @param {string} url 
  */
 Abrantes.redirectTo = function (url) {
-    location.href = url + location.search + location.hash;
+    var search = location.search;
+    if (search && url.indexOf('?') !== -1) {
+        search = '&' + search.substring(1);
+    }
+    location.href = url + search + location.hash;
 }
 
 /**
