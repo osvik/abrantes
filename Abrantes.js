@@ -11,6 +11,7 @@ const Abrantes = Object.create(null);
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
 Abrantes.version = "1.3.1";
+Abrantes.excludedVariantsForNewUsers = [];
 
 /**
  * Assigns a variant to a user
@@ -254,6 +255,10 @@ Abrantes.getRandomVar = function () {
     }
     else {
         variant = Math.floor(Math.random() * (numberOfVariants));
+    }
+
+    if (this.excludedVariantsForNewUsers.includes(variant)) {
+        return this.getRandomVar();
     }
     return variant;
 };
