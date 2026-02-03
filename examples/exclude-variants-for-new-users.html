@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Exclude variants for new users</title>
+    <script src="../AbrantesPlus.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        // Add the params here instead of in gtag config
+        window.googleTrackingConfig = {
+
+        };
+    </script>
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+            // Variant 3
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 3";
+            },
+
+        ];
+
+        // Exclude variants 1 and 2 for new users (0 is original)
+        MyTest.excludedVariantsForNewUsers = [1, 2];
+
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
+
+        // Track the variant in an event dimension
+        MyTest.track("test_event");
+
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("test_user");
+
+    </script>
+
+    <script>
+        // Use the window.googleTrackingConfig in the gtag config and configure it in the header
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
+
+
+</body>
+
+</html>

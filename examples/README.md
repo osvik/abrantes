@@ -29,3 +29,4 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 *   [iframes full/](iframes-full-js/) - Doing experiments with iframes when you can put any JavaScript in the iframe.
 *   [iframes limited/](iframes-limited/) - Experiments with iframes when the JavaScript you can put in the iframe is limited to run a script after the conversion.
 *   [dev.html](dev.html) - A generic development template used for testing various features.
+*   [exclude-variants-for-new-users.html](exclude-variants-for-new-users.html) - Abandon variants in the middle of an experiment without afecting the experience of users that previously entered the experiment.
