@@ -136,6 +136,20 @@ MyTest.track("test_event");
 
         <section class="features docs-section">
             <div class="container">
+                <h2>Testing the experiment</h2>
+                <div class="feature-card">
+                    <p>1.- Render specific variants using a parameter in the URL by importing instead of assigning:</p>
+                    <pre><code>MyTest.importVariant("MyTest");
+</code></pre>
+                    <p>and load the page with the URL parameter <code>?MyTest=x</code> (where x is the variant number). You can share this URLS with your team or using them to test in mobile phones.</p>
+                    <p>2.- Check the pages of the experiment using the <a href="https://github.com/osvik/abrantes-checker-extension" target="_blank">Abrantes checker browser extension</a>.</p>
+                    <p>3.- Use the <a href="https://github.com/osvik/abrantes/blob/main/examples/log.html" target="_blank">log plugin</a> to monitor what happens after the experiment is launched.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
                 <h2>Advanced patterns</h2>
                 <div class="doc-grid two-col">
 
