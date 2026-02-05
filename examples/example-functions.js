@@ -27,8 +27,8 @@ var variants = [
     * Add a class to all h1 tags
     */
     function () {
-        document.querySelectorAll("h1").forEach((n) => {
-            n.classList.add("d-none");
+        document.querySelectorAll("h1").forEach((el) => {
+            el.classList.add("d-none");
         });
     },
 
@@ -36,8 +36,8 @@ var variants = [
     * Remove a class to all h1 tags
     */
     function () {
-        document.querySelectorAll("h1").forEach((n) => {
-            n.classList.remove("d-none");
+        document.querySelectorAll("h1").forEach((el) => {
+            el.classList.remove("d-none");
         });
     },
 
