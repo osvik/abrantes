@@ -6,7 +6,7 @@
 
         calculateSHA256: async function (message) {
             if (typeof (message) !== "string" || message.length === 0) {
-                throw ("You need to provide a non-empty string to calculate SHA256");
+                throw new Error("You need to provide a non-empty string to calculate SHA256");
             }
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -38,16 +38,16 @@
          */
         assignSeededVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
-                throw ("You need to provide an ID when assigning a variant");
+                throw new Error("You need to provide an ID when assigning a variant");
             }
             if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
-                throw ("trafficAllocation must be a number between 0 and 1");
+                throw new Error("trafficAllocation must be a number between 0 and 1");
             }
             if (!Array.isArray(this.variants) || this.variants.length === 0) {
-                throw ("You must define at least one variant before assigning a seeded variant");
+                throw new Error("You must define at least one variant before assigning a seeded variant");
             }
             if (typeof (seed) !== "string" || seed.length === 0) {
-                throw ("You need to provide a seed string when assigning a seeded variant");
+                throw new Error("You need to provide a seed string when assigning a seeded variant");
             }
             this.testId = testId;
             const n = Math.random();

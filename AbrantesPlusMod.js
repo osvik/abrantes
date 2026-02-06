@@ -21,16 +21,16 @@ Abrantes.excludedVariantsForNewUsers = [];
  */
 Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () => true) {
     if (typeof (testId) !== "string" || testId.length === 0) {
-        throw ("You need to provide an ID when assigning a variant");
+        throw new Error("You need to provide an ID when assigning a variant");
     }
     if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
-        throw ("trafficAllocation must be a number between 0 and 1");
+        throw new Error("trafficAllocation must be a number between 0 and 1");
     }
     if (typeof (segment) !== "function") {
-        throw ("segment must be a function that returns true or false");
+        throw new Error("segment must be a function that returns true or false");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw ("You must define at least one variant before assigning");
+        throw new Error("You must define at least one variant before assigning");
     }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
@@ -63,10 +63,10 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
  */
 Abrantes.importVariant = function (testId) {
     if (typeof (testId) !== "string" || testId.length === 0) {
-        throw ("You need to provide an ID when importing a variant");
+        throw new Error("You need to provide an ID when importing a variant");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw ("You must define at least one variant before importing");
+        throw new Error("You must define at least one variant before importing");
     }
 
     this.testId = testId;
@@ -145,16 +145,16 @@ Abrantes.renderVariant = function (variant = this.variant) {
         return;
     }
     if (typeof (variant) !== "number" || isNaN(variant)) {
-        throw ("Variant must be a number");
+        throw new Error("Variant must be a number");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw ("No variants defined");
+        throw new Error("No variants defined");
     }
     if (variant < 0 || variant >= this.variants.length) {
-        throw ("Variant " + variant + " is out of range. Valid range: 0-" + (this.variants.length - 1));
+        throw new Error("Variant " + variant + " is out of range. Valid range: 0-" + (this.variants.length - 1));
     }
     if (typeof (this.variants[variant]) !== "function") {
-        throw ("Variant " + variant + " is not a function");
+        throw new Error("Variant " + variant + " is not a function");
     }
     this.variants[variant]();
     document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
@@ -173,7 +173,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
 Abrantes.persist = function (context = "cookie") {
     let validContexts = ["user", "local", "session", "cookie"];
     if (!validContexts.includes(context)) {
-        throw ("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
+        throw new Error("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
     }
     let persisted = false;
     if (context === "user" || context === "local") {
@@ -244,7 +244,7 @@ Abrantes.variants = [
  */
 Abrantes.getRandomVar = function () {
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw ("Cannot select random variant: no variants defined");
+        throw new Error("Cannot select random variant: no variants defined");
     }
     let variant;
     const numberOfVariants = this.variants.length;
@@ -301,7 +301,7 @@ Abrantes.waitFor = function (selector, callback) {
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
-    throw ("Missing plugin to track results");
+    throw new Error("Missing plugin to track results");
 };
 
 
@@ -316,7 +316,7 @@ Abrantes.track = function () {
          */
         track: function (customDim) {
             if (typeof (window.googleTrackingConfig) !== "object") {
-                throw ("window.googleTrackingConfig must be an object");
+                throw new Error("window.googleTrackingConfig must be an object");
             }
             if (this.variant === -1) {
                 return;
@@ -341,7 +341,7 @@ Abrantes.track = function () {
          */
         trackUser: function (customDim) {
             if (typeof (gtag) !== "function") {
-                throw ("gtag is not defined");
+                throw new Error("gtag is not defined");
             }
             if (this.variant === -1) {
                 return;
@@ -467,7 +467,7 @@ Abrantes.track = function () {
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);
             if (!iElement) {
-                throw ("The element '" + selector + "' does not exist");
+                throw new Error("The element '" + selector + "' does not exist");
             }
             iElement.value = testId + "-" + variant;
         }
@@ -514,7 +514,7 @@ Abrantes.track = function () {
             dlevent[this.settings.dataLayer.variantName] = this.settings.dataLayer.variantPrefix + this.variant;
 
             if (typeof (dataLayer) === "undefined") {
-                throw ("Undefined dataLayer");
+                throw new Error("Undefined dataLayer");
             }
 
             dataLayer.push(dlevent);
@@ -563,7 +563,7 @@ Abrantes.track = function () {
             }
 
             if (!this.settings.log.apiURL) {
-                throw ("You need to set the log API URL in settings.log.apiURL");
+                throw new Error("You need to set the log API URL in settings.log.apiURL");
             }
 
             const params = new URLSearchParams();
@@ -610,7 +610,7 @@ Abrantes.track = function () {
 
         calculateSHA256: async function (message) {
             if (typeof (message) !== "string" || message.length === 0) {
-                throw ("You need to provide a non-empty string to calculate SHA256");
+                throw new Error("You need to provide a non-empty string to calculate SHA256");
             }
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -642,16 +642,16 @@ Abrantes.track = function () {
          */
         assignSeededVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
-                throw ("You need to provide an ID when assigning a variant");
+                throw new Error("You need to provide an ID when assigning a variant");
             }
             if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
-                throw ("trafficAllocation must be a number between 0 and 1");
+                throw new Error("trafficAllocation must be a number between 0 and 1");
             }
             if (!Array.isArray(this.variants) || this.variants.length === 0) {
-                throw ("You must define at least one variant before assigning a seeded variant");
+                throw new Error("You must define at least one variant before assigning a seeded variant");
             }
             if (typeof (seed) !== "string" || seed.length === 0) {
-                throw ("You need to provide a seed string when assigning a seeded variant");
+                throw new Error("You need to provide a seed string when assigning a seeded variant");
             }
             this.testId = testId;
             const n = Math.random();
