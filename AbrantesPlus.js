@@ -21,7 +21,9 @@ Abrantes.settings = {
         triggerEvent: "DOMContentLoaded"
     },
     cookie: {
-        expires: 7
+        expires: 7,
+        path: "/",
+        domain: ""
     }
 
 };
@@ -196,7 +198,12 @@ Abrantes.persist = function (context = "cookie") {
         sessionStorage.setItem(this.testId, this.variant);
         persisted = true;
     } else if (context === "cookie") {
-        document.cookie = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=/; SameSite=Strict;`;
+        let cookieString = `${this.testId}=${this.variant}; expires=${new Date(Date.now() + 86400000 * this.settings.cookie.expires).toUTCString()}; path=${this.settings.cookie.path}`;
+        if (this.settings.cookie.domain) {
+            cookieString += `; domain=${this.settings.cookie.domain}`;
+        }
+        cookieString += "; SameSite=Strict;";
+        document.cookie = cookieString;
         persisted = true;
     }
     if (persisted) {
