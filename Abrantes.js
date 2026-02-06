@@ -73,8 +73,8 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
 };
 
 /**
- * Imports the variant from the url
- * @param {string} testId
+ * Imports the variant from the URL query parameters
+ * @param {string} testId - Identifier for the test, used as the URL parameter name
  */
 Abrantes.importVariant = function (testId) {
     if (typeof (testId) !== "string" || testId.length === 0) {
@@ -112,9 +112,9 @@ Abrantes.importVariant = function (testId) {
 };
 
 /**
- * Adds the variant to the URL, to be imported in a different domain
- * @param {string} linkURLstring 
- * @returns {string}
+ * Adds the test ID and variant to a URL for cross-domain experiments
+ * @param {string} linkURLstring - The target URL to append parameters to
+ * @returns {string} The modified URL with test parameters
  */
 Abrantes.makeCrossSiteURL = function (linkURLstring) {
     const linkURL = new URL(linkURLstring);
@@ -129,8 +129,8 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
 };
 
 /**
- * It transforms the hrefs of the <a> in the selector to make cross site experiments
- * @param {string} selector CSS selector
+ * Transforms the href attributes of matching anchor elements for cross-site experiments
+ * @param {string} selector - CSS selector to match anchor elements
  */
 Abrantes.crossSiteLink = function (selector) {
     const self = this;
@@ -152,8 +152,8 @@ Abrantes.crossSiteLink = function (selector) {
 };
 
 /**
- * Renders the variant and adds the class variant-x to the <body> tag
- * @param {Number} variant 
+ * Executes the variant function and adds a class to the body element
+ * @param {number} variant - The variant index to render (defaults to this.variant)
  */
 Abrantes.renderVariant = function (variant = this.variant) {
     if (variant === -1) {
@@ -182,8 +182,8 @@ Abrantes.renderVariant = function (variant = this.variant) {
 };
 
 /**
- * Stores the test id (object name) and variant in localStorage
- * @param {string} context "user" for localStorage, "session" for sessionStorage, "cookie" for cookies
+ * Stores the test ID and variant in the specified storage mechanism
+ * @param {string} context - Storage type: "user"/"local" for localStorage, "session" for sessionStorage, "cookie" for cookies
  */
 Abrantes.persist = function (context = "cookie") {
     let validContexts = ["user", "local", "session", "cookie"];
@@ -245,8 +245,8 @@ Abrantes.variants = [
 ];
 
 /**
- * Selects a random variation from the list of available variants
- * @returns number
+ * Selects a random variant from the list of available variants
+ * @returns {number} The randomly selected variant index
  */
 Abrantes.getRandomVar = function () {
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
@@ -270,8 +270,8 @@ Abrantes.getRandomVar = function () {
 };
 
 /**
- * Redirects to another url maintaining the url params and the hash
- * @param {string} url 
+ * Redirects to another URL while preserving query parameters and hash
+ * @param {string} url - The destination URL to redirect to
  */
 Abrantes.redirectTo = function (url) {
     var search = location.search;
@@ -282,9 +282,9 @@ Abrantes.redirectTo = function (url) {
 }
 
 /**
- * Waits for an element to appear in the DOM
- * @param {string} selector CSS selector
- * @param {function} callback
+ * Waits for an element to appear in the DOM using MutationObserver
+ * @param {string} selector - CSS selector for the element to wait for
+ * @param {function} callback - Function to execute when the element is found
  */
 Abrantes.waitFor = function (selector, callback) {
     if (document.querySelector(selector)) {

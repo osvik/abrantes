@@ -4,8 +4,8 @@
     const matomo = {
 
         /**
-         * Tracks the user using Matomo
-         * @param {string} customDim Id in Matomo, a number
+         * Tracks the user using Matomo custom dimensions
+         * @param {string} customDim - The custom dimension ID configured in Matomo
          */
         track: function (customDim) {
             if (this.variant === -1) {

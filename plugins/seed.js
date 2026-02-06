@@ -4,6 +4,11 @@
 
     const seed = {
 
+        /**
+         * Calculates the SHA-256 hash of a string
+         * @param {string} message - The string to hash
+         * @returns {Promise<string>} The hexadecimal hash string
+         */
         calculateSHA256: async function (message) {
             if (typeof (message) !== "string" || message.length === 0) {
                 throw new Error("You need to provide a non-empty string to calculate SHA256");
@@ -16,9 +21,9 @@
         },
 
         /**
-         * Selects a random variation from the list of available variants based on a seed value
-         * @param {string} seed The seed value to use for variant assignment
-         * @return {number} The assigned variant index (as a promise)
+         * Selects a variant based on a seed value for deterministic assignment
+         * @param {string} seed - The seed value to determine variant assignment
+         * @returns {Promise<number>} The assigned variant index, or -1 if seed is empty
          */
         getSeededVar: async function (seed = "") {
             if (typeof (seed) !== "string" || seed === "") {

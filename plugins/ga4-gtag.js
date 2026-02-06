@@ -4,8 +4,8 @@
     const ga4gtag = {
 
         /**
-         * Tracks the user using Google Analytics 4 and Gtag at event based level
-         * @param {string} customDim 
+         * Tracks the test at event-scoped level in Google Analytics 4 via gtag
+         * @param {string} customDim - The custom dimension name configured in GA4
          */
         track: function (customDim) {
             if (typeof (window.googleTrackingConfig) !== "object") {
@@ -29,8 +29,8 @@
         },
 
         /**
-         * Tracks the user using Google Analytics 4 and Gtag at user based level
-         * @param {string} customDim 
+         * Tracks the test at user-scoped level in Google Analytics 4 via gtag
+         * @param {string} customDim - The user property name configured in GA4
          */
         trackUser: function (customDim) {
             if (typeof (gtag) !== "function") {

@@ -41,10 +41,10 @@
         },
 
         /**
-         * Fills a form input with the testId and variant
-         * @param {string} selector 
-         * @param {string} testId 
-         * @param {number} variant 
+         * Sets a form input value with the test ID and variant
+         * @param {string} selector - CSS selector for the input element
+         * @param {string} testId - The test identifier
+         * @param {number} variant - The variant index
          */
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);

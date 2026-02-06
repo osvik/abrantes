@@ -15,9 +15,8 @@
     const add2DL = {
 
         /**
-         * Adds an event and a custom dimension with the event id and variant to the dataLayer.
-         * Used by tag manager to make AB tests.
-         * @param {string} customDim 
+         * Pushes an event with test data to the dataLayer for tag manager integration
+         * @param {string} customDim - Custom dimension name for the test data (defaults to testId)
          */
         add2dataLayer: function (customDim = this.testId) {
 
