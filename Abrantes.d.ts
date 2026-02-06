@@ -6,7 +6,7 @@
 /** Settings for cross-site link functionality */
 interface CrossSiteLinkSettings {
     /** Event to trigger link transformation (e.g., "DOMContentLoaded") */
-    triggerEvent: string;
+    triggerEvent: string | false | null;
 }
 
 /** Settings for cookie storage */
