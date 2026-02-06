@@ -38,7 +38,7 @@
          */
         assignSeededVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
-                throw new Error("You need to provide an ID when assigning a variant");
+                throw new Error("You need to provide an ID (string) when assigning a seeded variant");
             }
             if (typeof (trafficAllocation) !== "number" || trafficAllocation < 0 || trafficAllocation > 1) {
                 throw new Error("trafficAllocation must be a number between 0 and 1");

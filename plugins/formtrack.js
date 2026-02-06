@@ -49,7 +49,7 @@
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);
             if (!iElement) {
-                throw new Error("The element '" + selector + "' does not exist");
+                throw new Error("The element with the selector '" + selector + "' does not exist");
             }
             iElement.value = testId + "-" + variant;
         }

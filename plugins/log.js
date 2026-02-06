@@ -23,7 +23,7 @@
             }
 
             if (!this.settings.log.apiURL) {
-                throw new Error("You need to set the log API URL in settings.log.apiURL");
+                throw new Error("You need to set the log API URL in yourTest.settings.log.apiURL");
             }
 
             const params = new URLSearchParams();

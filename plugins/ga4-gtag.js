@@ -34,7 +34,7 @@
          */
         trackUser: function (customDim) {
             if (typeof (gtag) !== "function") {
-                throw new Error("gtag is not defined");
+                throw new Error("gtag is not defined or it's not a function");
             }
             if (this.variant === -1) {
                 return;

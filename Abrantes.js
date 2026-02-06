@@ -30,7 +30,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
         throw new Error("segment must be a function that returns true or false");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw new Error("You must define at least one variant before assigning");
+        throw new Error("You must define at least one variant (array of functions) before assigning");
     }
     this.testId = testId;
     if (typeof (this.readPersistent()) === "number") {
@@ -63,10 +63,10 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
  */
 Abrantes.importVariant = function (testId) {
     if (typeof (testId) !== "string" || testId.length === 0) {
-        throw new Error("You need to provide an ID when importing a variant");
+        throw new Error("You need to provide an ID (string) when importing a variant");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw new Error("You must define at least one variant before importing");
+        throw new Error("You must define at least one variant (array of functions) before importing");
     }
 
     this.testId = testId;
@@ -148,7 +148,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
         throw new Error("Variant must be a number");
     }
     if (!Array.isArray(this.variants) || this.variants.length === 0) {
-        throw new Error("No variants defined");
+        throw new Error("No variants defined to render");
     }
     if (variant < 0 || variant >= this.variants.length) {
         throw new Error("Variant " + variant + " is out of range. Valid range: 0-" + (this.variants.length - 1));

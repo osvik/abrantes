@@ -37,7 +37,7 @@
                 // Use a your own API endpoint that returns consistent user JSON data!
                 const response = await fetch("https://api-bdc.net/data/client-info");
                 if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
+                    throw new Error(`Could not fetch user data. Response status: ${response.status}`);
                 }
                 const result = await response.json();
                 seed = JSON.stringify(result);
