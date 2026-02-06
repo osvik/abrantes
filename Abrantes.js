@@ -10,7 +10,7 @@ const Abrantes = Object.create(null);
 
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "1.4.0";
+Abrantes.version = "1.4.1";
 Abrantes.excludedVariantsForNewUsers = [];
 
 /**
