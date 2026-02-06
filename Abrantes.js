@@ -7,11 +7,24 @@
  */
 
 const Abrantes = Object.create(null);
-
+Abrantes.version = "1.4.1";
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
-Abrantes.version = "1.4.1";
 Abrantes.excludedVariantsForNewUsers = [];
+
+/**
+ * Object where the user can read and write the settings
+ */
+Abrantes.settings = {
+
+    crossSiteLink: {
+        triggerEvent: "DOMContentLoaded"
+    },
+    cookie: {
+        expires: 7
+    }
+
+};
 
 /**
  * Assigns a variant to a user
@@ -215,20 +228,6 @@ Abrantes.readPersistent = function () {
         return Number(cookieData.split('=')[1]);
     }
     return undefined;
-};
-
-/**
- * Object where the user can read and write the settings
- */
-Abrantes.settings = {
-
-    crossSiteLink: {
-        triggerEvent: "DOMContentLoaded"
-    },
-    cookie: {
-        expires: 7
-    }
-
 };
 
 /**
