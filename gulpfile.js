@@ -15,6 +15,7 @@ const { src, dest, series, watch } = require('gulp');
 const concat = require('gulp-concat');
 const terser = require('gulp-terser');
 const rename = require('gulp-rename');
+const sourcemaps = require('gulp-sourcemaps');
 
 /**
  * It will concatenate Abrantes with the plugins in the src of this function
@@ -42,8 +43,10 @@ function minify() {
     return src([
         'AbrantesPlus.js',
     ])
+        .pipe(sourcemaps.init())
         .pipe(terser())
         .pipe(rename({ suffix: ".min" }))
+        .pipe(sourcemaps.write('./'))
         .pipe(dest('./'));
 }
 
@@ -96,10 +99,12 @@ function minifyMod() {
     return src([
         'AbrantesPlusMod.js',
     ])
+        .pipe(sourcemaps.init())
         .pipe(terser({
             module: true
         }))
         .pipe(rename({ suffix: ".min" }))
+        .pipe(sourcemaps.write('./'))
         .pipe(dest('./'));
 }
 
