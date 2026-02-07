@@ -138,6 +138,9 @@ Abrantes.crossSiteLink = function (selector) {
         const elements = document.querySelectorAll(selector);
         elements.forEach(function (element) {
             const elHref = element.getAttribute("href")
+            if (!elHref) {
+                return;
+            }
             const newHref = self.makeCrossSiteURL(elHref);
             element.setAttribute("href", newHref);
         });
