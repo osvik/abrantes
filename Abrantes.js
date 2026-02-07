@@ -30,9 +30,9 @@ Abrantes.settings = {
 
 /**
  * Assigns a variant to a user
- * @param {string} testId String identifier for the test
- * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
- * @param {function} segment Function that returns true or false to include the user in the test
+ * @param {string} testId - String identifier for the test
+ * @param {number} trafficAllocation - Percentage of users to include in the test (0-1)
+ * @param {function} segment - Function that returns true or false to include the user in the test
  */
 Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () => true) {
     if (typeof (testId) !== "string" || testId.length === 0) {

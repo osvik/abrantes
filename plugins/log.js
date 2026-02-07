@@ -13,8 +13,8 @@
 
         /**
          * Sends an event to the Abrantes Log API.
-         * @param {string} event Event name to log
-         * @param {string} note Optional note (defaults to empty string)
+         * @param {string} event - Event name to log
+         * @param {string} note - Optional note (defaults to empty string)
          */
         log: function (event, note = "") {
 
