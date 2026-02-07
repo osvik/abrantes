@@ -57,6 +57,51 @@
             <div class="container">
                 <h2>Available plugins</h2>
                 <div class="doc-grid two-col">
+
+                    <div class="feature-card">
+                        <h3>Seeded experiment</h3>
+                        <p>Allows cookieless experiments or powers cross-device experiments with logged in users.</p>
+                        <pre><code>seed = JSON.stringify(userData);
+await MyTest.assignSeededVariant("MyTest", seed, 1, () => true);
+</code></pre>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/seed.html#L31-L84" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/seed.js" target="_blank">Open source code →</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>GTM dataLayer</h3>
+                        <p>Push test and variant info into <code>dataLayer</code> for Google Tag Manager.</p>
+                        <pre><code>MyTest.add2dataLayer("example_test");
+</code></pre>
+                        <p>Customize fields in <code>Abrantes.settings.dataLayer</code>. Requires <code>dataLayer</code>
+                            to be initialized.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/add2DL.html#L62-L63" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/add2DL.js" target="_blank">Open source code →</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Abrantes log</h3>
+                        <p>Send events to the Abrantes log API.</p>
+                        <pre><code>MyTest.log("button_click", "User clicked the log button");
+</code></pre>
+                        <p>Configure log apiURL with <code style="overflow-wrap: anywhere;">MyTest.settings.log.apiURL</code>.</p>
+
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/log.html#L54-L60" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/log.js" target="_blank">Open source code →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes-log-api" target="_blank">Open API project →</a>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Form tracking</h3>
+                        <p>Fill a hidden input with the test and variant for CRM or lead forms.</p>
+                        <pre><code>&lt;input type="hidden" id="last_abtest_variant"&gt;
+MyTest.formTrack();
+</code></pre>
+                        <p>Set the selector in <code style="overflow-wrap: anywhere;">Abrantes.settings.formTrack.inputElement</code>.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/formtrack.html#L55-L56" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/formtrack.js" target="_blank">Open source code →</a>
+                    </div>
+
                     <div class="feature-card">
                         <h3>GA4 (gtag)</h3>
                         <p>Track events or user properties in Google Analytics 4 using gtag.js.</p>
@@ -69,17 +114,6 @@ MyTest.trackUser("test_user");
 </code></pre>
                         <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/dev.html#L31-L67" target="_blank">Open example →</a><br />
                         <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/ga4-gtag.js" target="_blank">Open source code →</a>
-                    </div>
-
-                    <div class="feature-card">
-                        <h3>GTM dataLayer</h3>
-                        <p>Push test and variant info into <code>dataLayer</code> for Google Tag Manager.</p>
-                        <pre><code>MyTest.add2dataLayer("example_test");
-</code></pre>
-                        <p>Customize fields in <code>Abrantes.settings.dataLayer</code>. Requires <code>dataLayer</code>
-                            to be initialized.</p>
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/add2DL.html#L62-L63" target="_blank">Open example →</a><br />
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/add2DL.js" target="_blank">Open source code →</a>
                     </div>
 
                     <div class="feature-card">
@@ -107,29 +141,6 @@ MyTest.trackUser("test_user");
                     </div>
 
                     <div class="feature-card">
-                        <h3>Abrantes log</h3>
-                        <p>Send events to the Abrantes log API.</p>
-                        <pre><code>MyTest.log("button_click", "User clicked the log button");
-</code></pre>
-                        <p>Configure log apiURL with <code style="overflow-wrap: anywhere;">MyTest.settings.log.apiURL</code>.</p>
-
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/log.html#L54-L60" target="_blank">Open example →</a><br />
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/log.js" target="_blank">Open source code →</a><br />
-                        <a class="doc-link" href="https://github.com/osvik/abrantes-log-api" target="_blank">Open API project →</a>
-                    </div>
-
-                    <div class="feature-card">
-                        <h3>Form tracking</h3>
-                        <p>Fill a hidden input with the test and variant for CRM or lead forms.</p>
-                        <pre><code>&lt;input type="hidden" id="last_abtest_variant"&gt;
-MyTest.formTrack();
-</code></pre>
-                        <p>Set the selector in <code style="overflow-wrap: anywhere;">Abrantes.settings.formTrack.inputElement</code>.</p>
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/formtrack.html#L55-L56" target="_blank">Open example →</a><br />
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/formtrack.js" target="_blank">Open source code →</a>
-                    </div>
-
-                    <div class="feature-card">
                         <h3>Matomo</h3>
                         <p>Store the variant in a Matomo custom dimension.</p>
                         <pre><code>MyTest.track(3);
@@ -147,16 +158,6 @@ MyTest.formTrack();
                         <p>You need to create the custom event in the Hubspot dashboard to get the event ID before using it.</p>
                         <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/hubspot-enterprise.html#L55-L56" target="_blank">Open example →</a><br />
                         <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/hubspot.js" target="_blank">Open source code →</a>
-                    </div>
-
-                    <div class="feature-card">
-                        <h3>Seeded experiment</h3>
-                        <p>Allows cookieless experiments or powers cross-device experiments with logged in users.</p>
-                        <pre><code>seed = JSON.stringify(userData);
-await MyTest.assignSeededVariant("MyTest", seed, 1, () => true);
-</code></pre>
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/seed.html#L31-L84" target="_blank">Open example →</a><br />
-                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/seed.js" target="_blank">Open source code →</a>
                     </div>
 
                 </div>
