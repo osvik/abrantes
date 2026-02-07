@@ -4,7 +4,6 @@
 
     const settings = {
         hubspot: {
-            eventName: "run_ab_test",
             customDimension: "ab_test_data",
             experimentName: "experiment_name",
             variantName: "variant_name",
@@ -25,7 +24,7 @@
             }
 
             let hbsptevent = {};
-            hbsptevent.event = eventName;
+            hbsptevent.name = eventName;
             hbsptevent.properties = {};
 
             hbsptevent.properties[this.settings.hubspot.customDimension] = this.testId + "-" + this.variant;
