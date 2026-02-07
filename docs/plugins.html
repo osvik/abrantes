@@ -140,6 +140,16 @@ MyTest.formTrack();
                     </div>
 
                     <div class="feature-card">
+                        <h3>Hubspot enterprise</h3>
+                        <p>Trigger a custom event in Hubspot Enterprise.</p>
+                        <pre><code>MyTest.hubspotEvent("pe5361482_run_ab_test");
+</code></pre>
+                        <p>You need to create the custom event in the Hubspot dashboard to get the event ID before using it.</p>
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/hubspot-enterprise.html#L55-L56" target="_blank">Open example →</a><br />
+                        <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/plugins/hubspot.js" target="_blank">Open source code →</a>
+                    </div>
+
+                    <div class="feature-card">
                         <h3>Seeded experiment</h3>
                         <p>Allows cookieless experiments or powers cross-device experiments with logged in users.</p>
                         <pre><code>seed = JSON.stringify(userData);

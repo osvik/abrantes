@@ -166,6 +166,13 @@ header .container {
     margin-bottom: 3rem;
 }
 
+.features h3 {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--heading-color);
+    margin-bottom: 1rem;
+}
+
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
