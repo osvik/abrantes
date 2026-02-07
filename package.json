@@ -1,7 +1,7 @@
 {
   "name": "abrantes",
-  "version": "1.4.1",
-  "description": "A browser javascript library to develop AB tests.",
+  "version": "1.5.0",
+  "description": "A lightweight, free and open-source JavaScript library to create advanced experiments on your website.",
   "main": "Abrantes.js",
   "directories": {
     "example": "examples"
