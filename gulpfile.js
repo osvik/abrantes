@@ -31,6 +31,7 @@ function init() {
         'plugins/add2DL.js',
         'plugins/log.js',
         'plugins/seed.js',
+        'plugins/hubspot.js',
     ])
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
@@ -86,6 +87,7 @@ export default Abrantes;
         'plugins/add2DL.js',
         'plugins/log.js',
         'plugins/seed.js',
+        'plugins/hubspot.js',
     ])
         .pipe(concat("AbrantesPlusMod.js"))
         .pipe(addModuleExport)

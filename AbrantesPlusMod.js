@@ -30,9 +30,9 @@ Abrantes.settings = {
 
 /**
  * Assigns a variant to a user
- * @param {string} testId String identifier for the test
- * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
- * @param {function} segment Function that returns true or false to include the user in the test
+ * @param {string} testId - String identifier for the test
+ * @param {number} trafficAllocation - Percentage of users to include in the test (0-1)
+ * @param {function} segment - Function that returns true or false to include the user in the test
  */
 Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () => true) {
     if (typeof (testId) !== "string" || testId.length === 0) {
@@ -561,8 +561,8 @@ Abrantes.track = function () {
 
         /**
          * Sends an event to the Abrantes Log API.
-         * @param {string} event Event name to log
-         * @param {string} note Optional note (defaults to empty string)
+         * @param {string} event - Event name to log
+         * @param {string} note - Optional note (defaults to empty string)
          */
         log: function (event, note = "") {
 
@@ -648,10 +648,10 @@ Abrantes.track = function () {
 
         /**
          * Assigns a variant to a user based on a seed string and a test identifier
-         * @param {string} testId String identifier for the test
-         * @param {string} seed A string seed to determine the variant
-         * @param {number} trafficAllocation Percentage of users to include in the test (0-1)
-         * @param {function} segment Function that returns true or false to include the user in the test
+         * @param {string} testId - String identifier for the test
+         * @param {string} seed - A string seed to determine the variant
+         * @param {number} trafficAllocation - Percentage of users to include in the test (0-1)
+         * @param {function} segment - Function that returns true or false to include the user in the test
          */
         assignSeededVariant: async function (testId, seed, trafficAllocation = 1, segment = () => true) {
             if (typeof (testId) !== "string" || testId.length === 0) {
@@ -686,6 +686,65 @@ Abrantes.track = function () {
     Object.assign(Abrantes, seed);
 
 }
+
+/* eslint-disable no-undef */
+
+{
+
+    const settings = {
+        hubspot: {
+            eventName: "run_ab_test",
+            customDimension: "ab_test_data",
+            experimentName: "experiment_name",
+            variantName: "variant_name",
+            variantPrefix : "v"
+        }
+    };
+
+    const hubspot = {
+
+        /**
+         * Pushes a custom event to Hubspot marketing hub enterprise plan.
+         * @param {string} eventName - Custom event name.
+         */
+        hubspotEvent: function (eventName) {
+
+            if (this.variant === -1) {
+                return;
+            }
+
+            let hbsptevent = {};
+            hbsptevent.event = eventName;
+            hbsptevent.properties = {};
+
+            hbsptevent.properties[this.settings.hubspot.customDimension] = this.testId + "-" + this.variant;
+            hbsptevent.properties[this.settings.hubspot.experimentName] = this.testId;
+            hbsptevent.properties[this.settings.hubspot.variantName] = this.settings.hubspot.variantPrefix + this.variant;
+
+            if (typeof (_hsq) === "undefined") {
+                throw new Error("Undefined _hsq. Please ensure that the Hubspot tracking code is correctly installed.");
+            }
+
+            _hsq.push(['trackCustomBehavioralEvent', hbsptevent]);
+
+            document.dispatchEvent(new CustomEvent("abrantes:track", {
+                detail: {
+                    testId: this.testId,
+                    variant: this.variant,
+                    event: eventName,
+                    tool: "hubspot"
+                }
+            }));
+
+        }
+
+    };
+
+    Object.assign(Abrantes, hubspot);
+    Object.assign(Abrantes.settings, settings)
+
+}
+
 
 // ES6 Module export - also expose globally for backward compatibility
 if (typeof window !== 'undefined') {

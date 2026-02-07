@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Abrantes Hubspot custom event</title>
+    <script src="../AbrantesPlus.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@main/AbrantesPlus.js"></script> -->
+    <script>
+        var _hsq = window._hsq = window._hsq || [];
+        _hsq.push(['setPath', window.location.pathname ]);
+    </script>
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
+
+        // Track a custom event in Hubspot Marketing Hub Enterprise
+        MyTest.hubspotEvent("pe5361482_run_ab_test");
+
+    </script>
+
+    <div id="hubspotEmbed"></div>
+    <script>
+        function loadHubspot() {
+            const t = document.getElementById("hubspotEmbed"),
+                e = document.createElement("script");
+            e.src = "//js.hs-scripts.com/5361482.js"; // Replace with your Hubspot tracking code!!!
+            e.setAttribute("id", "hs-script-loader");
+            e.setAttribute("type", "text/javascript");
+            e.setAttribute("defer", "defer");
+            e.setAttribute("async", "async");
+            t.appendChild(e);
+            return new Promise((resolve) => {
+                e.onload = resolve;
+            });
+        }
+        // Call the function to load Hubspot
+        // Implement your cookie consent logic here and call loadHubspot() 
+        // only if or after the user has given consent for marketing cookies!
+        loadHubspot();
+
+        // Track the page view after loading Hubspot
+        _hsq.push(['trackPageView']);
+    </script>
+
+</body>
+
+</html>
