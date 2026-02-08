@@ -110,7 +110,12 @@ function minifyMod() {
         .pipe(dest('./'));
 }
 
+// Build all outputs in strict order to avoid sourcemap/minify races.
+const build = series(init, minify, initMod, minifyMod);
+
 exports.init = init;
 exports.initMod = initMod;
 exports.minify = minify;
 exports.minifyMod = minifyMod;
+exports.build = build;
+exports.default = build;
