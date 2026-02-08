@@ -101,12 +101,12 @@ MyDesignExperiment.persist("cookie");
                     <pre><code>MyTest.assignVariant(
   "MyTest", // experiment name
   0.5, // traffic allocation: 50% of users
-  () => { return window.innerWidth > 768; } // segment: do the test for only desktop users only
+  () => { return window.innerWidth > 768; } // segment: in this example do the test for users with a viewport wider than 768px
 );
 </code></pre>
                     <ul class="doc-list">
                         <li>The traffic allocation is a number between <code>0</code> and <code>1</code>.</li>
-                        <li><code>segment</code> is a function that returns <code>true</code> or <code>false</code>. If it returns <code>true</code> the user enters the experiment.</li>
+                        <li><code>segment</code> is a function that returns <code>true</code> or <code>false</code>. If it returns <code>true</code> the user enters the experiment. <a href="https://github.com/osvik/abrantes/blob/main/examples/segments.js" target="_blank">See examples of segments</a>.</li>
                     </ul>
                     <p class="doc-callout">
                         When the user is not in the experiment <code>assignVariant</code> returns <code>-1</code> and the
@@ -120,13 +120,13 @@ MyDesignExperiment.persist("cookie");
             <div class="container">
                 <h2>Tracking results</h2>
                 <div class="feature-card">
-                    <p>Tracking is handled by plugins. You should use the plugins for your tracking tools. Call the plugin method after <code>assignVariant</code>.</p>
-                    <pre><code>// Example with the GA4 gtag plugin
+                    <p>Tracking is handled by plugins. You should use the right plugins for your tracking tools. Call the plugin method after <code>assignVariant</code>.</p>
+                    <pre><code>// Example with the Google Analytics 4 gtag plugin
 MyTest.track("test_event");
 </code></pre>
                     <p>You can also:</p>
                     <ul class="doc-list"> 
-                        <li>Use the <code>dataLayer</code> to track users if you are using a tag manager. See the <a href="https://github.com/osvik/abrantes/blob/main/examples/add2DL.html#L62-L63" target="_blank">add2DL plugin example</a> for details.</li>
+                        <li>Use the <code>dataLayer</code> to track users if you are using Google Tag Manager or other compatible software. See the <a href="https://github.com/osvik/abrantes/blob/main/examples/add2DL.html#L62-L63" target="_blank">add2DL plugin example</a> for more information.</li>
                         <li>Use the <a href="https://github.com/osvik/abrantes/blob/main/examples/log.html#L54-L60" target="_blank">log plugin</a> to capture raw data.</li>
                         <li>Use <a href="https://github.com/osvik/abrantes/blob/main/examples/hotjar.html#L65-L66" target="_blank">Hotjar</a> or <a href="https://github.com/osvik/abrantes/blob/main/examples/clarity.html#L59-L60" target="_blank">Microsoft Clarity</a> to create heatmaps or screen recordings.</li>
                     </ul>
