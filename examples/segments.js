@@ -94,6 +94,31 @@
 }
 
 
+// --- By cookie value ---
+
+() => {
+    // Users with a "user_plan" cookie equal to "premium".
+    const cookies = document.cookie.split("; ");
+    const userPlanCookie = cookies.find(cookie => cookie.startsWith("user_plan="));
+    if (!userPlanCookie) {
+        return false;
+    }
+    const value = decodeURIComponent(userPlanCookie.split("=").slice(1).join("="));
+    return value === "premium";
+}
+
+() => {
+    // Users with a "visit_count" cookie less than 3.
+    const cookies = document.cookie.split("; ");
+    const visitCountCookie = cookies.find(cookie => cookie.startsWith("visit_count="));
+    if (!visitCountCookie) {
+        return false;
+    }
+    const value = decodeURIComponent(visitCountCookie.split("=").slice(1).join("="));
+    return parseFloat(value) < 3;
+}
+
+
 // --- By pointer type (desktop vs mobile/tablet) ---
 
 () => {
