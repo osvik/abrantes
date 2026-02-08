@@ -43,31 +43,20 @@
                 <div class="doc-grid two-col">
                     <div class="feature-card">
                         <h3>Abrantes.js</h3>
-                        <p>Use the lightweight core and add the plugins you need as separate scripts.</p>
-                        <ul class="doc-list">
-                            <li>Good to learn the tool.</li>
-                            <li>You don't need to use gulp.</li>
-                        </ul>
-                        <p>In production websites use the other build, AbrantesPlus.js customized and minified.</p>
+                        <p>To start to learn and test Abrantes you can use the lightweight core and add the plugins you need as separate scripts. It's good to learn the tool and you don't need to use gulp.</p>
+                        <p>Don't use it in production websites as it's less performant to load the plugins as separate files without being bundled and minified.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>AbrantesPlus.js</h3>
-                        <p>Prebuilt bundle with the current set of plugins from the repo.</p>
-                        <ul class="doc-list">
-                            <li>Customize the plugin list with gulp.</li>
-                            <li>Best performance.</li>
-                            <li>Available as <code>AbrantesPlus.js</code> and <code>AbrantesPlus.min.js</code> (3.3Kb gziped and minified).</li>
-                        </ul>
+                        <h3>AbrantesPlus.min.js</h3>
+                        <p>Prebuilt bundle with the some plugins from the repo. However you should customize the plugin list with gulp for the best performance.</p>
                         <a class="doc-link" href="build.html">How to customize the build &rarr;</a>
                     </div>
                     <div class="feature-card">
-                        <h3>ES6 module</h3>
-                        <p>Use when you want to import Abrantes as an ES6 module.</p>
-                        <ul class="doc-list">
-                            <li>Available as <code>AbrantesPlusMod.js</code> and <code>AbrantesPlusMod.min.js</code> (3.3Kb gziped and minified).</li>
-                            <li>Good for modern web apps using modules and bundlers.</li>
-                            <li>Can be loaded directly from a CDN.</li>
-                        </ul>
+                        <h3>AbrantesPlusMod.min.js - ES6 module</h3>
+                        <p>Great if you just want to use Abrantes in few pages, without changing the site's template. You import Abrantes in a ES6 module and define the experiment in one html block.</p>
+                        <p>There's a prebuilt module with the plugins I use that can be loaded directly from a CDN.</p>
+                        <p>This version is also good for modern web apps using modules and bundlers.</p>
+                        <p>As with the non-module version you should build your own version latter, just with the plugins you need.</p>
                         <a class="doc-link" href="https://github.com/osvik/abrantes/blob/main/examples/as-module.html#L27-L82" target="_blank">Open example &rarr;</a>
                     </div>
                 </div>
@@ -79,8 +68,7 @@
                 <h2>Add the script to your page</h2>
                 <div class="doc-grid two-col">
                     <div class="feature-card">
-                        <h3>Use AbrantesPlus.js</h3>
-                        <p>In production websites always use a minified custom build for performance.</p>
+                        <h3>Use AbrantesPlus.min.js</h3>
                         <pre><code>&lt;script src="AbrantesPlus.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   // Your experiment code here
@@ -112,7 +100,7 @@
                         <li>Load Abrantes before any plugin scripts. (without defer)</li>
                         <li>Load analytics scripts (gtag, GTM, Hotjar, Clarity, Matomo) before calling their plugin
                             methods. For more information check the <a href="https://github.com/osvik/abrantes/tree/main/examples" target="_blank">examples</a>.</li>
-                        <li>Place your experiment code after loading Abrantes and the plugins.</li>
+                        <li>Place your experiment code after loading Abrantes and the plugins. Use <code>waitFor</code> to apply changes to DOM elements not yet loaded. See the <a href="https://github.com/osvik/abrantes/blob/main/examples/waitFor.html" target="_blank">waitFor example</a> for more information.</li>
                         <li>When testing locally, use a web server (not <code>file://</code>) so storage and redirects
                             work correctly.</li>
                     </ul>
