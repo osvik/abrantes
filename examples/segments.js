@@ -1,22 +1,31 @@
-// This file is for examples of segments as refences for documentation.
+// This file is for examples of segments as references for documentation.
 // Each function returns true if the user is in the segment, and false otherwise.
 
 // --- By browser language ---
 
 () => {
     // Users whose browser language is Portuguese.
-    return navigator.language === "pt";
+    const languages = navigator.languages || [navigator.language];
+    return languages.some(language => language && language.toLowerCase().startsWith("pt"));
 }
 
 () => {
     // Users whose browser language is Portuguese or Spanish.
-    return navigator.language === "pt" || navigator.language === "es";
+    const languages = navigator.languages || [navigator.language];
+    const prefixes = ["pt", "es"];
+    return languages.some(language =>
+        language && prefixes.some(prefix => language.toLowerCase().startsWith(prefix))
+    );
 }
 
 
 () => {
     // Users whose browser language is Portuguese or Spanish, and who are on a mobile device.
-    const isPortugueseOrSpanish = navigator.language === "pt" || navigator.language === "es";
+    const languages = navigator.languages || [navigator.language];
+    const prefixes = ["pt", "es"];
+    const isPortugueseOrSpanish = languages.some(language =>
+        language && prefixes.some(prefix => language.toLowerCase().startsWith(prefix))
+    );
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
     return isPortugueseOrSpanish && isMobile;
 }
@@ -56,20 +65,32 @@
 
 () => {
     // Users whose localStorage "user_plan" equals "premium".
-    const value = localStorage.getItem("user_plan");
-    return value !== null && value === "premium";
+    try {
+        const value = localStorage.getItem("user_plan");
+        return value === "premium";
+    } catch (error) {
+        return false;
+    }
 }
 
 () => {
     // Users whose localStorage "cart_total" is greater than 50.
-    const value = localStorage.getItem("cart_total");
-    return value !== null && parseFloat(value) > 50;
+    try {
+        const value = localStorage.getItem("cart_total");
+        return value !== null && parseFloat(value) > 50;
+    } catch (error) {
+        return false;
+    }
 }
 
 () => {
     // Users whose localStorage "visit_count" is less than 3.
-    const value = localStorage.getItem("visit_count");
-    return value !== null && parseFloat(value) < 3;
+    try {
+        const value = localStorage.getItem("visit_count");
+        return value !== null && parseFloat(value) < 3;
+    } catch (error) {
+        return false;
+    }
 }
 
 
@@ -140,13 +161,15 @@
 
 () => {
     // Users for whom a "purchase" event exists in the dataLayer.
-    return window.dataLayer && window.dataLayer.some(entry => entry.event === "purchase");
+    return Array.isArray(window.dataLayer) &&
+        window.dataLayer.some(entry => entry && entry.event === "purchase");
 }
 
 () => {
     // Users for whom a "login" or "sign_up" event exists in the dataLayer.
     const events = ["login", "sign_up"];
-    return window.dataLayer && window.dataLayer.some(entry => events.includes(entry.event));
+    return Array.isArray(window.dataLayer) &&
+        window.dataLayer.some(entry => entry && events.includes(entry.event));
 }
 
 
@@ -154,17 +177,21 @@
 
 () => {
     // Users for whom any dataLayer event has user_type set to "returning".
-    return window.dataLayer && window.dataLayer.some(entry => entry.user_type === "returning");
+    return Array.isArray(window.dataLayer) &&
+        window.dataLayer.some(entry => entry && entry.user_type === "returning");
 }
 
 () => {
     // Users for whom any dataLayer event has a page_type of "product" or "category".
     const pageTypes = ["product", "category"];
-    return window.dataLayer && window.dataLayer.some(entry => pageTypes.includes(entry.page_type));
+    return Array.isArray(window.dataLayer) &&
+        window.dataLayer.some(entry => entry && pageTypes.includes(entry.page_type));
 }
 
 () => {
     // Users for whom any dataLayer event has a nested ecommerce.value greater than 100.
-    return window.dataLayer && window.dataLayer.some(entry => entry.ecommerce && entry.ecommerce.value > 100);
+    return Array.isArray(window.dataLayer) &&
+        window.dataLayer.some(entry =>
+            entry && entry.ecommerce && entry.ecommerce.value > 100
+        );
 }
-
