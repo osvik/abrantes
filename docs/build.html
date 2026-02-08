@@ -43,7 +43,7 @@
                 <div class="feature-card">
                     <p><code>AbrantesPlus.js</code> is created by concatenating <code>Abrantes.js</code> with the plugin
                         files listed in <code>gulpfile.js</code>.</p>
-                        <p>You should also minify Abrantes and use the <code>AbrantesPlus.min.js</code> file instead.</p>
+                        <p>You should use the minified Abrantes and use the file <code>AbrantesPlus.min.js</code>. Or if you prefer the ES6 module version, use <code>AbrantesPlusMod.min.js</code>.</p>
                 </div>
             </div>
         </section>
@@ -79,24 +79,17 @@
                 <div class="feature-card">
                     <ol class="doc-steps">
                         <li>Install dependencies with <code>npm install</code>.</li>
-                        <li>Build the bundle with <code>npx gulp init</code>.</li>
-                        <li>Minify with <code>npx gulp minify</code>.</li>
+                        <li>Build and minify the bundle with <code>npx gulp</code>.</li>
                     </ol>
                     <pre><code>npm install
-npx gulp init
-npx gulp minify
+npx gulp
 </code></pre>
-                    <p>The output files are written to the repository root as <code>AbrantesPlus.js</code> and
-                        <code>AbrantesPlus.min.js</code>. Map files are also generated for debugging.</p>
-                        <h3 style="margin-top: 1rem;">Build the E6 module</h3>
-                        <p>If you want to build the E6 module run:</p>
-                    <pre><code>npm install
-npx gulp initMod
-npx gulp minifyMod
-</code></pre>
-                    <p>The module output files are written as <code>AbrantesPlusMod.js</code> and
-                        <code>AbrantesPlusMod.min.js</code>. It also generates a map file for debugging.</p>
-                        <p>See the <a href="https://github.com/osvik/abrantes/blob/main/examples/as-module.html#L27-L82" target="_blank">module example</a> for more information.</p>
+                    <h3 style="margin-top: 1em;">Output files</h3>
+                    <p>The <strong>classic</strong> files are written to the repository root as <code>AbrantesPlus.js</code> and
+                        <code>AbrantesPlus.min.js</code>. Sourcemap files are also generated for debugging.</p>
+                    
+                    <p>The <strong>ES6 module</strong> files are written as <code>AbrantesPlusMod.js</code> and
+                        <code>AbrantesPlusMod.min.js</code>. It also generates a sourcemap file for debugging. See the <a href="https://github.com/osvik/abrantes/blob/main/examples/as-module.html#L27-L82" target="_blank">module example</a> for more information.</p>
                 </div>
             </div>
         </section>
