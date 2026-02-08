@@ -8,6 +8,7 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 *   [example-functions.js](example-functions.js) - A collection of example JavaScript functions for common DOM manipulations (changing text, images, classes) to use in your variants.
 *   [waitFor.html](waitFor.html) - Implementation of a wait function to apply changes only when dynamic elements appear in the DOM. Important for SPAs.
 *   [segment.html](segment.html) - Demonstrates how to segment the experiment to specific users (e.g., by language or screen size).
+*   [segments.js](segments.js) - List of example of segments.
 *   [as-module.html](as-module.html) - Example of using Abrantes as an ES6 module.
 *   [defer.html](defer/defer.html) - Shows how to load Abrantes with the `defer` attribute.
 
