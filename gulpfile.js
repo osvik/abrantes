@@ -18,10 +18,10 @@ const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 
 /**
- * It will concatenate Abrantes with the plugins in the src of this function
+ * List of files to be included in the build. The order is important as some plugins may depend on others.
+ * You can comment out plugins that you don't want to include in the build.
  */
-function init() {
-    return src([
+const myBuild = [
         'Abrantes.js',
         'plugins/ga4-gtag.js',
         // 'plugins/matomo.js',
@@ -32,7 +32,13 @@ function init() {
         'plugins/log.js',
         'plugins/seed.js',
         'plugins/hubspot.js',
-    ])
+];
+
+/**
+ * It will concatenate Abrantes with the plugins in the src of this function
+ */
+function init() {
+    return src(myBuild)
         .pipe(concat("AbrantesPlus.js"))
         .pipe(dest('./'));
 }
@@ -77,18 +83,7 @@ export default Abrantes;
         }
     });
 
-    return src([
-        'Abrantes.js',
-        'plugins/ga4-gtag.js',
-        // 'plugins/matomo.js',
-        'plugins/hotjar.js',
-        // 'plugins/clarity.js',
-        'plugins/formtrack.js',
-        'plugins/add2DL.js',
-        'plugins/log.js',
-        'plugins/seed.js',
-        'plugins/hubspot.js',
-    ])
+    return src(myBuild)
         .pipe(concat("AbrantesPlusMod.js"))
         .pipe(addModuleExport)
         .pipe(dest('./'));

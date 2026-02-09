@@ -53,22 +53,19 @@
                 <h2>1. Select plugins</h2>
                 <div class="feature-card">
                     <p>Edit the <code>src</code> list in <code>gulpfile.js</code> to include or remove plugins.</p>
-                    <pre><code>return src([
-  "Abrantes.js",
-  "plugins/ga4-gtag.js",
-  // "plugins/matomo.js",
-  "plugins/hotjar.js",
-  // "plugins/clarity.js",
-  "plugins/formtrack.js",
-  "plugins/add2DL.js",
-  "plugins/log.js",
-  "plugins/seed.js",
-  "plugins/hubspot.js",
-])
-  .pipe(concat("AbrantesPlus.js"))
-  .pipe(dest("./"));
+                    <pre><code>const myBuild = [
+        'Abrantes.js',
+        'plugins/ga4-gtag.js',
+        // 'plugins/matomo.js',
+        'plugins/hotjar.js',
+        // 'plugins/clarity.js',
+        'plugins/formtrack.js',
+        'plugins/add2DL.js',
+        'plugins/log.js',
+        'plugins/seed.js',
+        'plugins/hubspot.js',
+];
 </code></pre>
-                    <p>Please note that there's two functions, one for the standard build <code>init()</code> and one for the E6 module build <code>initMod()</code>.</p>
                 </div>
             </div>
         </section>
