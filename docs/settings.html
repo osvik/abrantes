@@ -72,10 +72,11 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                         <h3>cookie</h3>
                         <p>Controls how long variants persist when using cookies.</p>
                         <ul class="doc-list">
-                            <li><code>MyTest.settings.cookie.expires</code> (number of days).</li>
-                            <li>Default: <code>7</code>.</li>
-                            <li>Used only when calling <code>persist("cookie")</code>.</li>
+                            <li><code>MyTest.settings.cookie.expires</code> (number of days, default: <code>7</code>).</li>
+                            <li><code>MyTest.settings.cookie.path</code> (string, default: <code>"/"</code>).</li>
+                            <li><code>MyTest.settings.cookie.domain</code> (string, default: <code>""</code>).</li>
                         </ul>
+                        <p>Used only when calling <code>persist("cookie")</code>.</p>
                     </div>
                 </div>
             </div>
