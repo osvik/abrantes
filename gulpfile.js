@@ -22,16 +22,16 @@ const sourcemaps = require('gulp-sourcemaps');
  * You can comment out plugins that you don't want to include in the build.
  */
 const myBuild = [
-        'Abrantes.js',
-        'plugins/ga4-gtag.js',
+        'Abrantes.js', // Core Abrantes library
+        'plugins/ga4-gtag.js', // Google Analytics 4 (gtag.js)
         // 'plugins/matomo.js',
-        'plugins/hotjar.js',
-        // 'plugins/clarity.js',
-        'plugins/formtrack.js',
-        'plugins/add2DL.js',
-        'plugins/log.js',
-        'plugins/seed.js',
-        'plugins/hubspot.js',
+        'plugins/hotjar.js', // Hotjar
+        // 'plugins/clarity.js', // Microsoft Clarity
+        'plugins/formtrack.js', // Form tracking 
+        'plugins/add2DL.js', // Add to Data Layer (Google Tag Manager)
+        'plugins/log.js', // Simple logging plugin
+        'plugins/seed.js', // Seed plugin for consistent random values (login in multiple devices or cookies disabled)
+        'plugins/hubspot.js', // HubSpot Enterprise tracking
 ];
 
 /**
