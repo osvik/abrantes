@@ -5,11 +5,4 @@ When you need to make an experiment with a landing page in one domain and the ne
 * [landing.html](landing.html)
 * [step-2.html](step-2.html)
 
-----
-
-Note: To browse this repository locally type in the terminal:
-
-```sh
-python3 -m http.server
-```
-And go to [http://localhost:8000/](http://localhost:8000/)
+As with experiments with redirects, cross site experiments also have some risk of someone linking directly to step-2.html. Because not all traffic has the same engagement if this happens there's no randomness in assigning the variant.

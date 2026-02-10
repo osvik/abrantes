@@ -6,4 +6,4 @@ It's useful in pages with deferred [jQuery](https://jquery.com/) specially if yo
 
 * [Defer example](defer.html)
 
-Using `defer` may impact the experiment performance.
+Using `defer` may impact the experiment performance, as it will delay the rendering of the choosen variant, when compared with other methods.
