@@ -19,7 +19,7 @@ Integrating your experiment engine with your analytics stack lets you:
 - Compare outcomes by variant using the same conversion events you already trust (signups, purchases, leads, etc.).
 - Segment results by audience (device, geography, acquisition channel, logged-in status, etc.).
 - Validate experiment health (sample ratio mismatch, unexpected drops, tracking regressions).
-- Keep one source of truth for “business events” instead of duplicating event definitions in two places.
+- Keep one source of truth for "business events" instead of duplicating event definitions in two places.
 - Combine quantitative and qualitative data (events + funnels + heatmaps/recordings).
 
 ## Use the tools you already run site-wide
@@ -28,7 +28,7 @@ When possible, integrate Abrantes with the analytics tools already used througho
 
 - Consistent event taxonomy and naming.
 - Works with existing consent management and tag governance.
-- Keeps long-term reporting in one place (no split “experiment reports” vs “site reports”).
+- Keeps long-term reporting in one place (no split "experiment reports" vs "site reports").
 - Makes comparisons easier (experiment traffic vs non-experiment traffic, historical baselines, etc.).
 
 ## Types of analytics to pair with experiments
@@ -50,7 +50,7 @@ Abrantes assigns a `testId` and a numeric `variant` to the user. Integrations ty
 
 There are three common patterns (you can mix them):
 
-1. Exposure event (event-scoped): send a single “experiment exposure” event when the user is assigned.
+1. Exposure event (event-scoped): send a single "experiment exposure" event when the user is assigned.
 2. Custom dimension / event parameter: attach the experiment+variant value as a parameter on your business events.
 3. User labeling (user-scoped): set a user property/trait once so subsequent events can be broken down by variant.
 
@@ -72,7 +72,7 @@ Several plugins dispatch a browser event you can listen to if you need a custom 
 - DOM event name: `abrantes:track`
 - `event.detail` includes `testId`, `variant`, and some tool-specific metadata
 
-This is useful if you want to forward the same “experiment exposure” to another analytics SDK (or to standardize naming) without modifying Abrantes core.
+This is useful if you want to forward the same "experiment exposure" to another analytics SDK (or to standardize naming) without modifying Abrantes core.
 
 ## Tool setup (official docs)
 
@@ -116,7 +116,7 @@ Official docs:
 
 What you can do:
 
-- Track an “experiment exposure” event with an `ab_test_data` property.
+- Track an "experiment exposure" event with an `ab_test_data` property.
 - Attach the same property to conversion events for clean attribution.
 - Optionally set a user profile property so you can segment any future events by variant.
 
@@ -135,7 +135,7 @@ What you can do:
 
 Official docs:
 
-- Hotjar Help Center (search for “Events API” and “Recordings filters”): https://help.hotjar.com/hc/en-us
+- Hotjar Help Center (search for "Events API" and "Recordings filters"): https://help.hotjar.com/hc/en-us
 
 ### HubSpot (Marketing Hub Enterprise)
 
@@ -146,7 +146,7 @@ What you can do:
 
 Official docs:
 
-- HubSpot Knowledge Base (search for “custom behavioral events”): https://knowledge.hubspot.com/
+- HubSpot Knowledge Base (search for "custom behavioral events"): https://knowledge.hubspot.com/
 - HubSpot developer docs: https://developers.hubspot.com/docs
 
 ### Microsoft Clarity
@@ -164,7 +164,7 @@ Official docs:
 
 What you can do:
 
-- Create a Custom Dimension for “experiment exposure” and set it to `MyTest-1` (or similar).
+- Create a Custom Dimension for "experiment exposure" and set it to `MyTest-1` (or similar).
 - Use segments and reports based on that dimension to compare conversions and behavior by variant.
 
 Official docs:
