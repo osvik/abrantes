@@ -154,12 +154,14 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                 <h2>Default settings (AbrantesPlus)</h2>
                 <div class="feature-card">
                     <p>This is the default settings object when you load <code>AbrantesPlus.js</code>:</p>
-                    <pre><code>MyTest.settings = {
+                    <pre><code>Abrantes.settings = {
   crossSiteLink: {
     triggerEvent: "DOMContentLoaded"
   },
   cookie: {
-    expires: 7
+    expires: 7,
+    path: "/",
+    domain: ""
   },
   hotjar: {
     triggerEvents: ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]
