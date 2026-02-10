@@ -23,6 +23,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+p {
+    margin-bottom: 1rem;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -229,6 +233,10 @@ header .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.5rem;
+}
+
+.docs-section .feature-card + .doc-grid {
+    margin-top: 1.5rem;
 }
 
 .doc-grid.two-col {
