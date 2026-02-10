@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Analytics integrations</title>
+    <meta name="description"
+        content="How to integrate Abrantes AB tests with analytics tools like GTM, GA4, Mixpanel, Hotjar, HubSpot Enterprise, Microsoft Clarity, and Matomo.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Analytics integrations</h1>
+                <p class="subtitle">Measure experiment impact using the analytics tools you already run site-wide.</p>
+                <div class="cta-group">
+                    <a href="plugins.html" class="btn btn-secondary">Plugin reference</a>
+                    <a href="settings.html" class="btn btn-secondary">Settings reference</a>
+                    <a href="examples.html" class="btn btn-secondary">Examples</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Why integrate AB testing + analytics</h2>
+                <div class="feature-card">
+                    <p>Abrantes focuses on running experiments (assigning variants, rendering changes, and persisting the
+                        assignment). Reporting is usually better handled by the analytics tools you already use across
+                        your site: you get existing dashboards, funnels, segmentation, retention, attribution, and data
+                        governance without building a separate reporting system.</p>
+                    <p>Integrating your experiment engine with your analytics stack lets you:</p>
+                    <ul class="doc-list">
+                        <li>Compare outcomes by variant using the same conversion events you already trust (signups,
+                            purchases, leads, etc.).</li>
+                        <li>Segment results by audience (device, geography, acquisition channel, logged-in status,
+                            etc.).</li>
+                        <li>Keep one source of truth for business events instead of duplicating event definitions.</li>
+                        <li>Combine quantitative and qualitative data (events + funnels + heatmaps/recordings).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Use the tools you already run site-wide</h2>
+                <div class="feature-card">
+                    <p>When possible, integrate Abrantes with the analytics tools already used throughout your site:</p>
+                    <ul class="doc-list">
+                        <li>Reuse existing consent management and tag governance.</li>
+                        <li>Keep long-term reporting in one place (no split "experiment reports" vs "site reports").</li>
+                        <li>Make comparisons easier (experiment traffic vs non-experiment traffic, historical
+                            baselines, etc.).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Types of analytics to pair with experiments</h2>
+                <div class="feature-card">
+                    <p>Different analytics tools answer different questions; it is common to use more than one:</p>
+                    <ul class="doc-list">
+                        <li><strong>Classic event tracking (quantitative):</strong> page views, clicks, form submits,
+                            purchases, signups. Examples: GA4, Mixpanel, Matomo (and GTM as the routing layer).</li>
+                        <li><strong>Heatmaps (qualitative):</strong> where users click/scroll and what they ignore.
+                            Examples: Hotjar, Microsoft Clarity.</li>
+                        <li><strong>Tagged session/video recording (qualitative):</strong> watch sessions for specific
+                            variants to understand <em>why</em> metrics change. Examples: Hotjar, Microsoft Clarity.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>How Abrantes sends experiment data</h2>
+                <div class="feature-card">
+                    <p>Abrantes assigns a <code>testId</code> and a numeric <code>variant</code> to the user.
+                        Integrations typically send a value like <code>MyTest-0</code> (control),
+                        <code>MyTest-1</code>, <code>MyTest-2</code>, and so on.</p>
+
+                    <p>There are three common patterns (you can mix them):</p>
+                    <ol class="doc-steps">
+                        <li><strong>Exposure event (event-scoped):</strong> send a single "experiment exposure" event when
+                            the user is assigned.</li>
+                        <li><strong>Custom dimension / event parameter:</strong> attach the experiment+variant value as
+                            a parameter on your business events.</li>
+                        <li><strong>User labeling (user-scoped):</strong> set a user property/trait once so subsequent
+                            events can be broken down by variant.</li>
+                    </ol>
+
+                    <h3>GTM-style dataLayer</h3>
+                    <p>The <code>add2DL</code> plugin pushes an object into <code>dataLayer</code>. Default keys:</p>
+                    <ul class="doc-list">
+                        <li><code>event</code>: <code>run_ab_test</code></li>
+                        <li><code>ab_test_data</code>: <code>{experiment}-{variant}</code> (example:
+                            <code>PricingTest-1</code>)</li>
+                        <li><code>experiment_name</code>: <code>{experiment}</code> (example: <code>PricingTest</code>)
+                        </li>
+                        <li><code>variant_name</code>: <code>{variantPrefix}{variant}</code> (example: <code>v1</code>)
+                        </li>
+                    </ul>
+                    <p>These keys are configurable via <code>Abrantes.settings.dataLayer</code> (see
+                        <a href="settings.html">settings reference</a>).</p>
+
+                    <h3>Custom integrations (abrantes:track)</h3>
+                    <p>Several plugins dispatch a browser event you can listen to if you need a custom bridge:</p>
+                    <ul class="doc-list">
+                        <li>DOM event name: <code>abrantes:track</code></li>
+                        <li><code>event.detail</code> includes <code>testId</code>, <code>variant</code>, and tool-specific
+                            metadata</li>
+                    </ul>
+                    <p>This is useful if you want to forward the same "experiment exposure" to another analytics SDK (or
+                        to standardize naming) without modifying Abrantes core.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Tool setup (official docs)</h2>
+                <div class="feature-card">
+                    <p>The examples in the folder <a href="https://github.com/osvik/abrantes/tree/main/examples" target="_blank">examples</a> cover adding tracking scripts and calling the relevant
+                        Abrantes plugin methods. The notes below focus on what to configure <em>inside each analytics
+                            tool</em> so you can analyze variants.</p>
+                </div>
+
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>Google Tag Manager (GTM)</h3>
+                        <p>Capture experiment exposure from <code>dataLayer</code> and route it to any tag (GA4,
+                            Mixpanel, etc.). Store experiment/variant as variables and attach them to your existing
+                            conversion events.</p>
+                        <ul class="doc-list">
+                            <li><a href="https://support.google.com/tagmanager/answer/6102821" target="_blank"
+                                    rel="noreferrer">GTM overview</a></li>
+                            <li><a href="https://developers.google.com/tag-platform/tag-manager/web/datalayer"
+                                    target="_blank" rel="noreferrer">dataLayer developer docs</a></li>
+                            <li><a href="https://support.google.com/tagmanager/answer/7679219" target="_blank"
+                                    rel="noreferrer">Triggers (including Custom Event)</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Google Analytics (GA4)</h3>
+                        <p>Register an event-scoped custom dimension for the exposure value (example:
+                            <code>ab_test_data</code>). Optionally create a user-scoped custom dimension (user property)
+                            if you label users by variant. Use Explorations, funnels, and segments to compare variants.
+                        </p>
+                        <ul class="doc-list">
+                            <li><a href="https://developers.google.com/analytics/devguides/collection/ga4/"
+                                    target="_blank" rel="noreferrer">GA4 gtag.js developer guide</a></li>
+                            <li><a href="https://support.google.com/analytics/answer/10075209" target="_blank"
+                                    rel="noreferrer">Create custom dimensions/metrics (GA4)</a></li>
+                            <li><a href="https://developers.google.com/tag-platform/gtagjs/reference" target="_blank"
+                                    rel="noreferrer">gtag.js reference (set/event/user properties)</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Mixpanel</h3>
+                        <p>Track an exposure event with an <code>ab_test_data</code> property, attach the same property
+                            to conversion events, and optionally set a user profile property for long-term segmentation.
+                        </p>
+                        <ul class="doc-list">
+                            <li><a href="https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript" target="_blank"
+                                    rel="noreferrer">JavaScript SDK</a></li>
+                            <li><a href="https://docs.mixpanel.com/docs/tracking-methods/identifying-users"
+                                    target="_blank" rel="noreferrer">Identifying users</a></li>
+                            <li><a href="https://docs.mixpanel.com/docs/data-structure/user-profiles" target="_blank"
+                                    rel="noreferrer">User profiles</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Hotjar</h3>
+                        <p>Send a Hotjar Event per variant (for example <code>PricingTest-1</code>) and filter Recordings
+                            and Heatmaps by that event to compare behavior across variants.</p>
+                        <ul class="doc-list">
+                            <li><a href="https://help.hotjar.com/hc/en-us" target="_blank" rel="noreferrer">Hotjar Help
+                                    Center</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>HubSpot (Marketing Hub Enterprise)</h3>
+                        <p>Send custom behavioral events that include experiment+variant properties. Use those events for
+                            reports, lists, and workflows (depending on your HubSpot setup).</p>
+                        <ul class="doc-list">
+                            <li><a href="https://knowledge.hubspot.com/" target="_blank" rel="noreferrer">HubSpot
+                                    Knowledge Base</a></li>
+                            <li><a href="https://developers.hubspot.com/docs" target="_blank" rel="noreferrer">HubSpot
+                                    developer docs</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Microsoft Clarity</h3>
+                        <p>Set custom Clarity variables/tags for experiment and variant and filter sessions/recordings by
+                            those tags to compare qualitative behavior.</p>
+                        <ul class="doc-list">
+                            <li><a href="https://learn.microsoft.com/en-us/clarity/" target="_blank"
+                                    rel="noreferrer">Microsoft Clarity documentation</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Matomo</h3>
+                        <p>Create a Custom Dimension for experiment exposure and set it to <code>MyTest-1</code> (or
+                            similar). Use segments and reports based on that dimension to compare behavior and
+                            conversions by variant.</p>
+                        <ul class="doc-list">
+                            <li><a href="https://matomo.org/docs/custom-dimensions/" target="_blank"
+                                    rel="noreferrer">Matomo Custom Dimensions</a></li>
+                            <li><a href="https://matomo.org/docs/javascript-tracking/" target="_blank"
+                                    rel="noreferrer">JavaScript Tracking</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under LGPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
