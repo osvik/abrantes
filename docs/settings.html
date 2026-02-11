@@ -42,8 +42,8 @@
                 <h2>How settings work</h2>
                 <div class="feature-card">
                     <p>Each test created with <code>Object.create(Abrantes)</code> inherits <code>Abrantes.settings</code>.
-                        Update <code>MyTest.settings</code> before calling the method that uses it.</p>
-                    <p>Plugin settings appear only after loading the plugin (or when using <code>AbrantesPlus.js</code>).</p>
+                        Update your experiment settings before calling the method that uses them.</p>
+                    <p>Plugin settings are available after loading the plugin.</p>
                     <pre><code>var MyTest = Object.create(Abrantes);
 
 MyTest.settings.cookie.expires = 30;
@@ -61,22 +61,21 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                 <div class="doc-grid two-col">
                     <div class="feature-card">
                         <h3>crossSiteLink</h3>
-                        <p>Controls when <code>crossSiteLink()</code> rewrites URLs.</p>
+                        <p>It's an event name that controls when <code>crossSiteLink()</code> rewrites cross-site URLs.</p>
                         <ul class="doc-list">
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.crossSiteLink.triggerEvent</code> (string or false).</li>
-                            <li>Default: <code>"DOMContentLoaded"</code>.</li>
-                            <li>Set to <code>false</code> to run immediately.</li>
+                            <li>Default: <code>"DOMContentLoaded"</code>. Good for most use cases in websites. Web apps may need to set this to another event.</li>
+                            <li>Set to <code>false</code> to run immediately (not recommended).</li>
                         </ul>
                     </div>
                     <div class="feature-card">
                         <h3>cookie</h3>
-                        <p>Controls how long variants persist when using cookies.</p>
+                        <p>Used only when calling <code>persist("cookie")</code>. Controls how variants persist when using cookies.</p>
                         <ul class="doc-list">
                             <li><code>MyTest.settings.cookie.expires</code> (number of days, default: <code>7</code>).</li>
                             <li><code>MyTest.settings.cookie.path</code> (string, default: <code>"/"</code>).</li>
                             <li><code>MyTest.settings.cookie.domain</code> (string, default: <code>""</code>).</li>
                         </ul>
-                        <p>Used only when calling <code>persist("cookie")</code>.</p>
                     </div>
                 </div>
             </div>
@@ -104,6 +103,7 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.hotjar.triggerEvents</code> (array of event names).</li>
                             <li>Default: <code>["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]</code>.</li>
                         </ul>
+                        <p>Please note that the <code>cookies:*</code> are just examples. Your website probably uses a different naming convention for cookie consent events. You must update the settings accordingly.</p>
                     </div>
                     <div class="feature-card">
                         <h3>Microsoft Clarity</h3>
@@ -112,6 +112,7 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.clarity.triggerEvents</code> (array of event names).</li>
                             <li>Default: <code>["load", "cookies:accept", "cookies:acceptall", "cookies:ok"]</code>.</li>
                         </ul>
+                        <p>Please note that the <code>cookies:*</code> are just examples. Your website probably uses a different naming convention for cookie consent events. You must update the settings accordingly.</p>
                     </div>
                     <div class="feature-card">
                         <h3>Form tracking</h3>
@@ -119,18 +120,30 @@ MyTest.settings.formTrack.inputElement = "#ab_variant";
                         <ul class="doc-list">
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.formTrack.triggerEvents</code> (array of event names).</li>
                             <li>Default: <code>["DOMContentLoaded"]</code>.</li>
+                        </ul>
+                        <p>Hidden form field to use for storing the variant name:</p>
+                        <ul class="doc-list">
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.formTrack.inputElement</code> (selector string).</li>
                             <li>Default: <code>"#last_abtest_variant"</code>.</li>
                         </ul>
                     </div>
                     <div class="feature-card">
-                        <h3>Abrantes log</h3>
-                        <p>Controls where to send user's event logs.</p>
+                        <h3>Abrantes Log</h3>
+                        <p>Controls where to send user's event logs. This plugin must be used with the custom API <a href="https://github.com/osvik/abrantes-log-api" target="_blank">Abrantes Log</a>.</p>
                         <ul class="doc-list">
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.log.apiURL</code> - A string with the URL of the API endpoint. Default: <code>""</code> - It must be defined before calling <code>.log("example_event", "example note")</code>.</li>
                             <li><code style="overflow-wrap: anywhere;">MyTest.settings.log.variantPrefix</code> - Prefix to the variant number in the log. Default: <code>"v"</code>.</li>
                         </ul>
-                        <p>This plugin must be used with the custom API <a href="https://github.com/osvik/abrantes-log-api" target="_blank">Abrantes log</a>.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Hubspot</h3>
+                        <p>Keys used when calling <code>hubspotEvent(eventName)</code>.</p>
+                        <ul class="doc-list">
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.hubspot.customDimension</code> (default: <code>"ab_test_data"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.hubspot.experimentName</code> (default: <code>"experiment_name"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.hubspot.variantName</code> (default: <code>"variant_name"</code>).</li>
+                            <li><code style="overflow-wrap: anywhere;">MyTest.settings.hubspot.variantPrefix</code> (default: <code>"v"</code>).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
