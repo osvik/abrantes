@@ -43,10 +43,10 @@
                 <h2>Plugin basics</h2>
                 <div class="feature-card">
                     <ul class="doc-list">
-                        <li>Use <code>AbrantesPlus.js</code> to load Abrantes and all the default plugins in one file.</li>
+                        <li>Use <code>AbrantesPlus.min.js</code> to load Abrantes and all the default plugins in one file.</li>
                         <li>Or load individual plugin files after <code>Abrantes.js</code>.</li>
                         <li>Call plugin methods after <code>assignVariant</code>.</li>
-                        <li>Customize plugin settings through <code>Abrantes.settings</code>.</li>
+                        <li>Customize plugin settings through <code>Abrantes.settings</code> or your object settings.</li>
                         <li>Some plugins share method names (for example, GA4 and Matomo both use
                             <code>track</code>).</li>
                     </ul>
@@ -61,7 +61,7 @@
 
                     <div class="feature-card">
                         <h3>Seeded experiment</h3>
-                        <p>Allows cookieless experiments or powers cross-device experiments with logged in users.</p>
+                        <p>Allows cookieless experiments and powers cross-device experiments with logged in users.</p>
                         <pre><code>seed = JSON.stringify(userData);
 await MyTest.assignSeededVariant("MyTest", seed, 1, () => true);
 </code></pre>
