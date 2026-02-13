@@ -46,6 +46,26 @@
                 }
             }));
 
+        },
+
+        /**
+         * Listens for new entries in the dataLayer and triggers a callback function with the new entry as an argument
+         * @param {*} callback - Function to process the new entries
+         */
+        listen2dataLayer: function (callback = (newEntry) => { console.log('New dataLayer entry:', newEntry); }) {
+
+            window.dataLayer = window.dataLayer || [];
+            const originalPush = dataLayer.push;
+
+            dataLayer.push = function () {
+                const result = originalPush.apply(window.dataLayer, arguments);
+                const newEntry = arguments[0];
+                if (callback && typeof callback === "function") {
+                    callback(newEntry);
+                }
+                return result;
+            }
+
         }
 
     };
