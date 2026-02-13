@@ -1,0 +1,52 @@
+<style>
+    .RunInGtm-0 #bigH1 { color: darkblue; }
+    .RunInGtm-1 #bigH1 { color: darkgreen; }
+    .RunInGtm-2 #bigH1 { color: darkred; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
+
+<script>
+
+    // Create the test
+    var RunInGtm = Object.create(Abrantes);
+
+    // Define the variants
+    RunInGtm.variants = [
+
+        // Original
+        function () {
+            RunInGtm.waitFor("#bigH1", function() {
+                document.getElementById("bigH1").innerText = "RunInGtm Original";
+            });
+        },
+
+        // Variant 1
+        function () {
+            RunInGtm.waitFor("#bigH1", function() {
+                document.getElementById("bigH1").innerText = "RunInGtm Variant 1";
+            });
+        },
+
+        // Variant 2
+        function () {
+            RunInGtm.waitFor("#bigH1", function() {
+                document.getElementById("bigH1").innerText = "RunInGtm Variant 2";
+            });
+        },
+
+    ];
+
+    // Assign a variant to the user
+    RunInGtm.assignVariant("RunInGtm");
+
+    // Render the variant
+    RunInGtm.renderVariant();
+
+    // Persist the variant in the browser. It should be "session", "user" or "cookie"
+    RunInGtm.persist("cookie");
+
+    // Send event ID and variant to the dataLayer
+    RunInGtm.add2dataLayer("example_test");
+
+</script>
