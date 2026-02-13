@@ -32,7 +32,7 @@
             dlevent[this.settings.dataLayer.variantName] = this.settings.dataLayer.variantPrefix + this.variant;
 
             if (typeof (dataLayer) === "undefined") {
-                throw new Error("Undefined dataLayer");
+                window.dataLayer = window.dataLayer || [];
             }
 
             dataLayer.push(dlevent);

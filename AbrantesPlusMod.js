@@ -7,7 +7,7 @@
  */
 
 const Abrantes = Object.create(null);
-Abrantes.version = "1.5.0";
+Abrantes.version = "1.5.1";
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
 Abrantes.excludedVariantsForNewUsers = [];
@@ -522,7 +522,7 @@ Abrantes.track = function () {
             dlevent[this.settings.dataLayer.variantName] = this.settings.dataLayer.variantPrefix + this.variant;
 
             if (typeof (dataLayer) === "undefined") {
-                throw new Error("Undefined dataLayer");
+                window.dataLayer = window.dataLayer || [];
             }
 
             dataLayer.push(dlevent);
