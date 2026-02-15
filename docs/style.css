@@ -163,7 +163,7 @@ header .container {
     padding: 4rem 0;
 }
 
-.features h2, .integrations h2 {
+.features h2, .integrations h2, .ecosystem h2 {
     text-align: center;
     font-size: 2rem;
     color: var(--heading-color);
@@ -181,6 +181,10 @@ header .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+}
+
+.ecosystem {
+    padding: 4rem 0 2rem;
 }
 
 .feature-card {
