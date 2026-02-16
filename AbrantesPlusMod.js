@@ -310,9 +310,15 @@ Abrantes.waitFor = function (selector, callback) {
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
-    throw new Error("Missing plugin to track results");
+    document.dispatchEvent(new CustomEvent("abrantes:track", {
+        detail: {
+            testId: this.testId,
+            variant: this.variant,
+            customDim: this.testId + "-" + this.variant,
+            tool: "abrantes-core"
+        }
+    }));
 };
-
 
 /* eslint-disable no-undef */
 

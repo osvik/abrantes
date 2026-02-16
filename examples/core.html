@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes Core Example</title>
+    <script src="../Abrantes.js"></script>
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Original";
+            },
+
+            // Variant 1
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 1";
+            },
+
+            // Variant 2
+            function () {
+                document.getElementById("bigH1").innerText = "MyTest Variant 2";
+            },
+
+        ];
+
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser. It should be "session", "user" or "cookie"
+        MyTest.persist("cookie");
+
+        // Track the experiment with a DOM event (document).
+        MyTest.track();
+
+
+    </script>
+
+</body>
+
+</html>

@@ -14,7 +14,8 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 
 ## Integrations & Plugins
 
-*   [add2DL.html](add2DL.html) - pushing experiment data to the `dataLayer` for Google Tag Manager or other tools.
+*   [core.html](core.html) - No integration, just Abrantes core. `YourTest.track()` triggers the DOM event `abrantes:track` (document). Because this event is triggered very early, please ensure that you have already added an event listener and a callback before calling it.
+*   [add2DL.html](add2DL.html) - Pushing experiment data to the `dataLayer` for Google Tag Manager or other tools.
 *   [gtm-ga4.html](gtm-ga4.html) - Integration with Google Analytics 4 (GA4).
 *   [hotjar.html](hotjar.html) - Integration with Hotjar to label recordings or heatmaps based on variants.
 *   [mixpanel.html](mixpanel.html) - Integration with Mixpanel analytics. (Example without GTM)
