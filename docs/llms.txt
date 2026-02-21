@@ -1,0 +1,110 @@
+# Abrantes
+
+> Abrantes is a lightweight (3.8KB), free, open-source JavaScript library for creating A/B tests and experiments on websites and web apps. It handles experiment assignment, rendering, and persistence, and integrates with popular analytics tools for tracking.
+
+## Documentation
+
+- [Home](https://osvik.github.io/abrantes/): Overview, features, and ecosystem tools
+- [Documentation](https://osvik.github.io/abrantes/docs.html): Documentation hub
+- [Installation](https://osvik.github.io/abrantes/install.html): How to install Abrantes (CDN, script, module)
+- [Creating Experiments](https://osvik.github.io/abrantes/experiments.html): Full guide to creating experiments
+- [Variants](https://osvik.github.io/abrantes/variants.html): Variant function reference and DOM patterns
+- [Plugins](https://osvik.github.io/abrantes/plugins.html): All available plugins
+- [Settings](https://osvik.github.io/abrantes/settings.html): Configuration reference
+- [Custom Builds](https://osvik.github.io/abrantes/build.html): How to create custom builds with Gulp
+- [Analytics Integration](https://osvik.github.io/abrantes/analytics.html): Integrating with analytics tools
+- [Alpine.js Integration](https://osvik.github.io/abrantes/alpine.html): Using Abrantes with Alpine.js
+- [Examples](https://osvik.github.io/abrantes/examples.html): All examples organized by category
+- [GitHub Repository](https://github.com/osvik/abrantes): Source code and issues
+
+## Ecosystem Tools
+
+- [A/B Test Planner](https://osvik.github.io/abrantes-test-calculator/planner.html): Estimate sample size and duration before launching
+- [A/B Test Significance Calculator](https://osvik.github.io/abrantes-test-calculator/): Check statistical significance of results
+- [Log API](https://github.com/osvik/abrantes-log-api): PHP endpoint that logs events to SQLite
+- [Checker Extension](https://github.com/osvik/abrantes-checker-extension): Browser extension to inspect Abrantes events
+
+## AI Experiment Builder
+
+There is a comprehensive AI experiment builder reference at `SKILL.md` in the repository root ([view on GitHub](https://github.com/osvik/abrantes/blob/main/SKILL.md)). It contains the full API reference, all experiment patterns (in-page, redirect, iframe, GTM, CSS-only, seeded), tracking recommendations, and step-by-step instructions for building experiments.
+
+If you are an AI assistant helping a user build an A/B test with Abrantes, read that file or use the reference below.
+
+## Quick Reference for AI Assistants
+
+### Loading Abrantes via CDN (jsDelivr)
+
+Classic script:
+```html
+<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
+```
+
+ES6 module (easiest, no template changes needed):
+```html
+<script type="module" async>
+  import Abrantes from 'https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlusMod.min.js';
+  // experiment code here
+</script>
+```
+
+### Basic Experiment Pattern
+
+```js
+var MyTest = Object.create(Abrantes);
+
+MyTest.variants = [
+  function () { /* variant 0 - control */ },
+  function () { /* variant 1 - changes */ }
+];
+
+MyTest.assignVariant("MyTest");  // assign user to a variant
+MyTest.renderVariant();           // execute the variant function
+MyTest.persist("cookie");         // persist assignment
+// + tracking calls (e.g. MyTest.add2dataLayer(), MyTest.hotjar(), etc.)
+```
+
+### Core Methods
+
+- `assignVariant(testId, trafficAllocation?, segment?)` - Assign user to a variant
+- `renderVariant()` - Execute the variant function, adds CSS class `{testId}-{variant}` to body
+- `persist(context?)` - Save assignment ("cookie", "user"/"local", "session")
+- `waitFor(selector, callback)` - Wait for DOM element via MutationObserver. Use whenever the target element may not exist yet (script in head, above elements, GTM, SPA)
+- `redirectTo(url)` - Redirect preserving query params and hash
+- `importVariant(testId)` - Read variant from URL query params (for cross-site/redirect/iframe experiments)
+- `makeCrossSiteURL(url)` - Generate URL with experiment params appended
+- `crossSiteLink(selector)` - Rewrite link hrefs to include experiment data
+- `assignSeededVariant(testId, seed, trafficAllocation?, segment?)` - Async deterministic assignment from seed string
+
+### Available Tracking Plugins (default build)
+
+- `add2dataLayer(customDim?)` - GTM dataLayer
+- `track(customDim)` - GA4 via gtag.js (event-scoped)
+- `trackUser(customDim)` - GA4 user property
+- `hotjar()` - Hotjar events
+- `hubspotEvent(eventName)` - HubSpot Enterprise
+- `formTrack()` - Hidden form field
+- `log(event, note?)` - Custom log API
+
+### Plugins NOT in default build (need custom build)
+
+- `clarity()` - Microsoft Clarity
+- `track(dimensionId)` - Matomo (conflicts with GA4 track, can only use one)
+
+### Experiment Patterns
+
+1. **In-page** (default): Modify DOM in variant functions
+2. **CSS-only**: Empty variant functions, use body class `{testId}-{variant}` for CSS rules
+3. **Redirect**: Each variant is a separate page, use `redirectTo()` on redirect page and `importVariant()` on variant pages
+4. **Iframe (full JS)**: Abrantes on parent and child, pass variant via `makeCrossSiteURL` + `importVariant`
+5. **Iframe (limited JS)**: Abrantes only on parent, each variant loads a different iframe URL
+6. **GTM**: Load Abrantes via CDN in GTM Custom HTML tag, always use `waitFor()` in variants
+7. **Seeded**: Deterministic assignment using `assignSeededVariant()` for cookieless/cross-device
+
+### Important Rules
+
+- Always use `waitFor()` when the target element may not exist yet
+- Variant 0 is typically the control
+- Call `assignVariant` before `renderVariant`
+- Always include at least one tracking method
+- For redirect experiments, add `<link rel="canonical">` on variant pages
+- For iframe experiments, verify `event.origin` in postMessage listeners
