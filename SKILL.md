@@ -107,12 +107,14 @@ Use these rules to decide which pattern to use:
   MyTest.variants = [
     function () {
       // Use waitFor since DOM may not be ready when GTM fires
-      MyTest.waitFor("h1", function (el) {
+      MyTest.waitFor("h1", function () {
+        const el = document.querySelector("h1");
         el.textContent = "New headline";
       });
     },
     function () {
-      MyTest.waitFor("h1", function (el) {
+      MyTest.waitFor("h1", function () {
+        const el = document.querySelector("h1");
         el.textContent = "Another headline";
       });
     }
@@ -162,7 +164,8 @@ function () {
 
 // CORRECT — safe regardless of script placement
 function () {
-  MyTest.waitFor(".hero-title", function (el) {
+  MyTest.waitFor(".hero-title", function () {
+    const el = document.querySelector(".hero-title");
     el.textContent = "New title";
   });
 }
@@ -347,14 +350,14 @@ Use when you have full control over the iframe content and can load Abrantes ins
   MyTest.variants = [
     function () {
       document.getElementById("bigH1").innerText = "Original heading";
-      MyTest.waitFor("iframe", function () {
+      MyTest.waitFor("#myIframe", function () {
         var iframeURL = MyTest.makeCrossSiteURL("https://example.com/child.html");
         document.getElementById("myIframe").src = iframeURL;
       });
     },
     function () {
       document.getElementById("bigH1").innerText = "Variant 1 heading";
-      MyTest.waitFor("iframe", function () {
+      MyTest.waitFor("#myIframe", function () {
         var iframeURL = MyTest.makeCrossSiteURL("https://example.com/child.html");
         document.getElementById("myIframe").src = iframeURL;
       });
@@ -430,17 +433,17 @@ Use when you can only add minimal JavaScript inside the iframe — enough to sen
 
   MyTest.variants = [
     function () {
-      MyTest.waitFor("iframe", function () {
+      MyTest.waitFor("#myIframe", function () {
         document.getElementById("myIframe").src = "child-0.html";
       });
     },
     function () {
-      MyTest.waitFor("iframe", function () {
+      MyTest.waitFor("#myIframe", function () {
         document.getElementById("myIframe").src = "child-1.html";
       });
     },
     function () {
-      MyTest.waitFor("iframe", function () {
+      MyTest.waitFor("#myIframe", function () {
         document.getElementById("myIframe").src = "child-2.html";
       });
     }

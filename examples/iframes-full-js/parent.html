@@ -36,7 +36,7 @@
             // Original
             function () {
                 document.getElementById("bigH1").innerText = "iFrame test original";
-                MyTest.waitFor("iframe", function (iframe) {
+                MyTest.waitFor("#iframe", function () {
                     const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
                     document.getElementById("iframe").src = iframeURL;
                 });
@@ -45,7 +45,7 @@
             // Variant 1
             function () {
                 document.getElementById("bigH1").innerText = "iFrame test variant 1";
-                MyTest.waitFor("iframe", function (iframe) {
+                MyTest.waitFor("#iframe", function () {
                     const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
                     document.getElementById("iframe").src = iframeURL;
                 });
@@ -54,7 +54,7 @@
             // Variant 2
             function () {
                 document.getElementById("bigH1").innerText = "iFrame test variant 2";
-                MyTest.waitFor("iframe", function (iframe) {
+                MyTest.waitFor("#iframe", function () {
                     const iframeURL = MyTest.makeCrossSiteURL("http://localhost:8000/examples/iframes-full/child.html");
                     document.getElementById("iframe").src = iframeURL;
                 });
