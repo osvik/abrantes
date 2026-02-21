@@ -19,14 +19,14 @@
 
 ## Ecosystem Tools
 
-- [A/B Test Planner](https://osvik.github.io/abrantes-test-calculator/planner.html): Estimate sample size and duration before launching
+- [A/B Test Planner](https://osvik.github.io/abrantes-test-calculator/planner.html): Estimate sample size and duration before launching an experiment.
 - [A/B Test Significance Calculator](https://osvik.github.io/abrantes-test-calculator/): Check statistical significance of results
 - [Log API](https://github.com/osvik/abrantes-log-api): PHP endpoint that logs events to SQLite
 - [Checker Extension](https://github.com/osvik/abrantes-checker-extension): Browser extension to inspect Abrantes events
 
 ## AI Experiment Builder
 
-There is a comprehensive AI experiment builder reference at `SKILL.md` in the repository root ([view on GitHub](https://github.com/osvik/abrantes/blob/main/SKILL.md)). It contains the full API reference, all experiment patterns (in-page, redirect, iframe, GTM, CSS-only, seeded), tracking recommendations, and step-by-step instructions for building experiments.
+There is a comprehensive AI experiment builder reference at `SKILL.md` in the repository root ([view on GitHub](https://github.com/osvik/abrantes/blob/main/SKILL.md) or [view markdown file](https://raw.githubusercontent.com/osvik/abrantes/refs/heads/main/SKILL.md)). It contains the full API reference, all experiment patterns (in-page, redirect, iframe, GTM, CSS-only, seeded), tracking recommendations, and step-by-step instructions for building experiments.
 
 If you are an AI assistant helping a user build an A/B test with Abrantes, read that file or use the reference below.
 
@@ -83,7 +83,7 @@ MyTest.persist("cookie");         // persist assignment
 - `hotjar()` - Hotjar events
 - `hubspotEvent(eventName)` - HubSpot Enterprise
 - `formTrack()` - Hidden form field
-- `log(event, note?)` - Custom log API
+- `log(event, note?)` - Custom log API, [PHP script available in Github](https://github.com/osvik/abrantes-log-api)
 
 ### Plugins NOT in default build (need custom build)
 
@@ -97,7 +97,7 @@ MyTest.persist("cookie");         // persist assignment
 3. **Redirect**: Each variant is a separate page, use `redirectTo()` on redirect page and `importVariant()` on variant pages
 4. **Iframe (full JS)**: Abrantes on parent and child, pass variant via `makeCrossSiteURL` + `importVariant`
 5. **Iframe (limited JS)**: Abrantes only on parent, each variant loads a different iframe URL
-6. **GTM**: Load Abrantes via CDN in GTM Custom HTML tag, always use `waitFor()` in variants
+6. **GTM**: Load Abrantes via CDN in Google Tag Manager custom HTML tag, always use `waitFor()` in variants
 7. **Seeded**: Deterministic assignment using `assignSeededVariant()` for cookieless/cross-device
 
 ### Important Rules
