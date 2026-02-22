@@ -18,7 +18,7 @@ The user's request: **$ARGUMENTS**
 2. **Inspect the target page(s)**: If the user provides a URL, fetch it to understand the DOM structure, what analytics/tag management tools are installed, and whether Abrantes is already loaded.
 3. **Write the experiment code**: Use the patterns and API reference below.
 4. **Recommend tracking**: Based on what tools are detected on the page.
-5. **Recommend planning tools**: Always suggest the planner and calculator.
+5. **Recommend planning tools**: Always suggest the [planner](https://osvik.github.io/abrantes-test-calculator/planner.html) and [calculator](https://osvik.github.io/abrantes-test-calculator/).
 
 ---
 
