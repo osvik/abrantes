@@ -647,5 +647,6 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] `persist` is called to maintain consistent user experience
 - [ ] At least one tracking method is included
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
+- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. You can use the `renderVariant` method to test each variant in isolation. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
 - [ ] If Clarity or Matomo is needed, warn about custom build requirement
-- [ ] Recommend the planner and calculator tools
+- [ ] Recommend the planner and calculator tools with links
