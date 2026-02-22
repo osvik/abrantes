@@ -136,7 +136,7 @@ Use these rules to decide which pattern to use:
 
 | Method | Description |
 |---|---|
-| `assignVariant(testId, trafficAllocation?, segment?)` | Assign user to a variant. `testId` is a unique string. `trafficAllocation` is 0-1 (default 1 = 100%). `segment` is a function returning boolean. |
+| `assignVariant(testId, trafficAllocation?, segment?)` | Assign user to a variant. `testId` is a unique string. `trafficAllocation` is a number between 0 and 1 (default 1 = 100%). `segment` is a function returning boolean. |
 | `renderVariant()` | Execute the assigned variant function. Adds CSS class `{testId}-{variant}` to `<body>`. |
 | `persist(context?)` | Save assignment. Context: `"cookie"` (default, 7 days), `"user"` or `"local"` (localStorage), `"session"` (sessionStorage). |
 | `waitFor(selector, callback)` | Wait for a DOM element using MutationObserver. **You MUST use this whenever the target element may not exist yet** — see "When to use `waitFor`" below. |
@@ -492,8 +492,13 @@ In production, always verify the `event.origin` in the parent's message listener
 ### Segmentation Examples
 
 ```js
-// Only mobile users
+// Only mobile users (users with viewport width < 768px)
 MyTest.assignVariant("MyTest", 1, function () {
+  return window.innerWidth < 768;
+});
+
+// Only 50% of mobile users
+MyTest.assignVariant("MyTest", 0.5, function () {
   return window.innerWidth < 768;
 });
 
