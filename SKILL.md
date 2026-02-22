@@ -28,6 +28,10 @@ The user's request: **$ARGUMENTS**
 
 **CDN (preferred when Abrantes is not already on the page):**
 
+Please check that Abrantes is not already loaded on the page before suggesting the CDN pattern. You can do this by checking the page source code and looking for mentions to AbrantesPlus.min.js or running `typeof (Abrantes) == "object"` in the browser console.
+
+If Abrantes is already loaded, use the classic script pattern and don't suggest a script tag with the Abrantes script.
+
 Classic script:
 ```html
 <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
