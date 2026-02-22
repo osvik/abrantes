@@ -512,9 +512,9 @@ Abrantes.track = function () {
 
         /**
          * Pushes an event with test data to the dataLayer for tag manager integration
-         * @param {string} customDim - Custom dimension name for the test data (defaults to testId)
+         * @param {string} testId - Optional name for the experiment (defaults to thisTest.testId)
          */
-        add2dataLayer: function (customDim = this.testId) {
+        add2dataLayer: function (testId = this.testId) {
 
             if (this.variant === -1) {
                 return;
@@ -523,8 +523,8 @@ Abrantes.track = function () {
             let dlevent = {};
 
             dlevent["event"] = this.settings.dataLayer.eventName;
-            dlevent[this.settings.dataLayer.customDimension] = customDim + "-" + this.variant;
-            dlevent[this.settings.dataLayer.experimentName] = customDim;
+            dlevent[this.settings.dataLayer.customDimension] = testId + "-" + this.variant;
+            dlevent[this.settings.dataLayer.experimentName] = testId;
             dlevent[this.settings.dataLayer.variantName] = this.settings.dataLayer.variantPrefix + this.variant;
 
             if (typeof (dataLayer) === "undefined") {
@@ -537,7 +537,6 @@ Abrantes.track = function () {
                 detail: {
                     testId: this.testId,
                     variant: this.variant,
-                    customDim: customDim,
                     tool: "dataLayer"
                 }
             }));

@@ -544,7 +544,7 @@ document.querySelector(".cta").style.backgroundColor = "#ff0000";
 
 | Tool on the page | Abrantes method | Plugin needed | Notes |
 |---|---|---|---|
-| GTM (dataLayer) | `add2dataLayer(customDim?)` | `add2DL` (default build) | Pushes event `"run_ab_test"` to dataLayer |
+| GTM (dataLayer) | `add2dataLayer(testId?)` | `add2DL` (default build) | Pushes event `"run_ab_test"` to dataLayer. Usually it's called without parameters, unless the user wants to override the testId. |
 | GA4 via gtag.js | `track(customDim)` | `ga4-gtag` (default build) | Sets event-scoped custom dimension. Requires `window.googleTrackingConfig` object. |
 | GA4 user property | `trackUser(customDim)` | `ga4-gtag` (default build) | Sets user-scoped property via gtag |
 | Hotjar | `hotjar()` | `hotjar` (default build) | Sends Hotjar event `"testId-variant"` |
