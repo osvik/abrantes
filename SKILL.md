@@ -193,13 +193,27 @@ MyTest.excludedVariantsForNewUsers = [2]; // new users won't get variant 2
 MyTest.assignVariant("MyTest");
 ```
 
-### CSS-Only Experiments
+### CSS Experiments
 
-Variants can be empty functions. `renderVariant()` adds class `{testId}-{variant}` to `<body>`, enabling pure CSS experiments:
+Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<body>`, enabling experiments with CSS:
 
 ```css
 .MyDesignExp-1 h1 { font-size: 2.5rem; }
 .MyDesignExp-2 h1 { font-size: 1.7rem; }
+```
+
+If an experiment can be done purely with CSS, it's often better to use this approach, for simplicity and performance.
+
+If part of the experiment is modifying styles, it's better that part of the experiment is done via CSS (using the class added by Abrantes to the body tag). Use JavaScript for structural changes or content changes that can't be achieved with CSS.
+
+A style block is then included in the experiment code, like this example:
+
+```html
+<style>
+  /* Style changes via CSS */
+  .MyTest-1 .hero { background-color: #f0f0f0; }
+  .MyTest-2 .hero { background-color: #e0e0e0; }
+</style>
 ```
 
 ### Redirect Experiments
