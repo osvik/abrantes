@@ -77,8 +77,8 @@ MyTest.persist("cookie");         // persist assignment
 
 ### Available Tracking Plugins (default build)
 
-- `add2dataLayer(customDim?)` - GTM dataLayer
-- `track(customDim)` - GA4 via gtag.js (event-scoped)
+- `add2dataLayer(testId?)` - Google Tag Manager (GTM) dataLayer
+- `track(customDim)` - Google Analytics (GA4) via gtag.js (event-scoped)
 - `trackUser(customDim)` - GA4 user property
 - `hotjar()` - Hotjar events
 - `hubspotEvent(eventName)` - HubSpot Enterprise

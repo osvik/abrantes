@@ -68,7 +68,7 @@ Use these rules to decide which pattern to use:
 1. **As-module pattern** (easiest, no template changes needed) - Use when:
    - Abrantes is NOT already loaded on the page
    - The user wants minimal setup
-   - The user doesn't mention GTM
+   - The user doesn't mention GTM (Google Tag Manager)
 
 ```html
 <script type="module" async>
@@ -90,7 +90,6 @@ Use these rules to decide which pattern to use:
 
 2. **Classic script pattern** - Use when:
    - Abrantes IS already loaded on the page as a script
-   - The user wants to use `defer` for performance
    - Multiple experiments share the same Abrantes script
 
 ```html
@@ -193,7 +192,7 @@ MyTest.excludedVariantsForNewUsers = [2]; // new users won't get variant 2
 MyTest.assignVariant("MyTest");
 ```
 
-### CSS Experiments
+### CSS Experiments (styles, layout tweaks, element visibility...)
 
 Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<body>`, enabling experiments with CSS:
 
@@ -202,7 +201,7 @@ Variants can be empty functions. `renderVariant()` adds the class `{testId}-{var
 .MyDesignExp-2 h1 { font-size: 1.7rem; }
 ```
 
-If an experiment can be done purely with CSS, it's often better to use this approach, for simplicity and performance.
+**If an experiment can be done purely with CSS, it's often better to use this approach, for simplicity and performance.**
 
 If part of the experiment is modifying styles, it's better that part of the experiment is done via CSS (using the class added by Abrantes to the body tag). Use JavaScript for structural changes or content changes that can't be achieved with CSS.
 
