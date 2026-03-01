@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - Use Abrantes with AI</title>
+    <meta name="description" content="Guide to create Abrantes experiments with AI assistants, including workflow, prompts, and tested tool/model combinations.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a href="./" class="logo">Abrantes</a>
+            <div class="nav-links">
+                <a href="./">Home</a>
+                <a href="examples.html">Examples</a>
+                <a href="docs.html">Documentation</a>
+                <a href="https://github.com/osvik/abrantes" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero docs-hero">
+            <div class="container">
+                <h1>Use Abrantes with AI</h1>
+                <p class="subtitle">How to generate Abrantes experiments with AI tools and models, based on practical tests.</p>
+                <div class="cta-group">
+                    <a href="experiments.html" class="btn btn-secondary">Experiment guide</a>
+                    <a href="https://github.com/osvik/abrantes/blob/main/SKILL.md" class="btn btn-secondary" target="_blank" rel="noreferrer">Open SKILL.md</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Important disclaimer</h2>
+                <div class="feature-card">
+                    <p>This workflow is experimental. Do not rely only on AI to create experiments.</p>
+                    <ul class="doc-list">
+                        <li>Always review generated code before using it.</li>
+                        <li>Always test variants and tracking before launch.</li>
+                        <li>Treat model output as draft code, not as production-ready code.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Recommended workflow</h2>
+                <div class="feature-card">
+                    <ol class="doc-steps">
+                        <li>Use a coding-focused AI tool that can read files in a local Abrantes repo clone.</li>
+                        <li>Share your target URL and experiment hypothesis.</li>
+                        <li>Provide <code>SKILL.md</code> (or reference the Abrantes docs URL if upload is not supported).</li>
+                        <li>Ask for a complete experiment with variant logic, render, persist, and tracking calls.</li>
+                        <li>Run and validate the output manually before launch.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Tools that worked well</h2>
+                <div class="doc-grid two-col">
+                    <div class="feature-card">
+                        <h3>chat.z.ai + GLM-5 agent mode</h3>
+                        <p>Best online result in these tests. Worked well with uploaded skill and prompt.</p>
+                        <p><a href="https://chat.z.ai/" target="_blank" rel="noreferrer">Open chat.z.ai</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Kimi + K2.5 agent</h3>
+                        <p>Good online results when prompting with the Abrantes URL.</p>
+                        <p><a href="https://www.kimi.com/agent" target="_blank" rel="noreferrer">Open Kimi agent</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>OpenCode + MiniMax M2.5 free</h3>
+                        <p>Desktop workflow worked well. The model scanned repo context and generated correct code.</p>
+                        <p><a href="https://opencode.ai/" target="_blank" rel="noreferrer">Download OpenCode</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Gemini CLI + Gemini 3 Flash preview</h3>
+                        <p>Good output when permissions were granted for required actions.</p>
+                        <p><a href="https://geminicli.com/" target="_blank" rel="noreferrer">Download Gemini CLI</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Codex + GPT 5.3 codex medium</h3>
+                        <p>Worked reliably in these tests. Allow <code>curl</code> so the model can access docs and pages.</p>
+                        <p><a href="https://github.com/openai/codex" target="_blank" rel="noreferrer">Download Codex</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Claude Code + Sonnet 4.6 (Medium)</h3>
+                        <p>Worked well using the <code>/experiment</code> skill workflow.</p>
+                        <p><a href="https://claude.com/product/claude-code" target="_blank" rel="noreferrer">Download Claude Code</a></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>Antigravity + Gemini 3.1 Pro (high)</h3>
+                        <p>Worked after being directed to use the experiment skill. Initial result hallucinated.</p>
+                        <p><a href="https://antigravity.google/" target="_blank" rel="noreferrer">Open Antigravity</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Tools that failed in tests</h2>
+                <div class="feature-card">
+                    <p>These results were noted on <code>2026-02-28</code> and may change as tools improve.</p>
+                    <ul class="doc-list">
+                        <li>GitHub + Claude Haiku 4.5 (online): could not access the tested page reliably.</li>
+                        <li>Gemini online: hallucinated the implementation.</li>
+                        <li>Mistral Le Chat: hallucinated the implementation.</li>
+                        <li>Grok 4.20 (beta): many selector and implementation mistakes.</li>
+                        <li>Qwen 3.5 plus reasoning: made up behavior and struggled with <code>add2dataLayer</code>.</li>
+                        <li>DeepSeek: generated invented behavior and ignored the real page context.</li>
+                        <li>Google NotebookLM: ignored uploaded <code>SKILL.md</code> guidance.</li>
+                        <li>ChatGPT Mac app (free plan): could not access tested URLs directly in this workflow.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Final recommendations</h2>
+                <div class="feature-card">
+                    <ul class="doc-list">
+                        <li>Evaluate a <strong>tool + model</strong> pair, not only the model alone.</li>
+                        <li>Desktop coding tools usually perform better because they can inspect local repo files.</li>
+                        <li>If your tool cannot access the tested page, experiment quality drops significantly.</li>
+                        <li>Before launch, validate selectors, assignments, rendering, persistence, and tracking events.</li>
+                    </ul>
+                    <a class="doc-link" href="experiments.html">Go to experiment implementation guide &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; Abrantes. Open source software licensed under LGPL-3.0.</p>
+            <p>Maintained by <a href="https://github.com/osvik" target="_blank" rel="noreferrer">osvik</a>.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
