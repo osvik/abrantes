@@ -427,7 +427,7 @@ Abrantes.waitFor = function (selector, callback) {
                 callback();
             }
         });
-        observer.observe(document.body, {
+        observer.observe(document.documentElement, {
             childList: true,
             subtree: true
         });
