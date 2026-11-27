@@ -589,6 +589,43 @@ When you inspect a page, look for these signals and recommend accordingly:
 
 Always recommend using **at least one tracking method** so the experiment results can be measured.
 
+### GA4 (gtag.js): Script Order for `track(customDim)`
+
+`track(customDim)` writes the dimension into `window.googleTrackingConfig`. gtag.js reads those parameters **only once**, when it processes `gtag('config', ...)`, and then sends them with every event (page_view, custom events, enhanced measurement). So the order matters:
+
+```html
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    window.googleTrackingConfig = {};            // 1. Create the config object
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
+  <script>
+    const MyTest = Object.create(Abrantes);       // 2. Run the experiment (synchronously)
+    // ... variants, assignVariant, renderVariant, persist
+    MyTest.track("ab_test");
+  </script>
+  <script>
+    gtag('config', 'G-XXXXXXX', window.googleTrackingConfig); // 3. Config with the object
+  </script>
+</head>
+```
+
+Rules:
+- `gtag('config', ...)` **must** receive `window.googleTrackingConfig` as its third argument.
+- The experiment must call `track()` **before gtag.js processes the config**. In practice, `gtag('config', ...)` must run **after** `track()`:
+  - Classic scripts: put the config in a script after the experiment, as above.
+  - `defer` scripts: put the config in a deferred script after the experiment (deferred scripts run in order). See `examples/defer/`.
+  - As-module pattern (`<script type="module" async>`): the module may run after a config in the page, so call `gtag('config', 'G-XXXXXXX', window.googleTrackingConfig);` **inside the module, right after `track()`**, and remove it from the page. Trade-off: if the module fails to load, GA4 isn't configured on that page.
+  - Tag managers / scripts added later: `track()` will usually be too late. Use `add2dataLayer()` with GTM instead.
+- Once gtag.js has processed the config, the dimension **can't be added later**. Neither `gtag('set', {...})` nor a second `gtag('config', ...)` adds custom parameters to later events (tested with gtag.js in 2026). Don't suggest them as a workaround.
+- `track()` logs a `console.warn` when it detects that the dimension won't be sent (config without `window.googleTrackingConfig`, config already processed, or `window.googleTrackingConfig` missing). Check the console when testing.
+- `trackUser(customDim)` uses `gtag('set', 'user_properties', ...)` and also works when called later. The user property is sent with the next event.
+- Register the custom dimension (event scope) in GA4 admin with the same name used in `track()`. For `trackUser()`, register a user-scoped custom dimension.
+
 ---
 
 ## Custom Builds
@@ -674,6 +711,7 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] `assignVariant` is called before `renderVariant`
 - [ ] `persist` is called to maintain consistent user experience
 - [ ] At least one tracking method is included
+- [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
 - [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. You can use the `renderVariant` method to test each variant in isolation. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
 - [ ] If Clarity or Matomo is needed, warn about custom build requirement

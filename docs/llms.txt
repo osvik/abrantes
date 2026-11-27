@@ -79,7 +79,7 @@ MyTest.persist("cookie");         // persist assignment
 ### Available Tracking Plugins (default build)
 
 - `add2dataLayer(testId?)` - Google Tag Manager (GTM) dataLayer
-- `track(customDim)` - Google Analytics (GA4) via gtag.js (event-scoped)
+- `track(customDim)` - Google Analytics (GA4) via gtag.js (event-scoped). Required order: `window.googleTrackingConfig = {}` → experiment with `track()` → `gtag('config', 'G-...', window.googleTrackingConfig)`. gtag.js reads the config only once, so a late `track()` (e.g. an async module running after the config, tag manager) isn't sent, and `gtag('set')` can't fix it. With the as-module pattern, call `gtag('config', ...)` inside the module right after `track()`. `track()` logs a console warning in that case
 - `trackUser(customDim)` - GA4 user property
 - `hotjar()` - Hotjar events
 - `hubspotEvent(eventName)` - HubSpot Enterprise

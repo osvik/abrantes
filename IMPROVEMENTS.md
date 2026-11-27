@@ -43,8 +43,14 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Proposal (choose one):**
   - a) If `gtag` exists, also call `gtag('set', { [customDim]: value })`. This sends the value with every following event, whatever the order.
   - b) Keep the behavior, but warn on the console when the config looks like it has already been sent, and document the required order clearly in `SKILL.md`.
-- **Status:** todo
+- **Status:** done (option b)
 - **Comments:** The `gtag('set'` pattern needs to be tested very well. In the past I've found many situations when it didn't behave as expected.
+- **Reply (Claude):** Tested with the real gtag.js (Chromium + Playwright, `G-50HRM8825D`, every `/g/collect` request intercepted so nothing reached GA). Checked events: page_view, custom events (with and without their own params), generate_lead, and enhanced measurement (form_start, scroll, file_download, outbound click).
+  - **Option (a) doesn't work.** `gtag('set', {ab_test: ...})` drops custom parameters from **every** event, whether it's called before config, right after it or later. `set` only works for built-in fields (e.g. `page_title`). The `('set', name, value)` form and an `ep.` prefix don't work either. A second `gtag('config', id, {...})` is ignored completely (no params, no second page_view). This likely explains the problems you had in the past.
+  - **What works:** the current approach, as long as `track()` runs before gtag.js processes the config. Because `track()` changes `window.googleTrackingConfig` itself, it still works if `gtag('config', id, window.googleTrackingConfig)` was already called but gtag.js hasn't loaded yet. Once gtag.js has processed the config, the dimension can't be added.
+  - **Implemented (b):** `track()` now logs a `console.warn` when the dimension won't be sent: (1) a `gtag('config', 'G-…')` in `dataLayer` doesn't use `window.googleTrackingConfig`; (2) gtag.js has already processed it (`window.google_tag_manager['G-…']` exists); (3) `window.googleTrackingConfig` is missing. Before, (3) threw an error, which stopped the code after `track()`. Now it warns and returns. Verified in the browser: no warning in the cases that work, the right warning in each case that doesn't.
+  - `trackUser()` (`gtag('set', 'user_properties', ...)`) does work when called late: the property is sent with the next event.
+  - **Docs:** new "GA4 (gtag.js): Script Order" section in `SKILL.md` (order, rules per loading pattern, no `gtag('set')` workaround, GA4 admin registration), a checklist item, and a note in `llms.txt`. Important: the as-module pattern with `gtag('config')` in the page loses the dimension when the module loads after gtag.js (tested). The docs now say to call `gtag('config', ...)` inside the module, right after `track()` (tested: works).
 
 ### 5. `formTrack()` errors are invisible
 
