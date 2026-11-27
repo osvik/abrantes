@@ -205,6 +205,51 @@ Abrantes doesn't manage consent. Each method stores or sends data only when it i
 
 So the site's consent setup decides where and when `persist()` and the tracking methods can be called. Follow the site's rules, or ask the user if they are unknown. Don't choose a consent approach on your own.
 
+### Google Consent Mode V2
+
+Abrantes works with Google Consent Mode V2. Nothing changes in the experiment code. Only the order of the GA4 snippet matters: the consent defaults go first, before the experiment and before `gtag('config')`.
+
+```html
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('consent', 'default', {                  // 1. Consent defaults
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+    gtag('set', 'ads_data_redaction', true);
+    // A returning visitor's saved choice: gtag('consent', 'update', {...}) here, before the config
+    gtag('js', new Date());
+    window.googleTrackingConfig = {};
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
+  <script>
+    // 2. The experiment, as usual: assignVariant, renderVariant, persist, track("ab_test")...
+  </script>
+  <script>
+    gtag('config', 'G-XXXXXXX', window.googleTrackingConfig); // 3. Config, always last
+  </script>
+</head>
+```
+
+What happens (tested with gtag.js in Chromium, November 2026):
+
+- **Consent denied:** gtag.js sets no `_ga` cookies and sends cookieless pings (`gcs=G100`). They still include the experiment: `ep.ab_test` from `track()` and `up.ab_test_user` from `trackUser()`.
+- **Visitor accepts on the same page** (`gtag('consent', 'update', {...granted})`): the next events (`gcs=G111`, e.g. the conversion event) still include `ep.ab_test`. Don't call `track()` or `gtag('config')` again.
+- **Consent already granted** (saved choice applied with `gtag('consent', 'update')` before the config): everything is sent normally.
+- `ads_data_redaction` only affects ad data. It doesn't change what Abrantes sends.
+- With **basic** Consent Mode (the Google tag is only loaded after consent), the usual rule still applies: `track()` must run before `gtag('config')`.
+- With **Google Tag Manager**, use `add2dataLayer()`. The push only adds data to the `dataLayer`; the GA4 tags in the container apply Consent Mode.
+
+Keep in mind:
+
+- **Consent Mode only controls Google tags.** It doesn't block the cookie or storage entry that `persist()` writes, or the other tools (`hotjar()`, `clarity()`, `hubspotEvent()`, `log()`). Those follow the site's consent setup (see "Consent and Storage").
+- **Analysis:** GA4 uses the denied-consent pings for modelling, so the GA4 reports for each variant mainly show visitors who accepted analytics cookies. If a variant can change whether visitors accept (e.g. it changes the cookie banner or the content around it), the GA4 samples of the variants aren't comparable. A conversion saved in the CRM with `formTrack()` doesn't depend on Google consent.
+
 ### CSS Experiments (styles, layout tweaks, element visibility...)
 
 Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<html>`, enabling experiments with CSS:
@@ -707,6 +752,7 @@ Use **classic scripts in `<head>`** (not the as-module pattern). They run in ord
 - Block 2 is an **empty slot in the layout** (e.g. a Nunjucks `{% block experiment %}{% endblock %}`, a Hugo `{{ block "experiment" . }}{{ end }}`, an Astro named `<slot>`), filled only by the pages in the experiment. It must stay **between** blocks 1 and 3. Never put the experiment at the end of `<body>` while the config is in `<head>`: the dimension would not be sent.
 - With several experiments on the same page, put them all in the slot, each with its own dimension name (see "Several Experiments on the Same Page").
 - If the site loads scripts with `defer` instead, keep the same order with deferred scripts (see "GA4 (gtag.js): Script Order").
+- If the site uses Google Consent Mode, `gtag('consent', 'default', {...})` goes at the start of block 1 (see "Google Consent Mode V2").
 
 ### 2. The form: hidden field, included in the submission
 
@@ -881,6 +927,7 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] With GA4: the custom dimension is registered in GA4 admin (event scope, same name as in `track()`) before launch
 - [ ] With `formTrack()`: the form has `<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">` in its HTML, and the value is included when the form is submitted (also when the site submits with JavaScript, e.g. the HubSpot Forms API)
 - [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
+- [ ] With Google Consent Mode: `gtag('consent', 'default', {...})` (and the update with a saved choice) runs before `gtag('config')`; the experiment code doesn't change (see "Google Consent Mode V2")
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
 - [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N&abrantes_debug` (see "Testing Each Variant" and "Debug Mode"); it isn't persisted or tracked. Load it once without `abrantes_force` (with `?abrantes_debug`) to check persistence and tracking. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
 - [ ] If Clarity or Matomo is needed, warn about custom build requirement

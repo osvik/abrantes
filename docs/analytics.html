@@ -155,6 +155,56 @@
 
         <section class="features docs-section">
             <div class="container">
+                <h2>Google Consent Mode V2</h2>
+                <div class="feature-card">
+                    <p>Abrantes works with <a href="https://developers.google.com/tag-platform/security/guides/consent" target="_blank" rel="noreferrer">Google Consent Mode V2</a>.
+                        The experiment code doesn't change. Only the order of the GA4 snippet matters: the consent defaults go first,
+                        before the experiment and before <code>gtag('config')</code>.</p>
+                    <pre><code>&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+  });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('js', new Date());
+  window.googleTrackingConfig = {};
+&lt;/script&gt;
+
+&lt;!-- The experiment: assignVariant, renderVariant, persist, track("ab_test")... --&gt;
+
+&lt;script&gt;
+  gtag('config', 'G-XXXXXXX', window.googleTrackingConfig);
+&lt;/script&gt;</code></pre>
+                    <p>Tested with gtag.js:</p>
+                    <ul class="doc-list">
+                        <li>With consent denied, gtag.js sends cookieless pings that still include the experiment
+                            (from <code>track()</code> and <code>trackUser()</code>).</li>
+                        <li>When the visitor accepts on the page (<code>gtag('consent', 'update', ...)</code>), the next events,
+                            like the conversion, include it too. There's no need to call <code>track()</code> or <code>gtag('config')</code> again.</li>
+                        <li>If the visitor accepted before, the site's consent manager calls <code>gtag('consent', 'update', ...)</code>
+                            before <code>gtag('config')</code>, and everything is sent normally.</li>
+                        <li>With Google Tag Manager, use <code>add2dataLayer()</code>: the GA4 tags in the container apply Consent Mode.</li>
+                    </ul>
+                    <p>Keep in mind:</p>
+                    <ul class="doc-list">
+                        <li>Consent Mode only controls Google tags. It doesn't block the cookie or storage entry written by
+                            <code>persist()</code>, or the other tools. Your consent setup decides when they can be used.</li>
+                        <li>GA4 uses the denied-consent pings for modelling, so the GA4 reports mainly show visitors who accepted
+                            analytics cookies. If a variant can change whether visitors accept (for example, it changes the cookie
+                            banner or the content around it), the GA4 samples of the variants aren't comparable.</li>
+                    </ul>
+                    <a class="example-link" href="https://github.com/osvik/abrantes/blob/main/examples/consent-mode.html" target="_blank">Open consent-mode.html &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
                 <h2>Tool setup (official docs)</h2>
                 <div class="feature-card">
                     <p>The examples in the folder <a href="https://github.com/osvik/abrantes/tree/main/examples" target="_blank">examples</a> cover adding tracking scripts and calling the relevant

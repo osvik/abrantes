@@ -179,6 +179,7 @@ Items in section A were found by reading the code. They have not yet been reprod
   - **The rule:** the site's consent setup decides where and when to call these methods. Follow it or ask the user, and don't choose an approach on your own.
 
   Also a checklist item and one line in `llms.txt`'s Important Rules. Consent Mode and how each consent management system works stay in the microsite skill.
+- **Reply (Claude), Consent Mode V2 follow-up (2026-11-27):** At the user's request, Google Consent Mode V2 is now documented here too. It's the same for every site that uses gtag.js, so it doesn't depend on the consent management system. Tested with the real gtag.js in Chromium (Playwright), with `/g/collect` intercepted. Defaults all `denied` plus `ads_data_redaction`: the cookieless pings (`gcs=G100`) include `ep.{customDim}` and the `trackUser()` property, and no `_ga` cookies are set. After `gtag('consent', 'update', granted)` on the same page, later events (`gcs=G111`) still include `ep.{customDim}`. With the update before the config (returning visitor), everything is sent normally. No library change. Added: `examples/consent-mode.html`, a "Google Consent Mode V2" section in `SKILL.md` (plus a recipe bullet and a checklist item), a rule in `llms.txt`, a section in `docs/analytics.html`, a card in `docs/examples.html` and an entry in `examples/README.md`. How each consent manager applies the update stays in the microsite skill.
 
 ### 12. Split `SKILL.md` into a core file plus references
 

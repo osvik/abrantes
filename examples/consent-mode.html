@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrantes - GA4 with Google Consent Mode V2</title>
+
+    <!-- 1. GA4 snippet with the Consent Mode V2 defaults, WITHOUT gtag('config') -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50HRM8825D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+
+        // Consent Mode V2 defaults: everything denied until the visitor accepts.
+        // They must run before gtag('config', ...).
+        gtag('consent', 'default', {
+            ad_storage: 'denied',
+            analytics_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+        });
+        gtag('set', 'ads_data_redaction', true);
+
+        // If the visitor already accepted on a previous page, your consent manager
+        // calls gtag('consent', 'update', {...}) here, before the config.
+
+        gtag('js', new Date());
+        window.googleTrackingConfig = {};
+    </script>
+
+    <!-- 2. The experiment -->
+    <script src="../AbrantesPlus.min.js"></script>
+    <script>
+
+        // Create the test
+        var MyTest = Object.create(Abrantes);
+
+        // Define the variants
+        MyTest.variants = [
+
+            // Original
+            function () {
+            },
+
+            // Variant 1
+            function () {
+                MyTest.waitFor("#bigH1", function () {
+                    document.getElementById("bigH1").innerText = "MyTest Variant 1";
+                });
+            },
+
+        ];
+
+        // Assign a variant to the user
+        MyTest.assignVariant("MyTest");
+
+        // Render the variant
+        MyTest.renderVariant();
+
+        // Persist the variant in the browser.
+        // Consent Mode only controls the Google tags: it doesn't stop this cookie.
+        // Your consent setup decides if and when persist() can be called, and with which storage.
+        MyTest.persist("cookie");
+
+        // Track the variant in an event dimension. It works with Consent Mode:
+        // while analytics_storage is denied, gtag.js sends cookieless pings that still include it,
+        // and after the visitor accepts, the next events include it too.
+        MyTest.track("ab_test");
+
+        // Optionally track the variant in a user dimension
+        MyTest.trackUser("ab_test_user");
+
+    </script>
+
+    <!-- 3. GA4 config, always after the experiment -->
+    <script>
+        gtag('config', 'G-50HRM8825D', window.googleTrackingConfig);
+    </script>
+
+</head>
+
+<body>
+
+    <h1 id="bigH1">MyTest Original</h1>
+
+    <!-- A minimal cookie banner. Use your consent manager instead. -->
+    <div id="cookie-banner">
+        <p>We use cookies for analytics.</p>
+        <button type="button" id="accept">Accept</button>
+        <button type="button" id="reject">Reject</button>
+    </div>
+
+    <script>
+        function closeBanner() {
+            document.getElementById("cookie-banner").hidden = true;
+        }
+
+        document.getElementById("accept").addEventListener("click", function () {
+            // Events sent after this update use cookies and still include ab_test
+            gtag('consent', 'update', {
+                ad_storage: 'granted',
+                analytics_storage: 'granted',
+                ad_user_data: 'granted',
+                ad_personalization: 'granted',
+            });
+            closeBanner();
+        });
+
+        document.getElementById("reject").addEventListener("click", closeBanner);
+    </script>
+
+</body>
+
+</html>
