@@ -24,8 +24,9 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Where:** `plugins/formtrack.js` — `formTrack()`, `settings.formTrack.triggerEvents`
 - **Problem:** The default trigger is `DOMContentLoaded`. With the recommended `<script type="module" async>` pattern, the script can run after that event has already fired. The listener never fires and the hidden field stays empty, with no error.
 - **Proposal:** If a trigger is `DOMContentLoaded` and `document.readyState !== "loading"`, call `setInput` right away.
-- **Status:** todo
+- **Status:** done
 - **Comments:** Fix without breaking other use cases.
+- **Reply (Claude):** Done in `plugins/formtrack.js`. When the trigger is `DOMContentLoaded` and `document.readyState` isn't `"loading"`, `setInput` is scheduled with `setTimeout(..., 0)` instead of adding a listener. Other cases don't change: scripts that run while the page is loading still use the listener, and custom consent events (e.g. `cookiesAccepted`) are always listeners. I used `setTimeout` instead of a direct call so a missing input still throws asynchronously, as it did before, and doesn't stop the code after `formTrack()` (e.g. `track()`). #5 will replace that throw with a `console.warn`. Tested in Chromium (Playwright) against the old and new code: with a late `async` script (classic or module), the old code left the field empty and the new code fills it. Scripts in `<head>`, at the end of `<body>`, deferred modules and custom consent events behave the same as before. The built files (`AbrantesPlus*.js`) haven't been rebuilt yet.
 
 ### 3. `crossSiteLink()` has the same `DOMContentLoaded` problem
 

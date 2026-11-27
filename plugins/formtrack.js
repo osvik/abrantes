@@ -24,10 +24,19 @@
 
             const self = this;
 
+            const setInput = function () {
+                self.setInput(self.settings.formTrack.inputElement, self.testId, self.variant);
+            };
+
             this.settings.formTrack.triggerEvents.forEach(function (ev) {
-                window.addEventListener(ev, function () {
-                    self.setInput(self.settings.formTrack.inputElement, self.testId, self.variant);
-                });
+                if (ev === "DOMContentLoaded" && document.readyState !== "loading") {
+                    // The DOM is already parsed (e.g. async or module script), so DOMContentLoaded
+                    // may have already fired. Run asynchronously, like the listener would,
+                    // so an error in setInput doesn't stop the code that called formTrack().
+                    setTimeout(setInput, 0);
+                    return;
+                }
+                window.addEventListener(ev, setInput);
             });
 
             document.dispatchEvent(new CustomEvent("abrantes:formTrack", {
