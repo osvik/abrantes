@@ -61,6 +61,7 @@
             const n = Math.random();
             if (n > trafficAllocation || !segment()) {
                 this.variant = -1;
+                this.debugLog(this.testId + ": not in the test (trafficAllocation or segment), variant -1");
                 return
             }
             this.variant = await this.getSeededVar(seed);

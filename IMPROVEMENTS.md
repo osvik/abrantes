@@ -110,7 +110,7 @@ Items in section A were found by reading the code. They have not yet been reprod
 ### 8. Debug mode
 
 - **Proposal:** `Abrantes.debug = true` or `?abrantes_debug` logs assignment, render, persist, track and formTrack (with values) to the console. A headless browser can read these logs. The existing `abrantes:*` CustomEvents can drive this.
-- **Status:** todo
+- **Status:** done
 - **Comments:** The the `Abrantes.track` method is what tracks if an experiment is tracked or not. Isn't it enough to remove or add the `Abrantes.track` method during testing?
 - **Reply (Claude):** My proposal was unclear. Debug mode wasn't about turning tracking on or off. It was about **seeing** what happened (which variant was assigned, whether it rendered, what was persisted, what value went to GA4 and to the form field) so an LLM can verify the experiment by itself.
 
@@ -119,6 +119,12 @@ Items in section A were found by reading the code. They have not yet been reprod
   - After load, check the state directly: `MyTest.variant`, the class on `<html>`/`<body>`, `window.googleTrackingConfig`, and the value of `#last_abtest_variant`.
 
   Together with #7, this lets the skill check every variant without changing the library. (The Checker Extension already covers this for people.)
+- **Reply (Claude), implementation:** Implemented in the library, as the proposal says.
+  - **Turning it on:** URL parameter `?abrantes_debug` (no code change, e.g. `?abrantes_force=MyTest:1&abrantes_debug`) or `Abrantes.debug = true` before the experiment. `debug` is an accessor on `Abrantes`, so `MyTest.debug = true` also works and the value is shared by all experiments (it doesn't become a per-experiment property). Only `true` turns it on.
+  - **What it logs** (`console.log`, prefixed `Abrantes debug:`, data as JSON so a headless browser can read it as text): every `abrantes:*` event (`assignVariant`, `renderVariant`, `persist`, `track`, `formTrack`, `log`) from a listener the core registers when it loads, so it always runs before the experiment code. Also the steps without an event: variant read from storage, not in the test (`trafficAllocation`/`segment`), `importVariant()` without its URL parameter, the value written to the form field by `formTrack()`, and the `hj()`/`clarity()` calls. New core helper `debugLog(message, data)`.
+  - **Off by default:** nothing is logged, and no behavior changes. Existing warnings and the forced-visit `console.info` messages are shown as before, with or without debug.
+  - **Tested** in Chromium (Playwright): off (silent), `?abrantes_debug`, `Abrantes.debug = true`, `MyTest.debug = true` (shared, no own property), a non-`true` value (off), debug + `abrantes_force`, stored variant, not in the test, `importVariant()` without parameter. The #7 tests still pass, ESLint is clean, and the module build parses.
+  - **Docs:** new "Debug Mode" section in `SKILL.md` (with example output and the Playwright tip), core methods table and checklist; `llms.txt`; "Testing the experiment" in `docs/experiments.html`. The built files haven't been rebuilt yet.
 
 ### 9. Test suite
 

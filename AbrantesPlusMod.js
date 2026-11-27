@@ -10,7 +10,45 @@ const Abrantes = Object.create(null);
 Abrantes.version = "1.7.0";
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
+Abrantes.forced = false;
 Abrantes.excludedVariantsForNewUsers = [];
+
+/**
+ * Debug mode: logs what each experiment does (assignment, render, persist, tracking, form field) to the console.
+ * Turn it on with Abrantes.debug = true (or MyTest.debug = true) before the experiment code,
+ * or with the URL parameter ?abrantes_debug. The value is shared by all experiments.
+ */
+{
+    let debugOn = false;
+    Object.defineProperty(Abrantes, "debug", {
+        get: function () {
+            return debugOn || new URLSearchParams(window.location.search).has("abrantes_debug");
+        },
+        set: function (value) {
+            debugOn = value === true;
+        },
+        enumerable: true
+    });
+}
+
+/**
+ * Logs a debug message to the console when debug mode is on
+ * @param {string} message - What happened
+ * @param {object} data - Optional data, logged as JSON
+ */
+Abrantes.debugLog = function (message, data) {
+    if (!Abrantes.debug) {
+        return;
+    }
+    console.log("Abrantes debug: " + message + (data === undefined ? "" : " " + JSON.stringify(data)));
+};
+
+// Logs every Abrantes event in debug mode. Registered when the library loads, so it runs before any experiment code.
+["assignVariant", "renderVariant", "persist", "track", "formTrack", "log"].forEach(function (name) {
+    document.addEventListener("abrantes:" + name, function (event) {
+        Abrantes.debugLog("abrantes:" + name, event.detail);
+    });
+});
 
 /**
  * Object where the user can read and write the settings
@@ -48,8 +86,12 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
         throw new Error("You must define at least one variant (array of functions) before assigning");
     }
     this.testId = testId;
+    if (this.applyForced()) {
+        return;
+    }
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
+        this.debugLog(this.testId + ": variant " + this.variant + " read from storage (cookie, localStorage or sessionStorage)");
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
@@ -61,6 +103,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     const n = Math.random();
     if (n > trafficAllocation || !segment()) {
         this.variant = -1;
+        this.debugLog(this.testId + ": not in the test (trafficAllocation or segment), variant -1");
     } else {
         this.variant = this.getRandomVar();
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
@@ -85,6 +128,9 @@ Abrantes.importVariant = function (testId) {
     }
 
     this.testId = testId;
+    if (this.applyForced()) {
+        return;
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has(testId)) {
@@ -108,7 +154,69 @@ Abrantes.importVariant = function (testId) {
         }));
     } else {
         this.variant = -1;
+        this.debugLog(this.testId + ": no ?" + this.testId + "= parameter in the URL, variant -1");
     }
+};
+
+/**
+ * Reads the variant forced for this.testId with the URL parameter abrantes_force.
+ * Format: ?abrantes_force=MyTest:1 Several tests: ?abrantes_force=MyTest:1,OtherTest:0
+ * @returns {number|undefined} The forced variant, or undefined if there's no valid forced variant for this test
+ */
+Abrantes.readForced = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    let forced;
+    urlParams.getAll("abrantes_force").join(",").split(",").forEach((entry) => {
+        const sep = entry.lastIndexOf(":");
+        if (sep === -1 || entry.slice(0, sep).trim() !== this.testId) {
+            return;
+        }
+        const value = entry.slice(sep + 1).trim();
+        const variant = Number(value);
+        if (value === "" || !Number.isInteger(variant) || variant < -1 || variant >= this.variants.length) {
+            console.warn("Abrantes: abrantes_force=" + entry + " is not valid for " + this.testId + ". Use a variant between 0 and " + (this.variants.length - 1) + " (or -1 for not in the test). The variant is assigned as usual.");
+            return;
+        }
+        forced = variant;
+    });
+    return forced;
+};
+
+/**
+ * If the URL forces a variant for this.testId, assigns it and marks the experiment as forced.
+ * A forced visit is for testing: persist() and the tracking methods skip it.
+ * @returns {boolean} true if a variant was forced
+ */
+Abrantes.applyForced = function () {
+    const forcedVariant = this.readForced();
+    if (typeof (forcedVariant) !== "number") {
+        this.forced = false;
+        return false;
+    }
+    this.variant = forcedVariant;
+    this.forced = true;
+    console.info("Abrantes: " + this.testId + " is forced to variant " + forcedVariant + " by the URL. It is not persisted or tracked.");
+    document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+        detail: {
+            testId: this.testId,
+            variant: this.variant,
+            forced: true
+        }
+    }));
+    return true;
+};
+
+/**
+ * Returns true, and logs that the action was skipped, when the variant was forced by the URL
+ * @param {string} action - Name of the skipped method, for the console message
+ * @returns {boolean}
+ */
+Abrantes.skipForced = function (action) {
+    if (this.forced) {
+        console.info("Abrantes: " + this.testId + " is forced by the URL, so " + action + " is skipped.");
+        return true;
+    }
+    return false;
 };
 
 /**
@@ -209,6 +317,9 @@ Abrantes.persist = function (context = "cookie") {
     let validContexts = ["user", "local", "session", "cookie"];
     if (!validContexts.includes(context)) {
         throw new Error("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
+    }
+    if (this.skipForced("persist()")) {
+        return;
     }
     let persisted = false;
     if (context === "user" || context === "local") {
@@ -327,6 +438,9 @@ Abrantes.waitFor = function (selector, callback) {
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
+    if (this.skipForced("track()")) {
+        return;
+    }
     document.dispatchEvent(new CustomEvent("abrantes:track", {
         detail: {
             testId: this.testId,
@@ -352,6 +466,9 @@ Abrantes.track = function () {
                 return;
             }
             if (this.variant === -1) {
+                return;
+            }
+            if (this.skipForced("track()")) {
                 return;
             }
             let setObj = {};
@@ -404,6 +521,9 @@ Abrantes.track = function () {
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("trackUser()")) {
+                return;
+            }
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             gtag('set', 'user_properties', setObj);
@@ -444,9 +564,13 @@ Abrantes.track = function () {
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("hotjar()")) {
+                return;
+            }
 
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
+                this.debugLog("hotjar(): hj('event', '" + this.testId + "-" + this.variant + "')");
                 return;
             }
 
@@ -457,6 +581,7 @@ Abrantes.track = function () {
                     setTimeout(() => {
                         if (typeof (hj) === "function") {
                             hj('event', self.testId + "-" + self.variant);
+                            self.debugLog("hotjar(): hj('event', '" + self.testId + "-" + self.variant + "')");
                         } else {
                             console.info("Hotjar not present");
                         }
@@ -497,6 +622,9 @@ Abrantes.track = function () {
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("formTrack()")) {
+                return;
+            }
 
             const self = this;
 
@@ -527,9 +655,14 @@ Abrantes.track = function () {
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);
             if (!iElement) {
-                throw new Error("The element with the selector '" + selector + "' does not exist");
+                const example = selector.charAt(0) === "#" && /^#[\w-]+$/.test(selector) ?
+                    "<input type=\"hidden\" id=\"" + selector.slice(1) + "\" name=\"" + selector.slice(1) + "\">" :
+                    "<input type=\"hidden\" name=\"...\"> matching \"" + selector + "\"";
+                console.warn("Abrantes formTrack(): no element matches the selector \"" + selector + "\", so " + testId + "-" + variant + " is not saved in the form. Add " + example + " inside the form (the name is needed for it to be submitted), or set settings.formTrack.inputElement to the selector of the hidden field.");
+                return;
             }
             iElement.value = testId + "-" + variant;
+            this.debugLog("formTrack(): " + selector + " value set", { value: iElement.value });
         }
 
     };
@@ -562,6 +695,9 @@ Abrantes.track = function () {
         add2dataLayer: function (testId = this.testId) {
 
             if (this.variant === -1) {
+                return;
+            }
+            if (this.skipForced("add2dataLayer()")) {
                 return;
             }
 
@@ -637,6 +773,9 @@ Abrantes.track = function () {
         log: function (event, note = "") {
 
             if (this.variant === -1) {
+                return;
+            }
+            if (this.skipForced("log()")) {
                 return;
             }
 
@@ -737,9 +876,13 @@ Abrantes.track = function () {
                 throw new Error("You need to provide a seed string when assigning a seeded variant");
             }
             this.testId = testId;
+            if (this.applyForced()) {
+                return;
+            }
             const n = Math.random();
             if (n > trafficAllocation || !segment()) {
                 this.variant = -1;
+                this.debugLog(this.testId + ": not in the test (trafficAllocation or segment), variant -1");
                 return
             }
             this.variant = await this.getSeededVar(seed);
@@ -779,6 +922,9 @@ Abrantes.track = function () {
         hubspotEvent: function (eventName) {
 
             if (this.variant === -1) {
+                return;
+            }
+            if (this.skipForced("hubspotEvent()")) {
                 return;
             }
 

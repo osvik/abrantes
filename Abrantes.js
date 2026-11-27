@@ -14,6 +14,43 @@ Abrantes.forced = false;
 Abrantes.excludedVariantsForNewUsers = [];
 
 /**
+ * Debug mode: logs what each experiment does (assignment, render, persist, tracking, form field) to the console.
+ * Turn it on with Abrantes.debug = true (or MyTest.debug = true) before the experiment code,
+ * or with the URL parameter ?abrantes_debug. The value is shared by all experiments.
+ */
+{
+    let debugOn = false;
+    Object.defineProperty(Abrantes, "debug", {
+        get: function () {
+            return debugOn || new URLSearchParams(window.location.search).has("abrantes_debug");
+        },
+        set: function (value) {
+            debugOn = value === true;
+        },
+        enumerable: true
+    });
+}
+
+/**
+ * Logs a debug message to the console when debug mode is on
+ * @param {string} message - What happened
+ * @param {object} data - Optional data, logged as JSON
+ */
+Abrantes.debugLog = function (message, data) {
+    if (!Abrantes.debug) {
+        return;
+    }
+    console.log("Abrantes debug: " + message + (data === undefined ? "" : " " + JSON.stringify(data)));
+};
+
+// Logs every Abrantes event in debug mode. Registered when the library loads, so it runs before any experiment code.
+["assignVariant", "renderVariant", "persist", "track", "formTrack", "log"].forEach(function (name) {
+    document.addEventListener("abrantes:" + name, function (event) {
+        Abrantes.debugLog("abrantes:" + name, event.detail);
+    });
+});
+
+/**
  * Object where the user can read and write the settings
  */
 Abrantes.settings = {
@@ -54,6 +91,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     }
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
+        this.debugLog(this.testId + ": variant " + this.variant + " read from storage (cookie, localStorage or sessionStorage)");
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
             detail: {
                 testId: this.testId,
@@ -65,6 +103,7 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
     const n = Math.random();
     if (n > trafficAllocation || !segment()) {
         this.variant = -1;
+        this.debugLog(this.testId + ": not in the test (trafficAllocation or segment), variant -1");
     } else {
         this.variant = this.getRandomVar();
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
@@ -115,6 +154,7 @@ Abrantes.importVariant = function (testId) {
         }));
     } else {
         this.variant = -1;
+        this.debugLog(this.testId + ": no ?" + this.testId + "= parameter in the URL, variant -1");
     }
 };
 

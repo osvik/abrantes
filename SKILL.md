@@ -148,6 +148,7 @@ Use these rules to decide which pattern to use:
 | `importVariant(testId)` | Read variant from URL query params (for cross-site experiments). |
 | `makeCrossSiteURL(url)` | Generate a URL with experiment params appended. |
 | `?abrantes_force=MyTest:1` (URL) | Not a method: forces a variant for testing. See "Testing Each Variant" below. |
+| `Abrantes.debug = true` or `?abrantes_debug` (URL) | Debug mode: logs every step to the console. See "Debug Mode" below. |
 | `onEvent(eventName, callback)` | Run `callback` when a window event fires. If the event is `DOMContentLoaded` or `load` and has already happened (e.g. `async` or module scripts, scripts added by a tag manager), it runs on the next tick instead of never. `crossSiteLink()` and `formTrack()` use it for their trigger events. |
 
 ### When to Use `waitFor`
@@ -725,6 +726,31 @@ page.html?abrantes_force=MyTest:1,OtherTest:0   // several experiments
 
 With Playwright, open one clean page per variant and check `MyTest.variant`, the class `MyTest-N` on `<html>` and the page content, and take a screenshot.
 
+## Debug Mode (`?abrantes_debug`)
+
+Debug mode logs what each experiment does to the console, with the values, so you can verify an experiment in a browser (or a headless one) without reading the code. Turn it on with either:
+
+- the URL parameter `?abrantes_debug` (no code change, recommended for testing; combine it with the force: `?abrantes_force=MyTest:1&abrantes_debug`), or
+- `Abrantes.debug = true;` (or `MyTest.debug = true;`) **before** the experiment code. The value is shared by all experiments. Remove it before going live.
+
+Every line starts with `Abrantes debug:`. It logs:
+
+- Every `abrantes:*` event with its `detail` as JSON: `assignVariant`, `renderVariant`, `persist`, `track` (GA4, dataLayer, HubSpot, Matomo, core), `formTrack`, `log`. The core registers this listener when it loads, so it never misses an event (a listener of your own must be registered before the experiment code, e.g. with Playwright's `page.addInitScript()`).
+- The steps without an event: variant read from storage, not in the test (`trafficAllocation` or `segment`, variant `-1`), `importVariant()` without its URL parameter, the value written to the form field by `formTrack()`, and the `hj()`/`clarity()` calls.
+
+Example output (`?abrantes_debug`):
+
+```
+Abrantes debug: abrantes:assignVariant {"testId":"MyTest","variant":0}
+Abrantes debug: abrantes:renderVariant {"testId":"MyTest","variant":0}
+Abrantes debug: abrantes:persist {"testId":"MyTest","variant":0,"context":"cookie"}
+Abrantes debug: abrantes:track {"testId":"MyTest","variant":0,"customDim":"ab_test","tool":"ga4-gtag","type":"event"}
+Abrantes debug: abrantes:formTrack {"testId":"MyTest","variant":0,"element":"#last_abtest_variant"}
+Abrantes debug: formTrack(): #last_abtest_variant value set {"value":"MyTest-0"}
+```
+
+Warnings (`console.warn`, e.g. GA4 script order, missing form field, invalid `abrantes_force`) and the forced-visit messages (`console.info`) are always shown, with or without debug mode. In Playwright, collect them with `page.on("console", msg => ...)`. To check the final state, also read `MyTest.variant`, the class on `<html>`, `window.googleTrackingConfig` and the value of `#last_abtest_variant`.
+
 ---
 
 ## DOM Events
@@ -750,6 +776,6 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] If several experiments run on the same page: one GA4 custom dimension per experiment, and `formTrack()` for one experiment only
 - [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
-- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N` (see "Testing Each Variant"); it isn't persisted or tracked. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
+- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N&abrantes_debug` (see "Testing Each Variant" and "Debug Mode"); it isn't persisted or tracked. Load it once without `abrantes_force` (with `?abrantes_debug`) to check persistence and tracking. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
 - [ ] If Clarity or Matomo is needed, warn about custom build requirement
 - [ ] Recommend the planner and calculator tools with links

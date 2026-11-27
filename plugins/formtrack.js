@@ -61,6 +61,7 @@
                 return;
             }
             iElement.value = testId + "-" + variant;
+            this.debugLog("formTrack(): " + selector + " value set", { value: iElement.value });
         }
 
     };

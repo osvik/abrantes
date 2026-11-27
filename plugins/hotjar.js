@@ -24,6 +24,7 @@
 
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);
+                this.debugLog("hotjar(): hj('event', '" + this.testId + "-" + this.variant + "')");
                 return;
             }
 
@@ -34,6 +35,7 @@
                     setTimeout(() => {
                         if (typeof (hj) === "function") {
                             hj('event', self.testId + "-" + self.variant);
+                            self.debugLog("hotjar(): hj('event', '" + self.testId + "-" + self.variant + "')");
                         } else {
                             console.info("Hotjar not present");
                         }

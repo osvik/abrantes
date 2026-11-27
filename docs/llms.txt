@@ -75,6 +75,7 @@ MyTest.persist("cookie");         // persist assignment
 - `crossSiteLink(selector)` - Rewrite link hrefs to include experiment data
 - `onEvent(eventName, callback)` - Run callback on a window event; if `DOMContentLoaded`/`load` already fired (async/module scripts, tag managers), runs on the next tick. Used by `crossSiteLink()` and `formTrack()`
 - `assignSeededVariant(testId, seed, trafficAllocation?, segment?)` - Async deterministic assignment from seed string
+- `Abrantes.debug` / URL parameter `?abrantes_debug` - Debug mode, logs every step to the console
 - URL parameter `?abrantes_force=MyTest:1` (comma-separated for several tests) - Forces a variant for testing, overriding stored/random assignment. A forced visit is not persisted or tracked (`persist()` and every tracking method skip it, with a `console.info`)
 
 ### Available Tracking Plugins (default build)
@@ -109,6 +110,7 @@ MyTest.persist("cookie");         // persist assignment
 - Call `assignVariant` before `renderVariant`
 - Always include at least one tracking method
 - Test each variant with `?abrantes_force=MyTest:N` instead of editing the code; check tracking without the parameter, since forced visits aren't tracked
+- Debug mode: `?abrantes_debug` in the URL (or `Abrantes.debug = true` before the experiment) logs every step to the console as `Abrantes debug: ...` (assignment, render, persist, tracking, form field value)
 - Several experiments on the same page: each needs its own GA4 custom dimension name (e.g. `MyTestA.track("ab_test_a")`, `MyTestB.track("ab_test_b")`), registered in GA4 admin. `settings` is shared by all experiments, so only one experiment per page can use `formTrack()`
 - For redirect experiments, add `<link rel="canonical">` on variant pages
 - For iframe experiments, verify `event.origin` in postMessage listeners

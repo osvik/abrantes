@@ -29,6 +29,7 @@
                     setTimeout(() => {
                         if (typeof (clarity) === "function") {
                             clarity("set", self.testId, "v" + self.variant);
+                            self.debugLog("clarity(): clarity('set', '" + self.testId + "', 'v" + self.variant + "')");
                         } else {
                             console.info("Clarity not present");
                         }
