@@ -78,6 +78,13 @@ Items in section A were found by reading the code. They have not yet been reprod
   If you want, a later item could give each experiment its own copy of `settings`. Otherwise, documenting it is enough.
 - **Reply (Claude):** Documented, no library change. `SKILL.md` has a new section, "Several Experiments on the Same Page": one GA4 custom dimension per experiment (with an example), `settings` shared by all experiments, and `formTrack()` for one experiment per page. There's also a checklist item, and the Settings Reference no longer says settings "can be customized per experiment". `llms.txt` has the same rule under Important Rules. Verified: two experiments share the same `settings` object (Node). With the real gtag.js and two dimensions (`ab_test`, `ab_test_b`), every event (page_view, custom, generate_lead, enhanced measurement) carries both values. With two `formTrack()` calls, the field keeps only the last one (Chromium + Playwright).
 
+### 20. `waitFor()` crashes when the script runs in `<head>`
+
+- **Where:** `Abrantes.js` — `waitFor()`, `observer.observe(document.body, ...)`
+- **Problem:** Found while testing #10. In `<head>`, `<body>` doesn't exist yet, so when the element isn't there `MutationObserver.observe(document.body)` throws `parameter 1 is not of type 'Node'`. The variant function stops, and so does the code after `renderVariant()`: no class, no `persist()`, no `track()`, no `formTrack()`. `SKILL.md` tells LLMs to use `waitFor()` exactly in this case (script in `<head>`), so every in-page experiment in `<head>` was broken. Same family as #1.
+- **Status:** done
+- **Reply (Claude):** Fixed by observing `document.documentElement` (`<html>`, which always exists) instead of `document.body`, with the same `childList` + `subtree` options, so it also sees `<body>` and everything inside it being parsed. Tested in Chromium (Playwright): `waitFor()` in `<head>` now changes the element once it's parsed and the rest of the experiment runs (class, cookie, GA4 dimension, form field); from a script in `<body>` it still fires for existing elements (right away) and for elements added later.
+
 ---
 
 ## B. Making experiments verifiable
@@ -145,8 +152,18 @@ Items in section A were found by reading the code. They have not yet been reprod
   - GA4 admin step: register the event-scoped custom dimension (and user property, if `trackUser` is used). Without it, no data shows up.
   - Hidden `<input type="hidden" id="last_abtest_variant">` in the form, included in the submission payload (e.g. HubSpot Forms API, mapped to a contact property).
   - The rule for several experiments (see #6).
-- **Status:** todo
+- **Status:** done
 - **Comments:**
+- **Reply (Claude):** Done. New section "End-to-End Recipe: Static Site + GA4 (gtag.js) + Form Tracking" in `SKILL.md`, linked from the workflow at the top, plus a short version in `llms.txt`. It doesn't repeat #4/#6, it links to them. Contents:
+  1. **Layout:** three blocks in `<head>` with classic scripts: GA4 snippet without config + `window.googleTrackingConfig = {}` (layout) → experiment slot (only on experiment pages; Nunjucks/Hugo/Astro examples) → `gtag('config', ..., window.googleTrackingConfig)` (layout, last). Classic scripts in `<head>` keep the order and avoid flicker. The as-module pattern isn't used here.
+  2. **Form:** the hidden field must be in the HTML. With JavaScript submissions, read it at submit time and include it in the payload. For HubSpot: a contact property, a hidden field on the HubSpot form, and the `fields` entry. Don't send it when it's empty. Also a GA4 conversion event, marked as a key event.
+  3. **GA4 admin:** where to register the dimension, event scope, exact parameter name, not retroactive (register before launch), one per concurrent experiment.
+  4. **Checks before launch:** `abrantes_force` + `abrantes_debug` for each variant; `abrantes_debug` in a fresh browser for tracking (expected log lines, no warnings, `ep.ab_test` in `/g/collect`, the field in the submitted data); a cookie to check tracking for a specific variant.
+  5. **Analysis:** GA4 Explorations or CRM, then the calculator.
+
+  Two new checklist items: GA4 registration, and the field included in the submission.
+
+  **Tested** in Chromium (Playwright) with the exact template and the real gtag.js (`/g/collect` intercepted, nothing sent to GA): `page_view`, `scroll` and `generate_lead` carry `ep.ab_test=hero_cta_2026-N`; the cookie is set; `new FormData(form)` contains `last_abtest_variant`; a forced visit renders the variant with no dimension, cookie or field value. Testing it found a library bug, now fixed (#20): `waitFor()` crashed in `<head>`, so the recipe template didn't work.
 
 ### 11. Consent / GDPR guidance
 
