@@ -14,10 +14,10 @@ Items in section A were found by reading the code. They have not yet been reprod
 
 - **Where:** `Abrantes.js` — `renderVariant()`, `document.getElementsByTagName("body")[0].classList.add(...)`
 - **Problem:** In `<head>`, `<body>` doesn't exist yet, so this throws a TypeError. The head is the natural place for no-flicker CSS experiments on a static site.
-- **Proposal:** Add the class `{testId}-{variant}` to `document.documentElement` (`<html>`). Also add it to `<body>` when it exists (for backward compatibility), or add it once the DOM is ready.
-- **Docs:** Then recommend "script in `<head>` + CSS on `.MyTest-1 ...`" as the no-flicker pattern.
-- **Status:** todo
-- **Comments:**
+- **Proposal:** Add the class `{testId}-{variant}` to `document.documentElement` (`<html>`) instead of (`<body>`)
+- **Docs:**
+- **Status:** done
+- **Comments:** Selectors like `.MyTest-1 h1` work with either element, because they only need an ancestor with the class. So nothing existing breaks, and code in `<head>` stops crashing.
 
 ### 2. `formTrack()` can miss `DOMContentLoaded`
 
@@ -25,14 +25,14 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Problem:** The default trigger is `DOMContentLoaded`. With the recommended `<script type="module" async>` pattern, the script can run after that event has already fired. The listener never fires and the hidden field stays empty, with no error.
 - **Proposal:** If a trigger is `DOMContentLoaded` and `document.readyState !== "loading"`, call `setInput` right away.
 - **Status:** todo
-- **Comments:**
+- **Comments:** Fix without breaking other use cases.
 
 ### 3. `crossSiteLink()` has the same `DOMContentLoaded` problem
 
 - **Where:** `Abrantes.js` — `crossSiteLink()`, `settings.crossSiteLink.triggerEvent`
 - **Problem / proposal:** Same as #2. Ideally use one shared helper for "run on event, or now if it already happened".
 - **Status:** todo
-- **Comments:**
+- **Comments:** Fix if it doesn't break backward compatibility.
 
 ### 4. GA4 `track()` depends on script order
 
@@ -42,7 +42,7 @@ Items in section A were found by reading the code. They have not yet been reprod
   - a) If `gtag` exists, also call `gtag('set', { [customDim]: value })`. This sends the value with every following event, whatever the order.
   - b) Keep the behavior, but warn on the console when the config looks like it has already been sent, and document the required order clearly in `SKILL.md`.
 - **Status:** todo
-- **Comments:**
+- **Comments:** The `gtag('set'` pattern needs to be tested very well. In the past I've found many situations when it didn't behave as expected.
 
 ### 5. `formTrack()` errors are invisible
 
@@ -50,7 +50,7 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Problem:** If `#last_abtest_variant` is missing, the code throws inside an event listener, where nobody notices.
 - **Proposal:** Use a `console.warn` with a clear message: which selector is missing and what to add to the form.
 - **Status:** todo
-- **Comments:**
+- **Comments:** Go ahead
 
 ### 6. Several experiments on the same page overwrite each other
 
@@ -60,7 +60,13 @@ Items in section A were found by reading the code. They have not yet been reprod
   - a) Document the rule "one experiment per page or flow".
   - b) Support several experiments, for example by appending values (`testA-1,testB-0`) or using one field per test.
 - **Status:** todo
-- **Comments:**
+- **Comments:** It supports more than one experiment but it needs more than one custom dimension in GA4. Maintain the current behaviour and document it. Keep the behavior and document it. The docs will say: each experiment running at the same time needs its own GA4 custom dimension name, e.g. `MyTestA.track("ab_test_a")` and `MyTestB.track("ab_test_b")`, each registered in GA4 admin.
+
+  One related trap to document as well: `settings` is **shared** between all experiments. `Object.create(Abrantes)` makes every experiment point to the same `Abrantes.settings` object, so `MyTestB.settings.formTrack.inputElement = "#field_b"` also changes it for `MyTestA`. `formTrack()` reads the setting when its trigger event fires, so both experiments end up writing to the last selector set. The same applies to `settings.cookie`. That means:
+  - With form tracking, two experiments on the same page can't use separate hidden fields today. Only one of them gets recorded in the form.
+  - `SKILL.md` currently says core settings "can be customized per experiment". That's misleading and should be corrected.
+
+  If you want, a later item could give each experiment its own copy of `settings`. Otherwise, documenting it is enough.
 
 ---
 
@@ -71,13 +77,30 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Proposal:** A query parameter such as `?abrantes_force=MyTest:1` that overrides stored and random assignment. With it, an LLM (with Playwright) or a person can open and screenshot every variant.
 - **Open questions:** Should a forced visit persist or be tracked? Probably neither: it shouldn't pollute the data.
 - **Status:** todo
-- **Comments:**
+- **Comments:** Isn't this alreay implemented by Abrantes.importVariant? It doesn't matter much if it's persisted. As for being tracked, the `Abrantes.track` method should only be added after each variant was carefully tested.
+- **Reply (Claude):** Partly. `importVariant()` reads `?MyTest=N`, but only on pages whose code calls `importVariant()` instead of `assignVariant()`, i.e. redirect destinations and cross-site/iframe children. A normal in-page experiment calls `assignVariant()`, which ignores the URL and uses (1) the stored assignment or (2) a random one. So today, to see variant 1 of a normal experiment you have to either:
+  - clear the cookie/storage and reload until you get it at random, or
+  - temporarily edit the code to `importVariant()`, which means you're no longer testing the code that goes live, or
+  - call `MyTest.renderVariant(1)` in the console. That runs on top of the variant already rendered, so it isn't a clean view.
+
+  The point of #7 is to test **the exact code that will go live**, each variant in a clean page load, for example with Playwright opening `page.html?abrantes_force=MyTest:1`.
+
+  Agreed on persistence (it doesn't matter) and on tracking (add it only after testing). That makes this simpler: no special tracking logic is needed.
+
+  A lighter alternative with no new parameter: document a QA recipe instead. Set the stored value before loading the page (e.g. cookie `MyTest=1`, which `assignVariant()` already respects through `readPersistent()`), then load the page. Playwright can do this with `context.addCookies(...)`. This needs **no library change**, so I'd suggest it as the first option and keep the URL parameter only if the recipe proves awkward.
 
 ### 8. Debug mode
 
 - **Proposal:** `Abrantes.debug = true` or `?abrantes_debug` logs assignment, render, persist, track and formTrack (with values) to the console. A headless browser can read these logs. The existing `abrantes:*` CustomEvents can drive this.
 - **Status:** todo
-- **Comments:**
+- **Comments:** The the `Abrantes.track` method is what tracks if an experiment is tracked or not. Isn't it enough to remove or add the `Abrantes.track` method during testing?
+- **Reply (Claude):** My proposal was unclear. Debug mode wasn't about turning tracking on or off. It was about **seeing** what happened (which variant was assigned, whether it rendered, what was persisted, what value went to GA4 and to the form field) so an LLM can verify the experiment by itself.
+
+  You're right that a new library feature isn't needed: the existing `abrantes:*` CustomEvents already provide this. So I suggest **dropping the library change** and documenting, in `SKILL.md`, how to verify an experiment:
+  - A small listener that logs every `abrantes:*` event. It must be registered **before** the experiment code runs, because the events fire synchronously. In Playwright, use `page.addInitScript(...)`.
+  - After load, check the state directly: `MyTest.variant`, the class on `<html>`/`<body>`, `window.googleTrackingConfig`, and the value of `#last_abtest_variant`.
+
+  Together with #7, this lets the skill check every variant without changing the library. (The Checker Extension already covers this for people.)
 
 ### 9. Test suite
 
@@ -106,7 +129,8 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Problem:** `persist("cookie")` sets the assignment cookie before consent.
 - **Proposal:** Document the options: `persist("session")`, persisting only after consent, or treating the cookie as functional. Explain how this works with Google Consent Mode.
 - **Status:** todo
-- **Comments:**
+- **Comments:** We'll leave it to the skill as this may work differently with different consent management systems.
+- **Reply (Claude):** Agreed. Consent stays in the microsite skill. The only thing I'd keep here is one neutral sentence in `SKILL.md`: `persist()` writes a cookie or `localStorage`/`sessionStorage` entry when it is called, so the site's consent setup decides where and when it can be called. That way an LLM using only this repo's docs knows there's a decision to make, without the library taking a position on it.
 
 ### 12. Split `SKILL.md` into a core file plus references
 
@@ -121,7 +145,14 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Problem:** LLMs copy the `1.x.x` placeholder literally.
 - **Proposal:** Use the real version (`@1.7.0`), and update it as part of the release process.
 - **Status:** todo
-- **Comments:**
+- **Comments:** I need clarification on this.
+- **Reply (Claude):** I checked, and I was wrong about the main point. jsDelivr treats `@1.x.x` as a valid version range, not a placeholder: `https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js` returns 200 and serves version 1.7.0 (the same as `@1` and `@1.7.0`). So the current URLs work, and an LLM copying them literally gets a working script.
+
+  What's left is a choice, not a bug:
+  - `@1.x.x` (range): sites get bug fixes automatically, but also any behavior change in a 1.x release (e.g. the fixes in section A), without anyone testing the site again.
+  - `@1.7.0` (exact): the site keeps running exactly what was tested. Upgrades are deliberate (see #15).
+
+  For microsites built by an LLM and tested before going live, I'd recommend the exact version for production, and keeping `@1.x.x` in the docs as the "always latest 1.x" option. One sentence in `SKILL.md` explaining the difference is enough. If you prefer to keep the range everywhere, this item can be closed.
 
 ### 14. Self-hosted / npm installation for static site generators
 

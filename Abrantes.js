@@ -175,7 +175,7 @@ Abrantes.renderVariant = function (variant = this.variant) {
         throw new Error("Variant " + variant + " is not a function");
     }
     this.variants[variant]();
-    document.getElementsByTagName("body")[0].classList.add(this.testId + "-" + variant);
+    document.getElementsByTagName("html")[0].classList.add(this.testId + "-" + variant);
     document.dispatchEvent(new CustomEvent("abrantes:renderVariant", {
         detail: {
             testId: this.testId,
