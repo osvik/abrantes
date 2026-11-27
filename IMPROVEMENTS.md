@@ -199,7 +199,7 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Where:** `SKILL.md`, `docs/llms.txt`, docs pages
 - **Problem:** LLMs copy the `1.x.x` placeholder literally.
 - **Proposal:** Use the real version (`@1.7.0`), and update it as part of the release process.
-- **Status:** todo
+- **Status:** rejected
 - **Comments:** I need clarification on this.
 - **Reply (Claude):** I checked, and I was wrong about the main point. jsDelivr treats `@1.x.x` as a valid version range, not a placeholder: `https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js` returns 200 and serves version 1.7.0 (the same as `@1` and `@1.7.0`). So the current URLs work, and an LLM copying them literally gets a working script.
 
@@ -208,6 +208,7 @@ Items in section A were found by reading the code. They have not yet been reprod
   - `@1.7.0` (exact): the site keeps running exactly what was tested. Upgrades are deliberate (see #15).
 
   For microsites built by an LLM and tested before going live, I'd recommend the exact version for production, and keeping `@1.x.x` in the docs as the "always latest 1.x" option. One sentence in `SKILL.md` explaining the difference is enough. If you prefer to keep the range everywhere, this item can be closed.
+- **Decision (2026-11-27):** Keep `@1.x.x` everywhere, as it is. It's a valid jsDelivr range, not a placeholder, so no change is needed.
 
 ### 14. Self-hosted / npm installation for static site generators
 
@@ -246,11 +247,3 @@ Items in section A were found by reading the code. They have not yet been reprod
 - Plan → build → QA each forced variant (#7) → launch → analyse with the calculator → **clean up** (hard-code the winner and remove the experiment code).
 - **Comments:**
 
----
-
-## Suggested order
-
-1. #1, #2, #4, #5 (with #9 tests covering them)
-2. #7, #8
-3. #10, #13, #6
-4. The rest
