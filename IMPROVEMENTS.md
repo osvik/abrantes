@@ -68,7 +68,7 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Proposal (choose one):**
   - a) Document the rule "one experiment per page or flow".
   - b) Support several experiments, for example by appending values (`testA-1,testB-0`) or using one field per test.
-- **Status:** todo
+- **Status:** done (documented)
 - **Comments:** It supports more than one experiment but it needs more than one custom dimension in GA4. Maintain the current behaviour and document it. Keep the behavior and document it. The docs will say: each experiment running at the same time needs its own GA4 custom dimension name, e.g. `MyTestA.track("ab_test_a")` and `MyTestB.track("ab_test_b")`, each registered in GA4 admin.
 
   One related trap to document as well: `settings` is **shared** between all experiments. `Object.create(Abrantes)` makes every experiment point to the same `Abrantes.settings` object, so `MyTestB.settings.formTrack.inputElement = "#field_b"` also changes it for `MyTestA`. `formTrack()` reads the setting when its trigger event fires, so both experiments end up writing to the last selector set. The same applies to `settings.cookie`. That means:
@@ -76,6 +76,7 @@ Items in section A were found by reading the code. They have not yet been reprod
   - `SKILL.md` currently says core settings "can be customized per experiment". That's misleading and should be corrected.
 
   If you want, a later item could give each experiment its own copy of `settings`. Otherwise, documenting it is enough.
+- **Reply (Claude):** Documented, no library change. `SKILL.md` has a new section, "Several Experiments on the Same Page": one GA4 custom dimension per experiment (with an example), `settings` shared by all experiments, and `formTrack()` for one experiment per page. There's also a checklist item, and the Settings Reference no longer says settings "can be customized per experiment". `llms.txt` has the same rule under Important Rules. Verified: two experiments share the same `settings` object (Node). With the real gtag.js and two dimensions (`ab_test`, `ab_test_b`), every event (page_view, custom, generate_lead, enhanced measurement) carries both values. With two `formTrack()` calls, the field keeps only the last one (Chromium + Playwright).
 
 ---
 

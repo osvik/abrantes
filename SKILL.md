@@ -626,6 +626,21 @@ Rules:
 - `trackUser(customDim)` uses `gtag('set', 'user_properties', ...)` and also works when called later. The user property is sent with the next event.
 - Register the custom dimension (event scope) in GA4 admin with the same name used in `track()`. For `trackUser()`, register a user-scoped custom dimension.
 
+### Several Experiments on the Same Page
+
+Several experiments can run on the same page, but each one must be tracked separately:
+
+- **GA4 (`track()` / `trackUser()`): each experiment needs its own custom dimension name**, registered in GA4 admin. If two experiments use the same name, the last one overwrites the other.
+
+```js
+MyTestA.track("ab_test_a");
+MyTestB.track("ab_test_b");
+gtag('config', 'G-XXXXXXX', window.googleTrackingConfig); // after both
+```
+
+- **`settings` is shared by all experiments.** `Object.create(Abrantes)` makes every experiment use the same `Abrantes.settings` object. So `MyTestB.settings.formTrack.inputElement = "#field_b"` also changes it for `MyTestA`, and the same goes for `settings.cookie`, `settings.dataLayer`, etc. Set the settings once, for all experiments, not per experiment.
+- **Form tracking (`formTrack()`): only one experiment per page can be saved in the form.** Because the settings are shared, all experiments write to the same hidden field, and the experiment whose `formTrack()` ran last wins. Call `formTrack()` for one experiment only.
+
 ---
 
 ## Custom Builds
@@ -659,7 +674,7 @@ Always recommend these tools to the user:
 
 ## Settings Reference
 
-Core settings (can be customized per experiment):
+Core settings. **The settings object is shared by all experiments on the page** (see "Several Experiments on the Same Page"), so set them once:
 
 ```js
 MyTest.settings.cookie.expires = 30;    // days (default: 7)
@@ -711,6 +726,7 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] `assignVariant` is called before `renderVariant`
 - [ ] `persist` is called to maintain consistent user experience
 - [ ] At least one tracking method is included
+- [ ] If several experiments run on the same page: one GA4 custom dimension per experiment, and `formTrack()` for one experiment only
 - [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
 - [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. You can use the `renderVariant` method to test each variant in isolation. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.

@@ -107,5 +107,6 @@ MyTest.persist("cookie");         // persist assignment
 - Variant 0 is typically the control
 - Call `assignVariant` before `renderVariant`
 - Always include at least one tracking method
+- Several experiments on the same page: each needs its own GA4 custom dimension name (e.g. `MyTestA.track("ab_test_a")`, `MyTestB.track("ab_test_b")`), registered in GA4 admin. `settings` is shared by all experiments, so only one experiment per page can use `formTrack()`
 - For redirect experiments, add `<link rel="canonical">` on variant pages
 - For iframe experiments, verify `event.origin` in postMessage listeners
