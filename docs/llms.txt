@@ -118,6 +118,7 @@ Full recipe in the "End-to-End Recipe" section of [SKILL.md](https://raw.githubu
 - Variant 0 is typically the control
 - Call `assignVariant` before `renderVariant`
 - Always include at least one tracking method
+- Consent: Abrantes doesn't manage it. `persist()` writes a cookie/`localStorage`/`sessionStorage` entry when called, and the tracking methods pass data to the tools on the page (`log()` sends it to the Log API itself). The site's consent setup decides where and when they can be called
 - Test each variant with `?abrantes_force=MyTest:N` instead of editing the code; check tracking without the parameter, since forced visits aren't tracked
 - Debug mode: `?abrantes_debug` in the URL (or `Abrantes.debug = true` before the experiment) logs every step to the console as `Abrantes debug: ...` (assignment, render, persist, tracking, form field value)
 - Several experiments on the same page: each needs its own GA4 custom dimension name (e.g. `MyTestA.track("ab_test_a")`, `MyTestB.track("ab_test_b")`), registered in GA4 admin. `settings` is shared by all experiments, so only one experiment per page can use `formTrack()`

@@ -195,6 +195,16 @@ MyTest.excludedVariantsForNewUsers = [2]; // new users won't get variant 2
 MyTest.assignVariant("MyTest");
 ```
 
+### Consent and Storage
+
+Abrantes doesn't manage consent. Each method stores or sends data only when it is called:
+
+- `persist()` writes a cookie (`{testId}={variant}`, 7 days by default, `SameSite=Strict`), a `localStorage` entry or a `sessionStorage` entry. `assignVariant()` only reads them. Without `persist()` nothing is stored, but the visitor may get a different variant on each page load.
+- The tracking methods hand the value to the tool on the page, and that tool (and its consent setup) decides what is sent: `track()` writes it into `window.googleTrackingConfig` for gtag.js, `add2dataLayer()` pushes to the `dataLayer`, `hubspotEvent()` to `_hsq`, `hotjar()` and `clarity()` call `hj()` and `clarity()`. `log()` is the exception: it sends a request to the Log API itself. `formTrack()` only writes into the form field.
+- `formTrack()` and `clarity()` run on the events in `settings.formTrack.triggerEvents` / `settings.clarity.triggerEvents`, and `hotjar()` on `settings.hotjar.triggerEvents` when Hotjar isn't loaded yet. These can be set to the consent events of the site.
+
+So the site's consent setup decides where and when `persist()` and the tracking methods can be called. Follow the site's rules, or ask the user if they are unknown. Don't choose a consent approach on your own.
+
 ### CSS Experiments (styles, layout tweaks, element visibility...)
 
 Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<html>`, enabling experiments with CSS:
@@ -866,6 +876,7 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] `assignVariant` is called before `renderVariant`
 - [ ] `persist` is called to maintain consistent user experience
 - [ ] At least one tracking method is included
+- [ ] `persist()` and the tracking calls follow the site's consent setup (see "Consent and Storage"; ask the user if unknown)
 - [ ] If several experiments run on the same page: one GA4 custom dimension per experiment, and `formTrack()` for one experiment only
 - [ ] With GA4: the custom dimension is registered in GA4 admin (event scope, same name as in `track()`) before launch
 - [ ] With `formTrack()`: the form has `<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">` in its HTML, and the value is included when the form is submitted (also when the site submits with JavaScript, e.g. the HubSpot Forms API)

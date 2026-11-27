@@ -169,9 +169,16 @@ Items in section A were found by reading the code. They have not yet been reprod
 
 - **Problem:** `persist("cookie")` sets the assignment cookie before consent.
 - **Proposal:** Document the options: `persist("session")`, persisting only after consent, or treating the cookie as functional. Explain how this works with Google Consent Mode.
-- **Status:** todo
+- **Status:** done
 - **Comments:** We'll leave it to the skill as this may work differently with different consent management systems.
 - **Reply (Claude):** Agreed. Consent stays in the microsite skill. The only thing I'd keep here is one neutral sentence in `SKILL.md`: `persist()` writes a cookie or `localStorage`/`sessionStorage` entry when it is called, so the site's consent setup decides where and when it can be called. That way an LLM using only this repo's docs knows there's a decision to make, without the library taking a position on it.
+- **Reply (Claude), implementation:** Done, docs only, no library change. New "Consent and Storage" section in `SKILL.md` (after "Excluding Variants"). It doesn't take a position, it only states facts:
+  - **What gets stored:** what `persist()` writes and where (cookie: 7 days by default, `SameSite=Strict`). `assignVariant()` only reads storage. Without `persist()`, nothing is stored, but the visitor may get a different variant on each page.
+  - **Who sends the data:** the tracking methods only hand the value to the tool on the page, and that tool decides what is sent. The exception is `log()`, which sends it to the Log API itself.
+  - **Waiting for consent events:** the `triggerEvents` settings of `formTrack()`, `clarity()` and `hotjar()` can be set to the site's consent events.
+  - **The rule:** the site's consent setup decides where and when to call these methods. Follow it or ask the user, and don't choose an approach on your own.
+
+  Also a checklist item and one line in `llms.txt`'s Important Rules. Consent Mode and how each consent management system works stay in the microsite skill.
 
 ### 12. Split `SKILL.md` into a core file plus references
 
