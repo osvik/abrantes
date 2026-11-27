@@ -22,6 +22,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("hubspotEvent()")) {
+                return;
+            }
 
             let hbsptevent = {};
             hbsptevent.name = eventName;

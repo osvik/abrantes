@@ -23,6 +23,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("add2dataLayer()")) {
+                return;
+            }
 
             let dlevent = {};
 

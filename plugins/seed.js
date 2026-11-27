@@ -55,6 +55,9 @@
                 throw new Error("You need to provide a seed string when assigning a seeded variant");
             }
             this.testId = testId;
+            if (this.applyForced()) {
+                return;
+            }
             const n = Math.random();
             if (n > trafficAllocation || !segment()) {
                 this.variant = -1;

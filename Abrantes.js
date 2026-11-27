@@ -10,6 +10,7 @@ const Abrantes = Object.create(null);
 Abrantes.version = "1.7.0";
 Abrantes.testId = undefined;
 Abrantes.variant = undefined;
+Abrantes.forced = false;
 Abrantes.excludedVariantsForNewUsers = [];
 
 /**
@@ -48,6 +49,9 @@ Abrantes.assignVariant = function (testId, trafficAllocation = 1, segment = () =
         throw new Error("You must define at least one variant (array of functions) before assigning");
     }
     this.testId = testId;
+    if (this.applyForced()) {
+        return;
+    }
     if (typeof (this.readPersistent()) === "number") {
         this.variant = this.readPersistent();
         document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
@@ -85,6 +89,9 @@ Abrantes.importVariant = function (testId) {
     }
 
     this.testId = testId;
+    if (this.applyForced()) {
+        return;
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has(testId)) {
@@ -109,6 +116,67 @@ Abrantes.importVariant = function (testId) {
     } else {
         this.variant = -1;
     }
+};
+
+/**
+ * Reads the variant forced for this.testId with the URL parameter abrantes_force.
+ * Format: ?abrantes_force=MyTest:1 Several tests: ?abrantes_force=MyTest:1,OtherTest:0
+ * @returns {number|undefined} The forced variant, or undefined if there's no valid forced variant for this test
+ */
+Abrantes.readForced = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    let forced;
+    urlParams.getAll("abrantes_force").join(",").split(",").forEach((entry) => {
+        const sep = entry.lastIndexOf(":");
+        if (sep === -1 || entry.slice(0, sep).trim() !== this.testId) {
+            return;
+        }
+        const value = entry.slice(sep + 1).trim();
+        const variant = Number(value);
+        if (value === "" || !Number.isInteger(variant) || variant < -1 || variant >= this.variants.length) {
+            console.warn("Abrantes: abrantes_force=" + entry + " is not valid for " + this.testId + ". Use a variant between 0 and " + (this.variants.length - 1) + " (or -1 for not in the test). The variant is assigned as usual.");
+            return;
+        }
+        forced = variant;
+    });
+    return forced;
+};
+
+/**
+ * If the URL forces a variant for this.testId, assigns it and marks the experiment as forced.
+ * A forced visit is for testing: persist() and the tracking methods skip it.
+ * @returns {boolean} true if a variant was forced
+ */
+Abrantes.applyForced = function () {
+    const forcedVariant = this.readForced();
+    if (typeof (forcedVariant) !== "number") {
+        this.forced = false;
+        return false;
+    }
+    this.variant = forcedVariant;
+    this.forced = true;
+    console.info("Abrantes: " + this.testId + " is forced to variant " + forcedVariant + " by the URL. It is not persisted or tracked.");
+    document.dispatchEvent(new CustomEvent("abrantes:assignVariant", {
+        detail: {
+            testId: this.testId,
+            variant: this.variant,
+            forced: true
+        }
+    }));
+    return true;
+};
+
+/**
+ * Returns true, and logs that the action was skipped, when the variant was forced by the URL
+ * @param {string} action - Name of the skipped method, for the console message
+ * @returns {boolean}
+ */
+Abrantes.skipForced = function (action) {
+    if (this.forced) {
+        console.info("Abrantes: " + this.testId + " is forced by the URL, so " + action + " is skipped.");
+        return true;
+    }
+    return false;
 };
 
 /**
@@ -209,6 +277,9 @@ Abrantes.persist = function (context = "cookie") {
     let validContexts = ["user", "local", "session", "cookie"];
     if (!validContexts.includes(context)) {
         throw new Error("The context " + context + " is not valid. Use 'user', 'session' or 'cookie'");
+    }
+    if (this.skipForced("persist()")) {
+        return;
     }
     let persisted = false;
     if (context === "user" || context === "local") {
@@ -327,6 +398,9 @@ Abrantes.waitFor = function (selector, callback) {
  * Tracks the user using whatever is defined in an Abrantes plugin
  */
 Abrantes.track = function () {
+    if (this.skipForced("track()")) {
+        return;
+    }
     document.dispatchEvent(new CustomEvent("abrantes:track", {
         detail: {
             testId: this.testId,

@@ -11,6 +11,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("track()")) {
+                return;
+            }
             _paq.push(['setCustomDimension', customDimensionId = customDim, customDimensionValue = this.testId + "-" + this.variant]);
             document.dispatchEvent(new CustomEvent("abrantes:track", {
                 detail: {

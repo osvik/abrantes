@@ -86,7 +86,7 @@ Items in section A were found by reading the code. They have not yet been reprod
 
 - **Proposal:** A query parameter such as `?abrantes_force=MyTest:1` that overrides stored and random assignment. With it, an LLM (with Playwright) or a person can open and screenshot every variant.
 - **Open questions:** Should a forced visit persist or be tracked? Probably neither: it shouldn't pollute the data.
-- **Status:** todo
+- **Status:** done
 - **Comments:** Isn't this alreay implemented by Abrantes.importVariant? It doesn't matter much if it's persisted. As for being tracked, the `Abrantes.track` method should only be added after each variant was carefully tested.
 - **Reply (Claude):** Partly. `importVariant()` reads `?MyTest=N`, but only on pages whose code calls `importVariant()` instead of `assignVariant()`, i.e. redirect destinations and cross-site/iframe children. A normal in-page experiment calls `assignVariant()`, which ignores the URL and uses (1) the stored assignment or (2) a random one. So today, to see variant 1 of a normal experiment you have to either:
   - clear the cookie/storage and reload until you get it at random, or
@@ -98,6 +98,14 @@ Items in section A were found by reading the code. They have not yet been reprod
   Agreed on persistence (it doesn't matter) and on tracking (add it only after testing). That makes this simpler: no special tracking logic is needed.
 
   A lighter alternative with no new parameter: document a QA recipe instead. Set the stored value before loading the page (e.g. cookie `MyTest=1`, which `assignVariant()` already respects through `readPersistent()`), then load the page. Playwright can do this with `context.addCookies(...)`. This needs **no library change**, so I'd suggest it as the first option and keep the URL parameter only if the recipe proves awkward.
+- **Reply (Claude), implementation:** Done, as requested: a forced visit is neither persisted nor tracked.
+  - **Format:** `?abrantes_force=MyTest:1`. Several experiments: `?abrantes_force=MyTest:1,OtherTest:0` (or the parameter repeated). `-1` (not in the test) is valid.
+  - **Core:** new `readForced()` (parses the parameter for `this.testId`) and `applyForced()` (sets the variant, `this.forced = true`, logs a `console.info` and dispatches `abrantes:assignVariant` with `forced: true`). `assignVariant()`, `importVariant()` and the seed plugin's `assignSeededVariant()` call it first, so it overrides the stored and random assignment, `trafficAllocation` and `segment`. New `Abrantes.forced` (default `false`).
+  - **No persist / no tracking:** new `skipForced(action)`. When forced, `persist()`, core `track()`, GA4 `track()`/`trackUser()`, `formTrack()`, `add2dataLayer()`, `hotjar()`, `clarity()`, `hubspotEvent()`, `log()` and Matomo `track()` return early and log `console.info("Abrantes: MyTest is forced by the URL, so track() is skipped.")`. They don't dispatch their `abrantes:*` events either. The plugins need this version of the core (same as `formtrack.js` with `onEvent()`).
+  - **Invalid values** (unknown variant, not an integer, empty) log a `console.warn` and the variant is assigned as usual, so a typo is visible instead of silently ignored.
+  - **Redirects and cross-site:** `redirectTo()` and `makeCrossSiteURL()` already copy the query string, so the force reaches the destination/child page too, where `importVariant()` also treats it as forced (not tracked).
+  - **Tested** in Chromium (Playwright), 18 cases: variants 0/1/2/-1 forced (right class, no cookie, empty `googleTrackingConfig`, empty form field, no dataLayer event); force overrides an existing cookie (and leaves it unchanged); several experiments with commas and with repeated parameters; a force for another test doesn't affect this one; 5 invalid values (warning + normal assignment and tracking); `importVariant()` forced and normal; `assignSeededVariant()` forced; `makeCrossSiteURL()` keeps the parameter. Without the parameter, everything behaves as before.
+  - **Docs:** new "Testing Each Variant (`?abrantes_force`)" section in `SKILL.md` (plus the core methods table, DOM events table and checklist), `llms.txt` (core methods and important rules), and "Testing the experiment" in `docs/experiments.html` (it used to suggest switching the code to `importVariant()`). The built files haven't been rebuilt yet.
 
 ### 8. Debug mode
 

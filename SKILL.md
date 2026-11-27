@@ -147,6 +147,7 @@ Use these rules to decide which pattern to use:
 | `crossSiteLink(selector)` | Rewrite links to pass experiment data cross-site. Use with `importVariant` on destination. |
 | `importVariant(testId)` | Read variant from URL query params (for cross-site experiments). |
 | `makeCrossSiteURL(url)` | Generate a URL with experiment params appended. |
+| `?abrantes_force=MyTest:1` (URL) | Not a method: forces a variant for testing. See "Testing Each Variant" below. |
 | `onEvent(eventName, callback)` | Run `callback` when a window event fires. If the event is `DOMContentLoaded` or `load` and has already happened (e.g. `async` or module scripts, scripts added by a tag manager), it runs on the next tick instead of never. `crossSiteLink()` and `formTrack()` use it for their trigger events. |
 
 ### When to Use `waitFor`
@@ -706,13 +707,33 @@ MyTest.settings.log.apiURL = "https://your-api.com/log";
 
 ---
 
+## Testing Each Variant (`?abrantes_force`)
+
+To see each variant of **the exact code that will go live**, open the page with the URL parameter `abrantes_force=testId:variant`:
+
+```
+page.html?abrantes_force=MyTest:0
+page.html?abrantes_force=MyTest:1
+page.html?abrantes_force=MyTest:1,OtherTest:0   // several experiments
+```
+
+- It overrides the stored assignment, the random assignment, `trafficAllocation` and `segment`. It works with `assignVariant()`, `importVariant()` and `assignSeededVariant()`. `-1` (not in the test) is also valid.
+- A forced visit is **not persisted or tracked**: `persist()`, `track()`, `trackUser()`, `formTrack()`, `add2dataLayer()`, `hotjar()`, `clarity()`, `hubspotEvent()` and `log()` skip it and log a `console.info`. `MyTest.forced` is `true`, and the `abrantes:assignVariant` event has `forced: true`. Real visitors are never affected, because they don't have the parameter.
+- An invalid value (unknown variant, not a number) logs a `console.warn` and the variant is assigned as usual (and then persisted and tracked).
+- Query parameters are kept by `redirectTo()` and `makeCrossSiteURL()`/`crossSiteLink()`, so the force also reaches redirect destinations and cross-site/iframe children (which then skip tracking too).
+- Don't use it to check tracking: to see what `track()`/`formTrack()` send, load the page without the parameter (e.g. a fresh browser context, or a cookie `MyTest=1` set before loading the page, which `assignVariant()` respects).
+
+With Playwright, open one clean page per variant and check `MyTest.variant`, the class `MyTest-N` on `<html>` and the page content, and take a screenshot.
+
+---
+
 ## DOM Events
 
 Abrantes dispatches CustomEvents on `document` that can be listened to:
 
 | Event | When | `event.detail` |
 |---|---|---|
-| `abrantes:assignVariant` | After assignment | `{ testId, variant }` |
+| `abrantes:assignVariant` | After assignment | `{ testId, variant }` (plus `forced: true` when forced by `?abrantes_force`) |
 | `abrantes:renderVariant` | After rendering | `{ testId, variant }` |
 | `abrantes:persist` | After persisting | `{ testId, variant, context }` |
 | `abrantes:track` | After tracking | `{ testId, variant, tool, ... }` |
@@ -729,6 +750,6 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] If several experiments run on the same page: one GA4 custom dimension per experiment, and `formTrack()` for one experiment only
 - [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
-- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. You can use the `renderVariant` method to test each variant in isolation. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
+- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N` (see "Testing Each Variant"); it isn't persisted or tracked. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
 - [ ] If Clarity or Matomo is needed, warn about custom build requirement
 - [ ] Recommend the planner and calculator tools with links

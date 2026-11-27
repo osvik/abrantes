@@ -142,10 +142,10 @@ MyTest.track("test_event");
                 <h2>Testing the experiment</h2>
                 <div class="feature-card">
                     <p>To make sure all is working properly and avoid having to restart the same experiment later.</p>
-                    <p>1.- Render specific variants using a parameter in the URL by importing instead of assigning:</p>
-                    <pre><code>MyTest.importVariant("MyTest");
+                    <p>1.- Open each variant with the URL parameter <code>abrantes_force</code>, without changing the experiment code:</p>
+                    <pre><code>page.html?abrantes_force=MyTest:1
 </code></pre>
-                    <p>and load the page with the URL parameter <code>?MyTest=x</code> (where x is the variant number). You can share this URLS with your team or using them to test in mobile phones.</p>
+                    <p>where <code>MyTest</code> is the test ID and <code>1</code> the variant number. It overrides the stored and the random assignment, the traffic allocation and the segment. It works with <code>assignVariant()</code>, <code>importVariant()</code> and <code>assignSeededVariant()</code>. A forced visit is not persisted or tracked: <code>persist()</code>, <code>track()</code>, <code>formTrack()</code> and the other tracking methods skip it and log it in the console. To force several experiments, separate them with commas: <code>?abrantes_force=MyTest:1,OtherTest:0</code>. You can share these URLs with your team or use them to test in mobile phones.</p>
                     <p>2.- Check the pages of the experiment using the <a href="https://github.com/osvik/abrantes-checker-extension" target="_blank">Abrantes checker browser extension</a>.</p>
                     <p>3.- Use the <a href="https://github.com/osvik/abrantes/blob/main/examples/log.html" target="_blank">log plugin</a> and the <a href="https://github.com/osvik/abrantes-log-api" target="_blank">log api</a> to monitor what happens after the experiment is launched.</p>
                     <p>4.- Use the <a href="https://osvik.github.io/abrantes-test-calculator/planner.html" target="_blank">A/B test planner</a> to plan and the <a href="https://osvik.github.io/abrantes-test-calculator/" target="_blank">A/B significance calculator</a> to determine if the results are statistically significant.</p>

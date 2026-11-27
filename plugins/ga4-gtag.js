@@ -15,6 +15,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("track()")) {
+                return;
+            }
             let setObj = {};
             setObj[customDim] = this.testId + "-" + this.variant;
             Object.assign(window.googleTrackingConfig, setObj);
@@ -63,6 +66,9 @@
                 throw new Error("gtag is not defined or it's not a function");
             }
             if (this.variant === -1) {
+                return;
+            }
+            if (this.skipForced("trackUser()")) {
                 return;
             }
             let setObj = {};

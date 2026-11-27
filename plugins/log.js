@@ -21,6 +21,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("log()")) {
+                return;
+            }
 
             if (!this.settings.log.apiURL) {
                 throw new Error("You need to set the log API URL in yourTest.settings.log.apiURL");

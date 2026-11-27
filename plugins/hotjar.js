@@ -18,6 +18,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("hotjar()")) {
+                return;
+            }
 
             if (typeof (hj) === "function") {
                 hj('event', this.testId + "-" + this.variant);

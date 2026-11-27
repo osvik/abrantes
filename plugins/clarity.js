@@ -18,6 +18,9 @@
             if (this.variant === -1) {
                 return;
             }
+            if (this.skipForced("clarity()")) {
+                return;
+            }
 
             const self = this;
             // Loops trough cookie aceptance events, defined in .settings.clarity.triggerEvents
