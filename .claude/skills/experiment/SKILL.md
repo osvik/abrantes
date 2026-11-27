@@ -6,4 +6,4 @@ disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Bash(curl *), WebFetch, WebSearch
 ---
 
-Read the file `SKILL.md` in the root of the repository and follow its instructions. The user's request is: **$ARGUMENTS**
+Read the file `SKILL.md` in the root of the repository and follow its instructions. It tells you which files in the `references/` folder to read for each kind of experiment; read only the ones that apply. The user's request is: **$ARGUMENTS**

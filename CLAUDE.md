@@ -4,7 +4,7 @@ Abrantes is a lightweight JavaScript A/B testing library. When working with this
 
 ## AI Experiment Builder Skill
 
-There is a comprehensive AI experiment builder reference at `SKILL.md` in the repository root. It contains the full API reference, all experiment patterns, tracking recommendations, and step-by-step instructions for building experiments. A Claude Code skill at `.claude/skills/experiment/` wraps this file — use `/experiment` to invoke it.
+There is an AI experiment builder skill at `SKILL.md` in the repository root. It contains the core pattern, the API reference, tracking recommendations and the checklist, and points to the files in `references/` (redirect, iframes, GTM, consent mode, other tracking tools, testing, the static site + GA4 + form recipe), which are loaded only when needed. A Claude Code skill at `.claude/skills/experiment/` wraps this file — use `/experiment` to invoke it.
 
 ## Key Resources
 
@@ -21,5 +21,6 @@ There is a comprehensive AI experiment builder reference at `SKILL.md` in the re
 - `AbrantesPlusMod.js` — Core + plugins as ES6 module
 - `plugins/` — Individual plugin files
 - `examples/` — Usage examples for all patterns
+- `SKILL.md` + `references/` — AI experiment builder skill (core file + references loaded when needed)
 - `docs/` — Documentation website (GitHub Pages)
 - `gulpfile.js` — Build configuration for custom builds

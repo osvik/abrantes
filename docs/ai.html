@@ -59,9 +59,23 @@
                     <ol class="doc-steps">
                         <li>Preferably use a coding-focused AI tool that can read files in a local Abrantes repo clone. Some online tools worked, but many didn't work.</li>
                         <li>Prompt your target URL and experiment hypothesis.</li>
-                        <li>Use a skill or provide the <code>SKILL.md</code> file with the prompt. (Or reference the Abrantes docs URL if upload is not supported).</li>
+                        <li>Use a skill or provide the <code>SKILL.md</code> file with the prompt, together with the <a href="https://github.com/osvik/abrantes/tree/main/references" target="_blank" rel="noreferrer"><code>references/</code></a> files that apply (redirect, iframes, GTM, consent mode, other tracking tools, testing, static site + GA4 + form). (Or reference the Abrantes docs URL if upload is not supported).</li>
                         <li>Run and validate the output manually before launch.</li>
                     </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="features docs-section">
+            <div class="container">
+                <h2>Copying the skill to another tool</h2>
+                <div class="feature-card">
+                    <p>The skill is split into a core file and reference files. <code>SKILL.md</code> has the core pattern, the API, the tracking rules and the checklist. The <a href="https://github.com/osvik/abrantes/tree/main/references" target="_blank" rel="noreferrer"><code>references/</code></a> folder has the rest, and <code>SKILL.md</code> tells the AI which file to read for each kind of experiment.</p>
+                    <ul class="doc-list">
+                        <li>When you copy the skill into another tool or project, <strong>copy the <code>references/</code> folder too</strong>, next to <code>SKILL.md</code>. Without it, the AI can't read the instructions for redirect, iframe and GTM experiments, Google Consent Mode, other tracking tools, testing, or the static site + GA4 + form recipe.</li>
+                        <li>If the tool can only take uploaded files, upload <code>SKILL.md</code> and the reference files that apply to your experiment.</li>
+                        <li>If the AI reads <code>SKILL.md</code> from its URL, it can fetch the references from GitHub. <code>SKILL.md</code> gives their address.</li>
+                    </ul>
                 </div>
             </div>
         </section>

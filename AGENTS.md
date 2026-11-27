@@ -2,7 +2,7 @@
 This repository includes a Claude skill definition in `SKILL.md`.
 
 ## ChatGPT Behavior
-When the user types `/experiment` (or asks to create/build/plan an experiment in this repo), follow the workflow and guidance described in `SKILL.md` as the source of truth.
+When the user types `/experiment` (or asks to create/build/plan an experiment in this repo), follow the workflow and guidance described in `SKILL.md` as the source of truth. `SKILL.md` is the core file; it tells you which files in `references/` to read for each kind of experiment (redirect, iframes, GTM, consent mode, other tracking tools, testing, the static site + GA4 + form recipe).
 
 ## Tool Constraints (ChatGPT)
 When following `SKILL.md`, limit tool usage to the closest ChatGPT equivalents of the Claude allowed tools:

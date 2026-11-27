@@ -16,9 +16,27 @@ The user's request: **$ARGUMENTS**
 
 1. **Understand the experiment**: Ask clarifying questions if the description is vague. You need to know: what page(s), what changes per variant, how many variants, any segmentation or traffic allocation requirements.
 2. **Inspect the target page(s)**: If the user provides a URL, fetch it to understand the DOM structure, what analytics/tag management tools are installed, and whether Abrantes is already loaded.
-3. **Write the experiment code**: Use the patterns and API reference below. For a static site with GA4 (gtag.js) and a form, follow the "End-to-End Recipe" section.
-4. **Recommend tracking**: Based on what tools are detected on the page.
-5. **Recommend planning tools**: Always suggest the [planner](https://osvik.github.io/abrantes-test-calculator/planner.html) and [calculator](https://osvik.github.io/abrantes-test-calculator/).
+3. **Load the references you need** (see the table below). Only load the ones that apply to this experiment.
+4. **Write the experiment code**: Use the patterns and API reference below. For a static site with GA4 (gtag.js) and a form, follow the recipe in `references/static-site-ga4-form.md`.
+5. **Recommend tracking**: Based on what tools are detected on the page.
+6. **Go through the checklist** at the end of this file.
+7. **Recommend planning tools**: Always suggest the [planner](https://osvik.github.io/abrantes-test-calculator/planner.html) and [calculator](https://osvik.github.io/abrantes-test-calculator/).
+
+### Reference files
+
+This file has the core pattern, the API, the tracking rules and the checklist. The rest is in the `references/` folder, next to this file. Load a reference only when it applies:
+
+| Load | When |
+|---|---|
+| [`references/static-site-ga4-form.md`](references/static-site-ga4-form.md) | Static site (11ty, Hugo, Astro, Jekyll...) + GA4 (gtag.js) + form conversion. The full end-to-end recipe: layout, form, GA4 admin, checks before launch, analysis. |
+| [`references/testing.md`](references/testing.md) | Checking an experiment in a browser or Playwright: forcing variants (`?abrantes_force`), debug mode (`?abrantes_debug`), DOM events. |
+| [`references/consent-mode.md`](references/consent-mode.md) | The site uses Google Consent Mode V2 (`gtag('consent', ...)`). |
+| [`references/redirect.md`](references/redirect.md) | Redirect experiments: each variant is a separate page. |
+| [`references/iframes.md`](references/iframes.md) | The conversion or part of the experiment is inside an iframe. |
+| [`references/gtm.md`](references/gtm.md) | The user asks to run the experiment from Google Tag Manager. |
+| [`references/tracking-tools.md`](references/tracking-tools.md) | Hotjar, Microsoft Clarity, Matomo, HubSpot, Mixpanel, the Log API, or a custom build. |
+
+If you read this file from a URL instead of a local copy, the references are at `https://raw.githubusercontent.com/osvik/abrantes/refs/heads/main/references/<name>.md`.
 
 ---
 
@@ -100,40 +118,10 @@ Use these rules to decide which pattern to use:
 </script>
 ```
 
-3. **GTM pattern** - Use ONLY when the user specifically asks for GTM:
-
-```html
-<!-- Inside a GTM Custom HTML tag -->
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-<script>
-  var MyTest = Object.create(Abrantes);
-  MyTest.variants = [
-    function () {
-      // Use waitFor since DOM may not be ready when GTM fires
-      MyTest.waitFor("h1", function () {
-        const el = document.querySelector("h1");
-        el.textContent = "New headline";
-      });
-    },
-    function () {
-      MyTest.waitFor("h1", function () {
-        const el = document.querySelector("h1");
-        el.textContent = "Another headline";
-      });
-    }
-  ];
-  MyTest.assignVariant("MyTest");
-  MyTest.renderVariant();
-  MyTest.persist("cookie");
-  MyTest.add2dataLayer();
-</script>
-```
-
-**Important GTM notes:**
-- Always use `waitFor()` inside variant functions when running from GTM, since the DOM may not be ready.
-- Performance may be lower compared to direct script inclusion.
-- The GTM tag should fire on the relevant page(s) using a GTM trigger.
-- Use `add2dataLayer()` to send experiment data back to GTM for analytics.
+3. **Other patterns** (load the reference first):
+   - **GTM**: only when the user specifically asks for Google Tag Manager. See [`references/gtm.md`](references/gtm.md).
+   - **Redirect**: the changes are too complex for DOM manipulation (new layout, redesign), so each variant is a separate page. See [`references/redirect.md`](references/redirect.md).
+   - **Iframe**: the conversion or part of the experiment content is inside an iframe. See [`references/iframes.md`](references/iframes.md).
 
 ### Core Methods
 
@@ -147,8 +135,8 @@ Use these rules to decide which pattern to use:
 | `crossSiteLink(selector)` | Rewrite links to pass experiment data cross-site. Use with `importVariant` on destination. |
 | `importVariant(testId)` | Read variant from URL query params (for cross-site experiments). |
 | `makeCrossSiteURL(url)` | Generate a URL with experiment params appended. |
-| `?abrantes_force=MyTest:1` (URL) | Not a method: forces a variant for testing. See "Testing Each Variant" below. |
-| `Abrantes.debug = true` or `?abrantes_debug` (URL) | Debug mode: logs every step to the console. See "Debug Mode" below. |
+| `?abrantes_force=MyTest:1` (URL) | Not a method: forces a variant for testing. See [`references/testing.md`](references/testing.md). |
+| `Abrantes.debug = true` or `?abrantes_debug` (URL) | Debug mode: logs every step to the console. See [`references/testing.md`](references/testing.md). |
 | `onEvent(eventName, callback)` | Run `callback` when a window event fires. If the event is `DOMContentLoaded` or `load` and has already happened (e.g. `async` or module scripts, scripts added by a tag manager), it runs on the next tick instead of never. `crossSiteLink()` and `formTrack()` use it for their trigger events. |
 
 ### When to Use `waitFor`
@@ -205,50 +193,7 @@ Abrantes doesn't manage consent. Each method stores or sends data only when it i
 
 So the site's consent setup decides where and when `persist()` and the tracking methods can be called. Follow the site's rules, or ask the user if they are unknown. Don't choose a consent approach on your own.
 
-### Google Consent Mode V2
-
-Abrantes works with Google Consent Mode V2. Nothing changes in the experiment code. Only the order of the GA4 snippet matters: the consent defaults go first, before the experiment and before `gtag('config')`.
-
-```html
-<head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('consent', 'default', {                  // 1. Consent defaults
-      ad_storage: 'denied',
-      analytics_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-    });
-    gtag('set', 'ads_data_redaction', true);
-    // A returning visitor's saved choice: gtag('consent', 'update', {...}) here, before the config
-    gtag('js', new Date());
-    window.googleTrackingConfig = {};
-  </script>
-  <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-  <script>
-    // 2. The experiment, as usual: assignVariant, renderVariant, persist, track("ab_test")...
-  </script>
-  <script>
-    gtag('config', 'G-XXXXXXX', window.googleTrackingConfig); // 3. Config, always last
-  </script>
-</head>
-```
-
-What happens (tested with gtag.js in Chromium, November 2026):
-
-- **Consent denied:** gtag.js sets no `_ga` cookies and sends cookieless pings (`gcs=G100`). They still include the experiment: `ep.ab_test` from `track()` and `up.ab_test_user` from `trackUser()`.
-- **Visitor accepts on the same page** (`gtag('consent', 'update', {...granted})`): the next events (`gcs=G111`, e.g. the conversion event) still include `ep.ab_test`. Don't call `track()` or `gtag('config')` again.
-- **Consent already granted** (saved choice applied with `gtag('consent', 'update')` before the config): everything is sent normally.
-- `ads_data_redaction` only affects ad data. It doesn't change what Abrantes sends.
-- With **basic** Consent Mode (the Google tag is only loaded after consent), the usual rule still applies: `track()` must run before `gtag('config')`.
-- With **Google Tag Manager**, use `add2dataLayer()`. The push only adds data to the `dataLayer`; the GA4 tags in the container apply Consent Mode.
-
-Keep in mind:
-
-- **Consent Mode only controls Google tags.** It doesn't block the cookie or storage entry that `persist()` writes, or the other tools (`hotjar()`, `clarity()`, `hubspotEvent()`, `log()`). Those follow the site's consent setup (see "Consent and Storage").
-- **Analysis:** GA4 uses the denied-consent pings for modelling, so the GA4 reports for each variant mainly show visitors who accepted analytics cookies. If a variant can change whether visitors accept (e.g. it changes the cookie banner or the content around it), the GA4 samples of the variants aren't comparable. A conversion saved in the CRM with `formTrack()` doesn't depend on Google consent.
+If the site uses Google Consent Mode V2, see [`references/consent-mode.md`](references/consent-mode.md): the experiment code doesn't change, only the order of the GA4 snippet.
 
 ### CSS Experiments (styles, layout tweaks, element visibility...)
 
@@ -272,297 +217,6 @@ A style block is then included in the experiment code, like this example:
   .MyTest-2 .hero { background-color: #e0e0e0; }
 </style>
 ```
-
-### Redirect Experiments
-
-**When to use:** Redirect experiments should be used when the changes to the page are too complex to apply via DOM manipulation in variant functions. For example: entirely different page layouts, major structural changes, or redesigns that would be fragile and error-prone to implement by modifying the existing DOM. In these cases, each variant is a separate page and Abrantes redirects users to the appropriate one.
-
-**Trade-off:** Redirect experiments are less reliable than in-page experiments because someone may link directly to a variant URL instead of the redirect page. Only use them when the changes are too complex for a traditional experiment.
-
-A redirect experiment has **two parts**:
-
-#### Part 1: The redirect page (the original URL that users/links point to)
-
-This page assigns the variant and immediately redirects. It should have minimal content since it won't be seen. Each variant function uses `redirectTo()` to send the user to the correct variant URL, passing the test ID and variant as query parameters.
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-<script>
-  var MyTest = Object.create(Abrantes);
-
-  MyTest.variants = [
-    // Variant 0 — the control/original page
-    function () {
-      MyTest.redirectTo("variant-0.html?MyTest=0");
-    },
-    // Variant 1
-    function () {
-      MyTest.redirectTo("variant-1.html?MyTest=1");
-    }
-  ];
-
-  MyTest.assignVariant("MyTest");
-  MyTest.renderVariant();
-</script>
-```
-
-Key points for the redirect page:
-- `redirectTo()` preserves existing query parameters and hash fragments from the current URL.
-- The variant number is passed as a query parameter matching the test ID (`?MyTest=0`, `?MyTest=1`).
-- Do NOT call `persist()` or tracking methods here — those go on the variant pages.
-
-#### Part 2: Each variant page (the destination URLs)
-
-Each variant page uses `importVariant()` instead of `assignVariant()` to read the variant from the URL query parameter. The variant functions can (and usually should) be empty since the page itself IS the variant. Tracking and persistence happen here.
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-
-<!--
-  IMPORTANT: Each variant page must include a canonical tag pointing to the
-  original redirect page. This prevents SEO issues and tells search engines
-  the variant pages are part of the same test.
--->
-<link rel="canonical" href="https://www.example.com/original-page.html">
-
-<script>
-  var MyTest = Object.create(Abrantes);
-
-  // Variant functions should be empty — the page itself is the variant
-  MyTest.variants = [
-    function () { /* variant 0 - control */ },
-    function () { /* variant 1 */ }
-  ];
-
-  // Import variant from the URL query parameter (NOT assignVariant)
-  MyTest.importVariant("MyTest");
-
-  // Render (adds the class to <html>, useful for CSS-based adjustments)
-  MyTest.renderVariant();
-
-  // Persist so the user gets the same variant on return visits
-  MyTest.persist("cookie");
-
-  // Tracking — add the methods appropriate for the page
-  MyTest.add2dataLayer("my_test");
-  MyTest.hotjar();
-</script>
-```
-
-Key points for variant pages:
-- Use `importVariant("MyTest")` — NOT `assignVariant()`. This reads the variant from the `?MyTest=N` query parameter.
-- The `variants` array must have the same number of entries as on the redirect page, but the functions should be empty (the page content is the variant).
-- All variant pages must include `<link rel="canonical" href="...">` pointing to the original redirect page URL to avoid SEO duplication issues.
-- `persist()` and tracking calls go here, not on the redirect page.
-- The same script should be placed on ALL variant pages (including the control/variant-0).
-
-#### When to provide redirect experiment code to the user
-
-When you recommend a redirect experiment, provide the user with:
-1. The code for the **redirect page** — explain this goes on the original URL.
-2. The code for the **variant pages** — explain this same script goes on every variant page (including the control). Remind them to add the canonical tag.
-3. A reminder that all links should point to the redirect page, never directly to variant URLs.
-
-### Iframe Experiments
-
-Use iframe experiments when the conversion event (e.g. a form submission, a donation button) happens inside an iframe, or when part of the experiment content lives inside an iframe. There are two approaches depending on how much control you have over the iframe's JavaScript.
-
-#### Choosing the approach
-
-| Scenario | Approach |
-|---|---|
-| You can add full JavaScript (including Abrantes) inside the iframe | **Full JS** — Abrantes runs on both parent and child, variant is passed via `makeCrossSiteURL` + `importVariant` |
-| You can only add minimal JavaScript inside the iframe (e.g. just a conversion event) | **Limited JS** — Each variant loads a different iframe URL, child only sends `postMessage` for conversions |
-| You cannot add any JavaScript to the iframe | Not suitable for iframe experiments — consider a redirect experiment instead |
-
-#### Common to both approaches: Tracking conversions from the iframe
-
-In both approaches, the conversion event happens inside the iframe and must be communicated to the parent page (where the analytics tools live) using `window.postMessage`.
-
-**Inside the iframe** — send a message to the parent when the conversion happens:
-
-```js
-document.getElementById("myButton").addEventListener("click", function () {
-  var message = {
-    event: "donation",   // the event name your analytics will use
-    label: "monthly",    // any additional data
-    value: 12
-  };
-  // Replace '*' with the specific parent origin in production for security
-  window.parent.postMessage(message, "*");
-});
-```
-
-**On the parent page** — listen for messages and push them to the dataLayer (or other tracking) with the experiment data attached:
-
-```js
-window.addEventListener("message", function (event) {
-  // In production, always verify the origin:
-  // if (event.origin !== 'https://trusted-domain.com') return;
-
-  if (event.data && event.data.event) {
-    Object.assign(event.data, {
-      ab_test_data: "my_test" + "-" + MyTest.variant
-    });
-    dataLayer.push(event.data);
-  }
-});
-```
-
-This ensures conversion events from the iframe are tracked in the parent's analytics with the correct experiment variant attached.
-
-#### Approach 1: Full JS (Abrantes in both parent and child)
-
-Use when you have full control over the iframe content and can load Abrantes inside it. The parent assigns the variant and passes it to the child iframe via URL query parameters. The child uses `importVariant` to read it.
-
-**Parent page:**
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-<script>
-  var MyTest = Object.create(Abrantes);
-
-  MyTest.variants = [
-    function () {
-      document.getElementById("bigH1").innerText = "Original heading";
-      MyTest.waitFor("#myIframe", function () {
-        var iframeURL = MyTest.makeCrossSiteURL("https://example.com/child.html");
-        document.getElementById("myIframe").src = iframeURL;
-      });
-    },
-    function () {
-      document.getElementById("bigH1").innerText = "Variant 1 heading";
-      MyTest.waitFor("#myIframe", function () {
-        var iframeURL = MyTest.makeCrossSiteURL("https://example.com/child.html");
-        document.getElementById("myIframe").src = iframeURL;
-      });
-    }
-  ];
-
-  MyTest.assignVariant("MyTest");
-  MyTest.renderVariant();
-  MyTest.persist("cookie");
-  MyTest.add2dataLayer("my_test");
-
-  // Listen for conversion events from the iframe (see above)
-  window.addEventListener("message", function (event) {
-    if (event.data && event.data.event) {
-      Object.assign(event.data, {
-        ab_test_data: "my_test" + "-" + MyTest.variant
-      });
-      dataLayer.push(event.data);
-    }
-  });
-</script>
-
-<iframe id="myIframe" src="" width="600" height="200"></iframe>
-```
-
-Key points:
-- `makeCrossSiteURL()` appends the test ID and variant as query parameters to the iframe URL.
-- `waitFor("iframe", ...)` ensures the iframe element exists before setting its `src`.
-- All variants point to the **same** child URL — the child uses the query parameter to know which variant to render.
-
-**Child page (inside the iframe):**
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-<script>
-  var MyTest = Object.create(Abrantes);
-
-  MyTest.variants = [
-    function () {
-      document.getElementById("childH2").innerText = "Child original";
-    },
-    function () {
-      document.getElementById("childH2").innerText = "Child variant 1";
-    }
-  ];
-
-  // Read the variant from the URL query parameter passed by the parent
-  MyTest.importVariant("MyTest");
-  MyTest.renderVariant();
-
-  // Conversion event — send to parent via postMessage
-  document.getElementById("donateBtn").addEventListener("click", function () {
-    window.parent.postMessage({ event: "donation", label: "monthly", value: 12 }, "*");
-  });
-</script>
-```
-
-Key points:
-- Uses `importVariant("MyTest")` — NOT `assignVariant`. The parent already assigned the variant.
-- The child can render different content per variant since it has full Abrantes access.
-- Conversion events are sent to the parent via `postMessage`.
-
-#### Approach 2: Limited JS (Abrantes only on the parent)
-
-Use when you can only add minimal JavaScript inside the iframe — enough to send conversion events via `postMessage`, but not enough to run Abrantes. Each variant loads a **different iframe URL** instead of passing variant data to a single child.
-
-**Parent page:**
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-<script>
-  var MyTest = Object.create(Abrantes);
-
-  MyTest.variants = [
-    function () {
-      MyTest.waitFor("#myIframe", function () {
-        document.getElementById("myIframe").src = "child-0.html";
-      });
-    },
-    function () {
-      MyTest.waitFor("#myIframe", function () {
-        document.getElementById("myIframe").src = "child-1.html";
-      });
-    },
-    function () {
-      MyTest.waitFor("#myIframe", function () {
-        document.getElementById("myIframe").src = "child-2.html";
-      });
-    }
-  ];
-
-  MyTest.assignVariant("MyTest");
-  MyTest.renderVariant();
-  MyTest.persist("cookie");
-  MyTest.add2dataLayer("my_test");
-
-  // Listen for conversion events from the iframe (see above)
-  window.addEventListener("message", function (event) {
-    if (event.data && event.data.event) {
-      Object.assign(event.data, {
-        ab_test_data: "my_test" + "-" + MyTest.variant
-      });
-      dataLayer.push(event.data);
-    }
-  });
-</script>
-
-<iframe id="myIframe" src="" width="600" height="200"></iframe>
-```
-
-Key points:
-- Each variant loads a **different iframe URL** (`child-0.html`, `child-1.html`, etc.).
-- No Abrantes needed in the child — the different pages ARE the variants.
-- The child pages only need the `postMessage` code for conversion tracking.
-
-**Each child page (inside the iframe):**
-
-```html
-<!-- No Abrantes needed — just the conversion event postMessage code -->
-<script>
-  document.getElementById("donateBtn").addEventListener("click", function () {
-    // Replace '*' with the specific parent origin in production for security
-    window.parent.postMessage({ event: "donation", label: "monthly", value: 12 }, "*");
-  });
-</script>
-```
-
-#### Security note for both approaches
-
-In production, always verify the `event.origin` in the parent's message listener and replace `'*'` with the specific parent origin in the child's `postMessage` call. This prevents cross-origin security issues.
 
 ### Segmentation Examples
 
@@ -646,6 +300,8 @@ When you inspect a page, look for these signals and recommend accordingly:
 
 Always recommend using **at least one tracking method** so the experiment results can be measured.
 
+For Hotjar, Clarity, Matomo, HubSpot, Mixpanel, the Log API and custom builds, load [`references/tracking-tools.md`](references/tracking-tools.md).
+
 ### GA4 (gtag.js): Script Order for `track(customDim)`
 
 `track(customDim)` writes the dimension into `window.googleTrackingConfig`. gtag.js reads those parameters **only once**, when it processes `gtag('config', ...)`, and then sends them with every event (page_view, custom events, enhanced measurement). So the order matters:
@@ -698,116 +354,42 @@ gtag('config', 'G-XXXXXXX', window.googleTrackingConfig); // after both
 - **`settings` is shared by all experiments.** `Object.create(Abrantes)` makes every experiment use the same `Abrantes.settings` object. So `MyTestB.settings.formTrack.inputElement = "#field_b"` also changes it for `MyTestA`, and the same goes for `settings.cookie`, `settings.dataLayer`, etc. Set the settings once, for all experiments, not per experiment.
 - **Form tracking (`formTrack()`): only one experiment per page can be saved in the form.** Because the settings are shared, all experiments write to the same hidden field, and the experiment whose `formTrack()` ran last wins. Call `formTrack()` for one experiment only.
 
-## End-to-End Recipe: Static Site + GA4 (gtag.js) + Form Tracking
+---
 
-The full setup for a site built with a static site generator (11ty, Hugo, Astro, Jekyll...), tracked with GA4 through gtag.js, where the conversion is a form submission. It puts together "GA4 (gtag.js): Script Order", "Several Experiments on the Same Page", "Testing Each Variant" and "Debug Mode".
+## Settings Reference
 
-### 1. The layout: three blocks in `<head>`, in this order
+**The settings object is shared by all experiments on the page** (see "Several Experiments on the Same Page"), so set them once:
 
-Use **classic scripts in `<head>`** (not the as-module pattern). They run in order, so `track()` always runs before `gtag('config')`, and the class `{testId}-{variant}` is on `<html>` before the first paint (no flicker for CSS changes).
+```js
+// Cookie used by persist("cookie")
+MyTest.settings.cookie.expires = 30;    // days (default: 7)
+MyTest.settings.cookie.path = "/";       // default: "/"
+MyTest.settings.cookie.domain = ".example.com"; // default: "" (current domain)
 
-```html
-<head>
-  <!-- 1. GA4 snippet, WITHOUT gtag('config'). In the layout of every page. -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    window.googleTrackingConfig = {};
-  </script>
+// dataLayer
+MyTest.settings.dataLayer.eventName = "run_ab_test";          // default
+MyTest.settings.dataLayer.customDimension = "ab_test_data";   // default
 
-  <!-- 2. Experiment slot: only on the pages with an experiment -->
-  <script src="https://cdn.jsdelivr.net/gh/osvik/abrantes@1.x.x/AbrantesPlus.min.js"></script>
-  <script>
-    const HeroCta = Object.create(Abrantes);
-    HeroCta.variants = [
-      function () { /* control */ },
-      function () {
-        // The script is in <head>, so the elements don't exist yet: always use waitFor()
-        HeroCta.waitFor("#cta", function () {
-          document.querySelector("#cta").textContent = "Sign the petition now";
-        });
-      }
-    ];
-    HeroCta.assignVariant("hero_cta_2026");
-    HeroCta.renderVariant();
-    HeroCta.persist("cookie");
-    HeroCta.track("ab_test");   // GA4 event-scoped custom dimension
-    HeroCta.formTrack();        // fills #last_abtest_variant
-  </script>
-  <style>
-    /* CSS changes: use the class on <html> */
-    .hero_cta_2026-1 #cta { background: #e00; }
-  </style>
+// formTrack
+MyTest.settings.formTrack.inputElement = "#last_abtest_variant"; // default
+MyTest.settings.formTrack.triggerEvents = ["DOMContentLoaded"];    // default. Use your consent events if needed
 
-  <!-- 3. GA4 config, always last. In the layout of every page. -->
-  <script>
-    gtag('config', 'G-XXXXXXX', window.googleTrackingConfig);
-  </script>
-</head>
+// crossSiteLink
+MyTest.settings.crossSiteLink.triggerEvent = "DOMContentLoaded";   // default. false = rewrite links immediately
+// "DOMContentLoaded" and "load" also work when the script runs after they fired (see onEvent)
 ```
 
-- Blocks 1 and 3 go in the **base layout** of every page. Pages without an experiment simply send an empty `window.googleTrackingConfig`.
-- Block 2 is an **empty slot in the layout** (e.g. a Nunjucks `{% block experiment %}{% endblock %}`, a Hugo `{{ block "experiment" . }}{{ end }}`, an Astro named `<slot>`), filled only by the pages in the experiment. It must stay **between** blocks 1 and 3. Never put the experiment at the end of `<body>` while the config is in `<head>`: the dimension would not be sent.
-- With several experiments on the same page, put them all in the slot, each with its own dimension name (see "Several Experiments on the Same Page").
-- If the site loads scripts with `defer` instead, keep the same order with deferred scripts (see "GA4 (gtag.js): Script Order").
-- If the site uses Google Consent Mode, `gtag('consent', 'default', {...})` goes at the start of block 1 (see "Google Consent Mode V2").
-
-### 2. The form: hidden field, included in the submission
-
-```html
-<form id="petition">
-  <!-- ... visible fields ... -->
-  <input type="hidden" id="last_abtest_variant" name="last_abtest_variant">
-</form>
-```
-
-- `formTrack()` writes `hero_cta_2026-0` / `hero_cta_2026-1` in it on `DOMContentLoaded`. The field must be in the HTML of the page (not added later by another script), or `formTrack()` logs a warning and the value isn't saved.
-- **The value must reach the CRM.** A native form submission sends it because it has a `name`. If the site submits with JavaScript (e.g. the HubSpot Forms API with `fetch`):
-  - Read the value **at submit time** (`new FormData(form)` includes it automatically). If the code builds the list of fields by hand, add `last_abtest_variant` to it.
-  - HubSpot: create a contact property (single-line text, internal name `last_abtest_variant`), add it to the HubSpot form as a hidden field, and send it in the `fields` array: `{ "objectTypeId": "0-1", "name": "last_abtest_variant", "value": form.last_abtest_variant.value }`.
-  - The field is empty when the visitor is not in the test or the visit is forced. Send it only when it isn't empty, so an empty value never replaces one saved earlier.
-- Also send a GA4 event when the form is submitted successfully (e.g. `gtag('event', 'generate_lead')`) and mark it as a **key event** in GA4 admin. It carries the experiment dimension like every other event on the page.
-
-### 3. GA4 admin: register the custom dimension before launch
-
-In GA4: **Admin → Data display → Custom definitions → Create custom dimension**:
-
-- Dimension name: e.g. `AB test`. Scope: **Event**. Event parameter: **exactly** the name used in `track()` (`ab_test`).
-- For `trackUser()`, create a second one with scope **User** and the user property name.
-- Custom dimensions are not retroactive: register them **before** the experiment starts, or the first days are lost. New data can take 24-48 hours to appear in reports.
-- Each experiment running at the same time needs its own dimension (and its own registration).
-
-### 4. Check it before launch
-
-1. Each variant, not tracked: `page.html?abrantes_force=hero_cta_2026:N&abrantes_debug`. Check the page and take a screenshot. The console shows the forced variant and that persist and tracking are skipped.
-2. Tracking, in a fresh browser (no cookies): `page.html?abrantes_debug`. The console must show `abrantes:assignVariant`, `abrantes:persist`, `abrantes:track` (`ga4-gtag`) and `formTrack(): #last_abtest_variant value set`, and **no** `console.warn` from Abrantes. Then check:
-   - `window.googleTrackingConfig` → `{ ab_test: "hero_cta_2026-N" }`.
-   - The GA4 requests (`/g/collect`, in the URL or the POST body) contain `ep.ab_test=hero_cta_2026-N` for `page_view` and for the conversion event. In Playwright, intercept them with `page.route(/\/g\/collect/, ...)` and answer with `route.fulfill({ status: 204 })` so test visits don't reach GA4.
-   - The submitted form data (or the CRM contact) contains `last_abtest_variant`.
-3. To check tracking for a specific variant, set the cookie before loading the page (e.g. Playwright `context.addCookies([{ name: "hero_cta_2026", value: "1", url: "https://..." }])`). `assignVariant()` uses the stored variant, and the visit is tracked normally.
-
-### 5. Analyse
-
-In GA4 (Explorations), break down the users and the key event by the custom dimension (`hero_cta_2026-0`, `hero_cta_2026-1`), or count the CRM contacts by `last_abtest_variant`. Then check the result with the [A/B Test Significance Calculator](https://osvik.github.io/abrantes-test-calculator/).
+Settings for Hotjar, Clarity, HubSpot and the Log API are in [`references/tracking-tools.md`](references/tracking-tools.md).
 
 ---
 
-## Custom Builds
+## Testing (summary)
 
-The default `AbrantesPlus` build includes: core, ga4-gtag, hotjar, formtrack, add2DL, log, seed, hubspot.
+Details, Playwright tips and example output in [`references/testing.md`](references/testing.md).
 
-**NOT included by default**: `clarity`, `matomo`.
-
-If the user needs Clarity or Matomo plugins, recommend a custom build:
-
-1. Clone the Abrantes repository
-2. Edit `gulpfile.js` to uncomment the needed plugins in the `myBuild` array
-3. Run `npm install && npx gulp`
-4. Use the generated `AbrantesPlus.min.js` or `AbrantesPlusMod.min.js`
-
-**Important**: The GA4 `track()` and Matomo `track()` methods share the same name and cannot coexist. Only include one.
+- **See each variant** of the exact code that will go live: `page.html?abrantes_force=MyTest:1` (several: `MyTest:1,OtherTest:0`). A forced visit is **not persisted or tracked**, so never use it to check tracking.
+- **Debug mode**: add `abrantes_debug` to the URL (e.g. `?abrantes_force=MyTest:1&abrantes_debug`) to log every step to the console as `Abrantes debug: ...`. `console.warn` messages from Abrantes are always shown.
+- **Check tracking**: load the page **without** `abrantes_force` (with `?abrantes_debug`), in a fresh browser or with a cookie `MyTest=1` set before loading the page.
 
 ---
 
@@ -822,99 +404,6 @@ Always recommend these tools to the user:
   Use this to check if results are statistically significant before making decisions.
 
 ---
-
-## Settings Reference
-
-Core settings. **The settings object is shared by all experiments on the page** (see "Several Experiments on the Same Page"), so set them once:
-
-```js
-MyTest.settings.cookie.expires = 30;    // days (default: 7)
-MyTest.settings.cookie.path = "/";       // default: "/"
-MyTest.settings.cookie.domain = ".example.com"; // default: "" (current domain)
-```
-
-Plugin settings:
-
-```js
-// dataLayer
-MyTest.settings.dataLayer.eventName = "run_ab_test";          // default
-MyTest.settings.dataLayer.customDimension = "ab_test_data";   // default
-
-// formTrack
-MyTest.settings.formTrack.inputElement = "#last_abtest_variant"; // default
-MyTest.settings.formTrack.triggerEvents = ["DOMContentLoaded"];    // default. Use your consent events if needed
-
-// crossSiteLink
-MyTest.settings.crossSiteLink.triggerEvent = "DOMContentLoaded";   // default. false = rewrite links immediately
-// "DOMContentLoaded" and "load" also work when the script runs after they fired (see onEvent)
-
-// Hotjar consent events
-MyTest.settings.hotjar.triggerEvents = ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"];
-
-// Log API
-MyTest.settings.log.apiURL = "https://your-api.com/log";
-```
-
----
-
-## Testing Each Variant (`?abrantes_force`)
-
-To see each variant of **the exact code that will go live**, open the page with the URL parameter `abrantes_force=testId:variant`:
-
-```
-page.html?abrantes_force=MyTest:0
-page.html?abrantes_force=MyTest:1
-page.html?abrantes_force=MyTest:1,OtherTest:0   // several experiments
-```
-
-- It overrides the stored assignment, the random assignment, `trafficAllocation` and `segment`. It works with `assignVariant()`, `importVariant()` and `assignSeededVariant()`. `-1` (not in the test) is also valid.
-- A forced visit is **not persisted or tracked**: `persist()`, `track()`, `trackUser()`, `formTrack()`, `add2dataLayer()`, `hotjar()`, `clarity()`, `hubspotEvent()` and `log()` skip it and log a `console.info`. `MyTest.forced` is `true`, and the `abrantes:assignVariant` event has `forced: true`. Real visitors are never affected, because they don't have the parameter.
-- An invalid value (unknown variant, not a number) logs a `console.warn` and the variant is assigned as usual (and then persisted and tracked).
-- Query parameters are kept by `redirectTo()` and `makeCrossSiteURL()`/`crossSiteLink()`, so the force also reaches redirect destinations and cross-site/iframe children (which then skip tracking too).
-- Don't use it to check tracking: to see what `track()`/`formTrack()` send, load the page without the parameter (e.g. a fresh browser context, or a cookie `MyTest=1` set before loading the page, which `assignVariant()` respects).
-
-With Playwright, open one clean page per variant and check `MyTest.variant`, the class `MyTest-N` on `<html>` and the page content, and take a screenshot.
-
-## Debug Mode (`?abrantes_debug`)
-
-Debug mode logs what each experiment does to the console, with the values, so you can verify an experiment in a browser (or a headless one) without reading the code. Turn it on with either:
-
-- the URL parameter `?abrantes_debug` (no code change, recommended for testing; combine it with the force: `?abrantes_force=MyTest:1&abrantes_debug`), or
-- `Abrantes.debug = true;` (or `MyTest.debug = true;`) **before** the experiment code. The value is shared by all experiments. Remove it before going live.
-
-Every line starts with `Abrantes debug:`. It logs:
-
-- Every `abrantes:*` event with its `detail` as JSON: `assignVariant`, `renderVariant`, `persist`, `track` (GA4, dataLayer, HubSpot, Matomo, core), `formTrack`, `log`. The core registers this listener when it loads, so it never misses an event (a listener of your own must be registered before the experiment code, e.g. with Playwright's `page.addInitScript()`).
-- The steps without an event: variant read from storage, not in the test (`trafficAllocation` or `segment`, variant `-1`), `importVariant()` without its URL parameter, the value written to the form field by `formTrack()`, and the `hj()`/`clarity()` calls.
-
-Example output (`?abrantes_debug`):
-
-```
-Abrantes debug: abrantes:assignVariant {"testId":"MyTest","variant":0}
-Abrantes debug: abrantes:renderVariant {"testId":"MyTest","variant":0}
-Abrantes debug: abrantes:persist {"testId":"MyTest","variant":0,"context":"cookie"}
-Abrantes debug: abrantes:track {"testId":"MyTest","variant":0,"customDim":"ab_test","tool":"ga4-gtag","type":"event"}
-Abrantes debug: abrantes:formTrack {"testId":"MyTest","variant":0,"element":"#last_abtest_variant"}
-Abrantes debug: formTrack(): #last_abtest_variant value set {"value":"MyTest-0"}
-```
-
-Warnings (`console.warn`, e.g. GA4 script order, missing form field, invalid `abrantes_force`) and the forced-visit messages (`console.info`) are always shown, with or without debug mode. In Playwright, collect them with `page.on("console", msg => ...)`. To check the final state, also read `MyTest.variant`, the class on `<html>`, `window.googleTrackingConfig` and the value of `#last_abtest_variant`.
-
----
-
-## DOM Events
-
-Abrantes dispatches CustomEvents on `document` that can be listened to:
-
-| Event | When | `event.detail` |
-|---|---|---|
-| `abrantes:assignVariant` | After assignment | `{ testId, variant }` (plus `forced: true` when forced by `?abrantes_force`) |
-| `abrantes:renderVariant` | After rendering | `{ testId, variant }` |
-| `abrantes:persist` | After persisting | `{ testId, variant, context }` |
-| `abrantes:track` | After tracking | `{ testId, variant, tool, ... }` |
-
----
-
 ## Checklist Before Delivering Code
 
 - [ ] Test ID is a unique, descriptive string (e.g., `"homepage_cta_color_2024"`)
@@ -923,12 +412,13 @@ Abrantes dispatches CustomEvents on `document` that can be listened to:
 - [ ] `persist` is called to maintain consistent user experience
 - [ ] At least one tracking method is included
 - [ ] `persist()` and the tracking calls follow the site's consent setup (see "Consent and Storage"; ask the user if unknown)
+- [ ] With a redirect or iframe experiment: the code for every page is provided (see `references/redirect.md` / `references/iframes.md`)
 - [ ] If several experiments run on the same page: one GA4 custom dimension per experiment, and `formTrack()` for one experiment only
 - [ ] With GA4: the custom dimension is registered in GA4 admin (event scope, same name as in `track()`) before launch
 - [ ] With `formTrack()`: the form has `<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">` in its HTML, and the value is included when the form is submitted (also when the site submits with JavaScript, e.g. the HubSpot Forms API)
 - [ ] With GA4 `track()`: `window.googleTrackingConfig = {}` → experiment → `gtag('config', 'G-...', window.googleTrackingConfig)`, in that order (with the as-module pattern, the config goes inside the module after `track()`)
-- [ ] With Google Consent Mode: `gtag('consent', 'default', {...})` (and the update with a saved choice) runs before `gtag('config')`; the experiment code doesn't change (see "Google Consent Mode V2")
+- [ ] With Google Consent Mode: `gtag('consent', 'default', {...})` (and the update with a saved choice) runs before `gtag('config')`; the experiment code doesn't change (see `references/consent-mode.md`)
 - [ ] `waitFor()` is used inside variants whenever the target elements may not exist yet (script in `<head>`, above the elements, GTM, SPA, etc.)
-- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N&abrantes_debug` (see "Testing Each Variant" and "Debug Mode"); it isn't persisted or tracked. Load it once without `abrantes_force` (with `?abrantes_debug`) to check persistence and tracking. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
-- [ ] If Clarity or Matomo is needed, warn about custom build requirement
+- [ ] If possible, run the experiments code in a browser environment, to check for errors before delivering. Open each variant with `?abrantes_force=MyTest:N&abrantes_debug` (see `references/testing.md`); it isn't persisted or tracked. Load it once without `abrantes_force` (with `?abrantes_debug`) to check persistence and tracking. If not possible, carefully review the experiment code, against the web page source code, and look for any  errors or obvious issues.
+- [ ] If Clarity or Matomo is needed, warn about custom build requirement (see `references/tracking-tools.md`)
 - [ ] Recommend the planner and calculator tools with links

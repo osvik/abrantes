@@ -185,8 +185,14 @@ Items in section A were found by reading the code. They have not yet been reprod
 
 - **Problem:** At 674 lines, most of `SKILL.md` covers GTM, iframes, Matomo, Clarity and Hotjar, which most agents don't need.
 - **Proposal:** A short core `SKILL.md` (API, core pattern, checklist), plus `references/redirect.md`, `references/iframes.md`, `references/gtm.md`, `references/tracking-tools.md` and so on, loaded only when needed.
-- **Status:** todo
+- **Status:** done
 - **Comments:**
+- **Reply (Claude):** Done. `SKILL.md` went from 934 lines to about 420. Every section was moved word for word except the cross-references, which now point to the new files. Nothing was dropped (checked line by line against the old file).
+  - **Core `SKILL.md`:** workflow, a "Reference files" table (which file to load and when), loading, the core pattern, choosing the pattern (as-module and classic; GTM, redirect and iframe are one line each pointing to their reference), core methods, `waitFor`, seeded, excluded variants, consent and storage, CSS experiments, segmentation, DOM operations, the tracking methods table and recommendations, GA4 script order, several experiments on the same page, settings (core, dataLayer, formTrack, crossSiteLink), a short testing summary, planning tools and the checklist. GA4 order, several experiments and consent and storage stay in the core because they apply to the main use case (static site + GA4 + form) and they're needed to avoid silent mistakes.
+  - **`references/`:** `static-site-ga4-form.md` (the end-to-end recipe), `testing.md` (`?abrantes_force`, debug mode, DOM events), `consent-mode.md`, `redirect.md`, `iframes.md`, `gtm.md`, `tracking-tools.md` (Hotjar, Clarity, Matomo, HubSpot, Mixpanel, Log API, custom builds). Each starts with "Load this file when: ...".
+  - The core file also gives the raw GitHub URL of the references, for agents that read `SKILL.md` from a URL.
+  - Updated to match: `.claude/skills/experiment/SKILL.md`, `AGENTS.md`, `CLAUDE.md`, `docs/llms.txt` (links to each reference; the recipe and Consent Mode links now point to their files) and `docs/ai.html` (provide `SKILL.md` together with the references that apply).
+  - Anyone who copies the skill into another tool now has to copy `references/` with it. This is now said on the docs site: a new "Copying the skill to another tool" section in `docs/ai.html`, and a note next to the AI skill link in `docs/index.html`.
 
 ### 13. Exact versions instead of `@1.x.x`
 
