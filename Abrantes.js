@@ -129,6 +129,23 @@ Abrantes.makeCrossSiteURL = function (linkURLstring) {
 };
 
 /**
+ * Runs a callback when a window event fires. If the event is "DOMContentLoaded" or "load"
+ * and has already happened (e.g. async or module scripts), the callback runs on the next tick instead.
+ * It runs asynchronously, like a listener would, so an error in the callback doesn't stop the calling code.
+ * @param {string} eventName - Name of the window event
+ * @param {function} callback - Function to run
+ */
+Abrantes.onEvent = function (eventName, callback) {
+    const alreadyFired = (eventName === "DOMContentLoaded" && document.readyState !== "loading") ||
+        (eventName === "load" && document.readyState === "complete");
+    if (alreadyFired) {
+        setTimeout(callback, 0);
+    } else {
+        window.addEventListener(eventName, callback);
+    }
+};
+
+/**
  * Transforms the href attributes of matching anchor elements for cross-site experiments
  * @param {string} selector - CSS selector to match anchor elements
  */
@@ -146,7 +163,7 @@ Abrantes.crossSiteLink = function (selector) {
         });
     };
     if (this.settings.crossSiteLink.triggerEvent) {
-        window.addEventListener(this.settings.crossSiteLink.triggerEvent, function () {
+        this.onEvent(this.settings.crossSiteLink.triggerEvent, function () {
             addLinks(selector);
         });
     } else {
@@ -155,7 +172,7 @@ Abrantes.crossSiteLink = function (selector) {
 };
 
 /**
- * Executes the variant function and adds a class to the body element
+ * Executes the variant function and adds a class to the html element
  * @param {number} variant - The variant index to render (defaults to this.variant)
  */
 Abrantes.renderVariant = function (variant = this.variant) {

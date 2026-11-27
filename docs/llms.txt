@@ -66,13 +66,14 @@ MyTest.persist("cookie");         // persist assignment
 ### Core Methods
 
 - `assignVariant(testId, trafficAllocation?, segment?)` - Assign user to a variant
-- `renderVariant()` - Execute the variant function, adds CSS class `{testId}-{variant}` to body
+- `renderVariant()` - Execute the variant function, adds CSS class `{testId}-{variant}` to `<html>`
 - `persist(context?)` - Save assignment ("cookie", "user"/"local", "session")
 - `waitFor(selector, callback)` - Wait for DOM element via MutationObserver. Use whenever the target element may not exist yet (script in head, above elements, GTM, SPA)
 - `redirectTo(url)` - Redirect preserving query params and hash
 - `importVariant(testId)` - Read variant from URL query params (for cross-site/redirect/iframe experiments)
 - `makeCrossSiteURL(url)` - Generate URL with experiment params appended
 - `crossSiteLink(selector)` - Rewrite link hrefs to include experiment data
+- `onEvent(eventName, callback)` - Run callback on a window event; if `DOMContentLoaded`/`load` already fired (async/module scripts, tag managers), runs on the next tick. Used by `crossSiteLink()` and `formTrack()`
 - `assignSeededVariant(testId, seed, trafficAllocation?, segment?)` - Async deterministic assignment from seed string
 
 ### Available Tracking Plugins (default build)
@@ -93,7 +94,7 @@ MyTest.persist("cookie");         // persist assignment
 ### Experiment Patterns
 
 1. **In-page** (default): Modify DOM in variant functions
-2. **CSS-only**: Empty variant functions, use body class `{testId}-{variant}` for CSS rules
+2. **CSS-only**: Empty variant functions, use the `<html>` class `{testId}-{variant}` for CSS rules
 3. **Redirect**: Each variant is a separate page, use `redirectTo()` on redirect page and `importVariant()` on variant pages
 4. **Iframe (full JS)**: Abrantes on parent and child, pass variant via `makeCrossSiteURL` + `importVariant`
 5. **Iframe (limited JS)**: Abrantes only on parent, each variant loads a different iframe URL

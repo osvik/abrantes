@@ -140,13 +140,14 @@ Use these rules to decide which pattern to use:
 | Method | Description |
 |---|---|
 | `assignVariant(testId, trafficAllocation?, segment?)` | Assign user to a variant. `testId` is a unique string. `trafficAllocation` is a number between 0 and 1 (default 1 = 100%). `segment` is a function returning boolean. |
-| `renderVariant()` | Execute the assigned variant function. Adds CSS class `{testId}-{variant}` to `<body>`. |
+| `renderVariant()` | Execute the assigned variant function. Adds CSS class `{testId}-{variant}` to `<html>`. |
 | `persist(context?)` | Save assignment. Context: `"cookie"` (default, 7 days), `"user"` or `"local"` (localStorage), `"session"` (sessionStorage). |
 | `waitFor(selector, callback)` | Wait for a DOM element using MutationObserver. **You MUST use this whenever the target element may not exist yet** — see "When to use `waitFor`" below. |
 | `redirectTo(url)` | Redirect preserving query params and hash. Use inside variant functions for redirect tests. |
 | `crossSiteLink(selector)` | Rewrite links to pass experiment data cross-site. Use with `importVariant` on destination. |
 | `importVariant(testId)` | Read variant from URL query params (for cross-site experiments). |
 | `makeCrossSiteURL(url)` | Generate a URL with experiment params appended. |
+| `onEvent(eventName, callback)` | Run `callback` when a window event fires. If the event is `DOMContentLoaded` or `load` and has already happened (e.g. `async` or module scripts, scripts added by a tag manager), it runs on the next tick instead of never. `crossSiteLink()` and `formTrack()` use it for their trigger events. |
 
 ### When to Use `waitFor`
 
@@ -194,7 +195,7 @@ MyTest.assignVariant("MyTest");
 
 ### CSS Experiments (styles, layout tweaks, element visibility...)
 
-Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<body>`, enabling experiments with CSS:
+Variants can be empty functions. `renderVariant()` adds the class `{testId}-{variant}` to `<html>`, enabling experiments with CSS:
 
 ```css
 .MyDesignExp-1 h1 { font-size: 2.5rem; }
@@ -203,7 +204,7 @@ Variants can be empty functions. `renderVariant()` adds the class `{testId}-{var
 
 **If an experiment can be done purely with CSS, it's often better to use this approach, for simplicity and performance.**
 
-If part of the experiment is modifying styles, it's better that part of the experiment is done via CSS (using the class added by Abrantes to the body tag). Use JavaScript for structural changes or content changes that can't be achieved with CSS.
+If part of the experiment is modifying styles, it's better that part of the experiment is done via CSS (using the class added by Abrantes to the `<html>` element). Use JavaScript for structural changes or content changes that can't be achieved with CSS.
 
 A style block is then included in the experiment code, like this example:
 
@@ -279,7 +280,7 @@ Each variant page uses `importVariant()` instead of `assignVariant()` to read th
   // Import variant from the URL query parameter (NOT assignVariant)
   MyTest.importVariant("MyTest");
 
-  // Render (applies the body class, useful for CSS-based adjustments)
+  // Render (adds the class to <html>, useful for CSS-based adjustments)
   MyTest.renderVariant();
 
   // Persist so the user gets the same variant on return visits
@@ -638,6 +639,11 @@ MyTest.settings.dataLayer.customDimension = "ab_test_data";   // default
 
 // formTrack
 MyTest.settings.formTrack.inputElement = "#last_abtest_variant"; // default
+MyTest.settings.formTrack.triggerEvents = ["DOMContentLoaded"];    // default. Use your consent events if needed
+
+// crossSiteLink
+MyTest.settings.crossSiteLink.triggerEvent = "DOMContentLoaded";   // default. false = rewrite links immediately
+// "DOMContentLoaded" and "load" also work when the script runs after they fired (see onEvent)
 
 // Hotjar consent events
 MyTest.settings.hotjar.triggerEvents = ["load", "cookies:accept", "cookies:acceptall", "cookies:ok"];

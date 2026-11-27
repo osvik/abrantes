@@ -4,7 +4,7 @@ This folder contains various examples demonstrating how to use the Abrantes libr
 
 ## Core Concepts
 
-*   [design-experiment-1.html](design-experiment-1.html) - A simple CSS-based experiment. Abrantes applies different classes to the body tag that can be used to experiment with different designs.
+*   [design-experiment-1.html](design-experiment-1.html) - A simple CSS-based experiment. Abrantes applies different classes to the html tag that can be used to experiment with different designs.
 *   [example-functions.js](example-functions.js) - A collection of example JavaScript functions for common DOM manipulations (changing text, images, classes) to use in your variants.
 *   [waitFor.html](waitFor.html) - Implementation of a wait function to apply changes only when dynamic elements appear in the DOM. Important for SPAs.
 *   [segment.html](segment.html) - Demonstrates how to segment the experiment to specific users (e.g., by language or screen size).
