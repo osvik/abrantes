@@ -57,8 +57,9 @@ Items in section A were found by reading the code. They have not yet been reprod
 - **Where:** `plugins/formtrack.js` — `setInput()`
 - **Problem:** If `#last_abtest_variant` is missing, the code throws inside an event listener, where nobody notices.
 - **Proposal:** Use a `console.warn` with a clear message: which selector is missing and what to add to the form.
-- **Status:** todo
+- **Status:** done
 - **Comments:** Go ahead
+- **Reply (Claude):** Done. `setInput()` no longer throws. It logs a `console.warn` and returns. The message names the selector and the value that wasn't saved, and says what to add. For an id selector it shows the exact tag, e.g. `<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">`, and mentions that the `name` is needed for the value to be submitted. For other selectors it shows a generic hint. It also suggests `settings.formTrack.inputElement` as the alternative. Tested in Chromium (Playwright): no warning when the field exists, in `<head>` and in late async scripts. When it's missing (default, custom id and complex selectors), the right warning appears, there's no exception, and the code after `formTrack()` runs. `SKILL.md` and `llms.txt` now mention the required hidden field and the warning, including the case of forms embedded later by another script (e.g. HubSpot), where the field doesn't exist yet when the trigger event fires.
 
 ### 6. Several experiments on the same page overwrite each other
 

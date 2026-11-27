@@ -83,7 +83,7 @@ MyTest.persist("cookie");         // persist assignment
 - `trackUser(customDim)` - GA4 user property
 - `hotjar()` - Hotjar events
 - `hubspotEvent(eventName)` - HubSpot Enterprise
-- `formTrack()` - Hidden form field
+- `formTrack()` - Hidden form field (`<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">`). Logs a console warning if the field doesn't exist when the trigger event fires
 - `log(event, note?)` - Custom log API, [PHP script available in Github](https://github.com/osvik/abrantes-log-api)
 
 ### Plugins NOT in default build (need custom build)

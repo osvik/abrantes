@@ -51,7 +51,11 @@
         setInput: function (selector, testId, variant) {
             const iElement = document.querySelector(selector);
             if (!iElement) {
-                throw new Error("The element with the selector '" + selector + "' does not exist");
+                const example = selector.charAt(0) === "#" && /^#[\w-]+$/.test(selector) ?
+                    "<input type=\"hidden\" id=\"" + selector.slice(1) + "\" name=\"" + selector.slice(1) + "\">" :
+                    "<input type=\"hidden\" name=\"...\"> matching \"" + selector + "\"";
+                console.warn("Abrantes formTrack(): no element matches the selector \"" + selector + "\", so " + testId + "-" + variant + " is not saved in the form. Add " + example + " inside the form (the name is needed for it to be submitted), or set settings.formTrack.inputElement to the selector of the hidden field.");
+                return;
             }
             iElement.value = testId + "-" + variant;
         }

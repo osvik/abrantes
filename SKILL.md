@@ -569,7 +569,7 @@ document.querySelector(".cta").style.backgroundColor = "#ff0000";
 | Microsoft Clarity | `clarity()` | `clarity` (NOT in default build) | Needs custom build |
 | Matomo | `track(dimensionId)` | `matomo` (NOT in default build) | Conflicts with GA4 `track()` - needs custom build |
 | HubSpot Enterprise | `hubspotEvent(eventName)` | `hubspot` (default build) | Requires Marketing Hub Enterprise |
-| Form hidden field | `formTrack()` | `formtrack` (default build) | Sets `#last_abtest_variant` input value |
+| Form hidden field | `formTrack()` | `formtrack` (default build) | Sets `#last_abtest_variant` input value when the trigger event fires (`DOMContentLoaded` by default). The form needs `<input type="hidden" id="last_abtest_variant" name="last_abtest_variant">`. If the field doesn't exist at that moment (e.g. a form embedded later by HubSpot or another script), it logs a `console.warn` and the value isn't saved. |
 | Custom Log API | `log(event, note?)` | `log` (default build) | Sends to configurable API endpoint |
 | Mixpanel | Manual: `mixpanel.track(...)` | None (no plugin) | Use `MyTest.testId + "-" + MyTest.variant` |
 | Core DOM event | `track()` | Core (always available) | Dispatches `abrantes:track` CustomEvent |
